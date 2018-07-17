@@ -1,5 +1,6 @@
-<?php
 
+<?php
+///factura 89
  
 //namespace josemmo\Facturae;
 
@@ -749,6 +750,13 @@ class Facturae {
                '</ds:CanonicalizationMethod>' . "\n" .
                '<ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1">' .
                '</ds:SignatureMethod>' . "\n" .*/
+//reference 2
+               '<ds:Reference URI="#xmldsig-' . $this->certificateID . '-keyinfo">' . "\n" .
+                 '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1">' .
+                 '</ds:DigestMethod>' . "\n" .
+                 '<ds:DigestValue>' . $kInfoDigest . '</ds:DigestValue>' . "\n" .
+               '</ds:Reference>' . "\n" .
+//reference 2
 //reference 1
                '<ds:Reference Id="xmldsig-' . $this->referenceID . '-ref0" URI="">' . "\n" .
                  '<ds:Transforms>' . "\n" .
@@ -760,13 +768,6 @@ class Facturae {
                  '<ds:DigestValue>' . $documentDigest . '</ds:DigestValue>' . "\n" .
                '</ds:Reference>' . "\n" .
 //reference 1
-//reference 2
-               '<ds:Reference URI="#xmldsig-' . $this->certificateID . '-keyinfo">' . "\n" .
-                 '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1">' .
-                 '</ds:DigestMethod>' . "\n" .
-                 '<ds:DigestValue>' . $kInfoDigest . '</ds:DigestValue>' . "\n" .
-               '</ds:Reference>' . "\n" .
-//reference 2
 //reference 3               
                '<ds:Reference ' .
                'Type="http://uri.etsi.org/01903#SignedProperties" ' .
@@ -819,9 +820,6 @@ class Facturae {
                '</xades:QualifyingProperties>' .
              '</ds:Object>' .
            '</ds:Signature>';*/
-
-
-
     // Inject signature
     $xml = str_replace('<ext:ExtensionContent></ext:ExtensionContent>', '<ext:ExtensionContent>' .$sig . '</ext:ExtensionContent>', $xml);
 
@@ -869,7 +867,7 @@ $nit                    = "900332178";//nit de factura
 $Prefix                 = 'PRUE';//Prefijo
 $From                   = '980000000';//De
 $To                     = '985000000';//a
-$rango                  = "980000088";
+$rango                  = "980000089";
 $InvoiceNumber          =  $Prefix.$rango;
 $InvoiceAuthorization   = '9000000105596663';//Autorización de factura
 $StartDate              = '2018-02-14';//fecha inicio resolución
@@ -885,9 +883,7 @@ $id_producto            = '1';
 $cantidad               = '765';
 $descripcion            = 'Línea-1 PRUE980007161 f-s0001_900373115_0d2e2_R9000000500017960-PRUE-A_cufe';
 $Precio                 = '1483.4518917264927';
-
 $IssueDate              =   date('Y-m-d');//Fecha de asunto
-
 $IssueTime              =   date('H:i:s');//Tiempo de emisión
 $LineExtensionAmount    = '500.00';//<!-- Valor de la factura sin IVA-->
 $TaxExclusiveAmount     = '95.00'; //<!--Importe exclusivo de impuestos -->
@@ -897,7 +893,6 @@ $Note                   = 'Nota';//prueba de nota
 //_________________________________________________________ cufe_______________________________________
 $NumFac = $InvoiceNumber;   //Número de factura.
 //$FecFac = $IssueDate.$IssueTime; // Fecha de factura en formato (Java) YYYYmmddHHMMss
-
 $FecFac = date('Ymd').date('His'); // Fecha de factura en formato (Java) YYYYmmddHHMMss
 $ValFac = $LineExtensionAmount; //Valor Factura sin IVA, con punto decimal, con decimales a dos (2) dígitos, sin separadores de miles, ni símbolo pesos.
 $CodImp1 = '01'; //  01  fe:Invoice/fe:TaxTotal[x]/fe:TaxSubtotal/cac:TaxCategory/cac:TaxScheme/cbc:ID = 01
@@ -1091,22 +1086,22 @@ $cufe = sha1($NumFac.$FecFac.$ValFac.$CodImp1.$ValImp1.$CodImp2.$ValImp2.$CodImp
     $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . $xml;
 
     // Save document
-    //if (!is_null($filePath)) return file_put_contents($filePath, $xml);
+   // if (!is_null($filePath)) return file_put_contents($filePath, $xml);
 
 
 $obj_xml = new SimpleXMLElement($xml);
 $documento_xml = $obj_xml->asXML(); //el xml de salidad
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//                                                       //
-//                          Fin_Creamos_Xml                        //
-//                                                         //
+//                                                                                                           //
+//                          Fin_Creamos_Xml                                                                  //
+//                                                                                                           //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//                                                       //
-//                          Inicio_Creamos_ZIP                       //
-//                                                         //
+//                                                                                                           //
+//                          Inicio_Creamos_ZIP                                                               //
+//                                                                                                           //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //nobre del archivo de salidad
