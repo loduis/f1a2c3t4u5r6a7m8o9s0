@@ -885,9 +885,9 @@ $id_producto            = '1';
 $cantidad               = '765';
 $descripcion            = 'Línea-1 PRUE980007161 f-s0001_900373115_0d2e2_R9000000500017960-PRUE-A_cufe';
 $Precio                 = '1483.4518917264927';
- date_default_timezone_set("America/Bogota");
+
 $IssueDate              =   date('Y-m-d');//Fecha de asunto
- date_default_timezone_set("America/Bogota");
+
 $IssueTime              =   date('H:i:s');//Tiempo de emisión
 $LineExtensionAmount    = '500.00';//<!-- Valor de la factura sin IVA-->
 $TaxExclusiveAmount     = '95.00'; //<!--Importe exclusivo de impuestos -->
@@ -897,7 +897,7 @@ $Note                   = 'Nota';//prueba de nota
 //_________________________________________________________ cufe_______________________________________
 $NumFac = $InvoiceNumber;   //Número de factura.
 //$FecFac = $IssueDate.$IssueTime; // Fecha de factura en formato (Java) YYYYmmddHHMMss
- date_default_timezone_set("America/Bogota");
+
 $FecFac = date('Ymd').date('His'); // Fecha de factura en formato (Java) YYYYmmddHHMMss
 $ValFac = $LineExtensionAmount; //Valor Factura sin IVA, con punto decimal, con decimales a dos (2) dígitos, sin separadores de miles, ni símbolo pesos.
 $CodImp1 = '01'; //  01  fe:Invoice/fe:TaxTotal[x]/fe:TaxSubtotal/cac:TaxCategory/cac:TaxScheme/cbc:ID = 01
@@ -1142,7 +1142,7 @@ echo "<br><br>".$content."<br><br>";
   $nonce    = base64_encode(rand());
     $wsdl     = "https://facturaelectronica.dian.gov.co/habilitacion/B2BIntegrationEngine/FacturaElectronica/facturaElectronica.wsdl";
     $client   = new SoapClient($wsdl, array("trace"=>1,"exceptions"=>0));
-  date_default_timezone_set("America/Bogota");
+ 
   $created   = date('Y-m-d\TH:i:s.v\Z');  
   $xmlHeader = 
         '<wsse:Security  SOAP-ENV:mustUnderstand="1" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
@@ -1165,7 +1165,7 @@ echo "<br><br>".$content."<br><br>";
 'Document'      => $content);
 //          'Document'      => 'cid:ws_f0900332178003b023383.zip');*/
 //----------------------------------------------------------------------------------------
- date_default_timezone_set("America/Bogota");
+
 $date     = date('Y-m-d\TH:i:s');
 $parameters =
 '<ns1:EnvioFacturaElectronicaPeticion>
