@@ -1,5 +1,5 @@
 <?php
-
+//91
 //= date("Y-m-d", $fecha_inicio); 
 /*
 echo "<br> date       ".  $date      = date('Y-m-d\TH:i:s');  
@@ -944,7 +944,7 @@ $nit                    = "900332178";//nit de factura
 $Prefix                 = 'PRUE';//Prefijo
 $From                   = '980000000';//De
 $To                     = '985000000';//a
-$rango                  = "980000090";
+$rango                  = "980000091";
 $InvoiceNumber          =  $Prefix.$rango;
 $InvoiceAuthorization   = '9000000105596663';//Autorización de factura
 $StartDate              = '2018-02-14';//fecha inicio resolución
