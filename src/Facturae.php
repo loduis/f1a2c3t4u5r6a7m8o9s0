@@ -39,7 +39,7 @@ class Facturae {
   const SIGN_POLICY_3_1 = array(
     "name" => "Política de Firma FacturaE v3.1",
     "url" => "https://facturaelectronica.dian.gov.co/politicadefirma/v1/politicadefirmav1.pdf",
-    "digest" => "61fInBICBQOCBwuTwlaOZSi9HKc="
+    "digest" => "5CL0Atx0jWqWoGG7rhuKOU7RN/kXCnupNAZb+fMiUu8JFLaUZb7mWXBCO2lzgKuzUObeBz1nGXtL9+0Rqw8X+Q=="
   );
 
   const PAYMENT_CASH = "01";
@@ -672,7 +672,7 @@ class Facturae {
     // Prepare signed properties
     $signTime = is_null($this->signTime) ? time() : $this->signTime;
     $certData = openssl_x509_parse($this->publicKey);
-    $certDigest = openssl_x509_fingerprint($this->publicKey, "sha256", true);
+    $certDigest = openssl_x509_fingerprint($this->publicKey, "sha512", true);
     $certDigest = base64_encode($certDigest);
     $certIssuer = array();
     foreach ($certData['issuer'] as $item=>$value) {
@@ -687,10 +687,12 @@ class Facturae {
                // '<xades:SigningTime>' . date('c', $signTime) . '</xades:SigningTime>' .
                 '<xades:SigningTime>' .  $fecha_SigningTime . '</xades:SigningTime>' .
                 '<xades:SigningCertificate>' .
+
+
  //certi 1               
                   '<xades:Cert>' .
                     '<xades:CertDigest>' .
-                      '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256"></ds:DigestMethod>' .
+                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></ds:DigestMethod>' .
                       '<ds:DigestValue>' . $certDigest . '</ds:DigestValue>' .
                     '</xades:CertDigest>' .
                     '<xades:IssuerSerial>' .
@@ -700,11 +702,13 @@ class Facturae {
                     '</xades:IssuerSerial>' .
                   '</xades:Cert>' .
  //certi 1 
+
+
  //certi 2
                   '<xades:Cert>' .
                     '<xades:CertDigest>' .
-                      '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256"></ds:DigestMethod>' .
-                      '<ds:DigestValue>' . 'ydBrkDUi4OLwpDJACttO8PSuHdE=' . '</ds:DigestValue>' .
+                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></ds:DigestMethod>' .
+                      '<ds:DigestValue>' . 'TZdLsy//YK5nRSfiz/SOgMlTbU3DEfCk6CUDf8EI4rhzURHg71mfjB7++WC4eav/HCq14hQdgo0rGL/t+Gt28A==' . '</ds:DigestValue>' .
                     '</xades:CertDigest>' .
                     '<xades:IssuerSerial>' .
                       '<ds:X509IssuerName>' . 'C=CO,L=Bogota D.C.,O=Andes SCD,OU=Division de certificacion,CN=ROOT CA ANDES SCD S.A.,1.2.840.113549.1.9.1=#1614696e666f40616e6465737363642e636f6d2e636f' . '</ds:X509IssuerName>' .
@@ -713,11 +717,13 @@ class Facturae {
                     '</xades:IssuerSerial>' .
                   '</xades:Cert>' .
  //certi 2
+
+
  //certi 3
                   '<xades:Cert>' .
                     '<xades:CertDigest>' .
-                      '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256"></ds:DigestMethod>' .
-                      '<ds:DigestValue>' . 'OXeITae4OgBq7RWNUGqshhvKGk8=' . '</ds:DigestValue>' .
+                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></ds:DigestMethod>' .
+                      '<ds:DigestValue>' . '5fhNFBE6/8oBbUSwDj3N9RVEkrOW6ePre2qHKN0w67IbMKmh49a3PYjFj+ZF04uaW6n9kQKGFg+1NIFlHRua1Q==' . '</ds:DigestValue>' .
                     '</xades:CertDigest>' .
                     '<xades:IssuerSerial>' .
                        '<ds:X509IssuerName>' . 'C=CO,L=Bogota D.C.,O=Andes SCD,OU=Division de certificacion,CN=ROOT CA ANDES SCD S.A.,1.2.840.113549.1.9.1=#1614696e666f40616e6465737363642e636f6d2e636f' . '</ds:X509IssuerName>' .           
@@ -726,6 +732,10 @@ class Facturae {
                     '</xades:IssuerSerial>' .
                   '</xades:Cert>' .
  //certi 3
+
+
+
+
                 '</xades:SigningCertificate>' .
                 '<xades:SignaturePolicyIdentifier>' .
                   '<xades:SignaturePolicyId>' .
@@ -734,7 +744,7 @@ class Facturae {
                      // '<xades:Description>' . $this->signPolicy['name'] . '</xades:Description>' .
                     '</xades:SigPolicyId>' .
                     '<xades:SigPolicyHash>' .
-                      '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256"></ds:DigestMethod>' .
+                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></ds:DigestMethod>' .
                       '<ds:DigestValue>' . $this->signPolicy['digest'] . '</ds:DigestValue>' .
                     '</xades:SigPolicyHash>' .
                   '</xades:SignaturePolicyId>' .
@@ -780,47 +790,55 @@ class Facturae {
              '</ds:KeyInfo>';
 
     // Calculate digests
-    $propDigest = base64_encode(hash('sha256',str_replace('<xades:SignedProperties','<xades:SignedProperties ' . $xmlns, $prop), true));
+    $propDigest = base64_encode(hash('sha512',str_replace('<xades:SignedProperties','<xades:SignedProperties ' . $xmlns, $prop), true));
 
 
-    $kInfoDigest = base64_encode(hash('sha256',str_replace('<ds:KeyInfo','<ds:KeyInfo ' . $xmlns, $kInfo), true));
+    $kInfoDigest = base64_encode(hash('sha512',str_replace('<ds:KeyInfo','<ds:KeyInfo ' . $xmlns, $kInfo), true));
 
-    $documentDigest = base64_encode(hash('sha256',$xml, true));
+    $documentDigest = base64_encode(hash('sha512',$xml, true));
 
     // Generate SignedInfo
     $sInfo = '<ds:SignedInfo>' . "\n" .
                '<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315">' .
                '</ds:CanonicalizationMethod>' . "\n" .
-               '<ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256">' .
+               '<ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256">' .
                '</ds:SignatureMethod>' . "\n" .
      /*$sInfo = '<ds:SignedInfo Id="Signature-SignedInfo' . $this->signedInfoID . '">' . "\n" .
                '<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315">' .
                '</ds:CanonicalizationMethod>' . "\n" .
                '<ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256">' .
                '</ds:SignatureMethod>' . "\n" .*/
+
+
+
 //reference 1
                '<ds:Reference Id="xmldsig-' . $this->referenceID . '-ref0" URI="">' . "\n" .
                  '<ds:Transforms>' . "\n" .
                    '<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature">' .
                    '</ds:Transform>' . "\n" .
                  '</ds:Transforms>' . "\n" .
-                 '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256">' .
+                 '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512">' .
                  '</ds:DigestMethod>' . "\n" .
                  '<ds:DigestValue>' . $documentDigest . '</ds:DigestValue>' . "\n" .
                '</ds:Reference>' . "\n" .
 //reference 1
+
+
 //reference 2
                '<ds:Reference URI="#xmldsig-' . $this->certificateID . '-keyinfo">' . "\n" .
-                 '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256">' .
+                 '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512">' .
                  '</ds:DigestMethod>' . "\n" .
                  '<ds:DigestValue>' . $kInfoDigest . '</ds:DigestValue>' . "\n" .
                '</ds:Reference>' . "\n" .
 //reference 2
+
+
+
 //reference 3               
                '<ds:Reference ' .
                'Type="http://uri.etsi.org/01903#SignedProperties" ' .
                'URI="#xmldsig-' . $this->signatureID . '-signedprops">' . "\n" .
-                 '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256">' .
+                 '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512">' .
                  '</ds:DigestMethod>' . "\n" .
                  '<ds:DigestValue>' . $propDigest . '</ds:DigestValue>' . "\n" .
                '</ds:Reference>' . "\n" .
