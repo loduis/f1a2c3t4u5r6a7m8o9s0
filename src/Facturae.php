@@ -1,5 +1,5 @@
 <?php
-//91
+
 //= date("Y-m-d", $fecha_inicio); 
 /*
 echo "<br> date       ".  $date      = date('Y-m-d\TH:i:s');  
@@ -528,20 +528,20 @@ class Facturae {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-public function sign($publicPath, $privatePath=null, $passphrase="", $policy=self::SIGN_POLICY_3_1) {
+  public function sign($publicPath, $privatePath=null, $passphrase="", $policy=self::SIGN_POLICY_3_1) {
     $this->publicKey = null;
     $this->privateKey = null;
     $this->signPolicy = $policy;
 
     // Generate random IDs
-    $this->signatureID                 = '16baa8f7-2e89-4ff9-b736-7e642ce066c7'; //$this->random();
-    $this->signedInfoID                = '16baa8f7-2e89-4ff9-b736-7e642ce066c7';//$this->random();
-    $this->signedPropertiesID          = '16baa8f7-2e89-4ff9-b736-7e642ce066c7';//$this->random();
-    $this->signatureValueID            = '16baa8f7-2e89-4ff9-b736-7e642ce066c7';//$this->random();
-    $this->certificateID               = '16baa8f7-2e89-4ff9-b736-7e642ce066c7';//$this->random();
-    $this->referenceID                 = '16baa8f7-2e89-4ff9-b736-7e642ce066c7';//$this->random();
-    $this->signatureSignedPropertiesID = '16baa8f7-2e89-4ff9-b736-7e642ce066c7';//$this->random();
-    $this->signatureObjectID           = '16baa8f7-2e89-4ff9-b736-7e642ce066c7';//$this->random();
+    $this->signatureID                 = '16baa8f7-2e89-4ff9-b736-7e642ce066c3'; //$this->random();
+    $this->signedInfoID                = $this->random();
+    $this->signedPropertiesID          = $this->random();
+    $this->signatureValueID            = '16baa8f7-2e89-4ff9-b736-7e642ce066c3';//$this->random();
+    $this->certificateID               = '16baa8f7-2e89-4ff9-b736-7e642ce066c3';//$this->random();
+    $this->referenceID                 = '16baa8f7-2e89-4ff9-b736-7e642ce066c3';//$this->random();
+    $this->signatureSignedPropertiesID = $this->random();
+    $this->signatureObjectID           = $this->random();
 
     // Load public and private keys
     if (empty($privatePath)) {
@@ -559,37 +559,31 @@ public function sign($publicPath, $privatePath=null, $passphrase="", $policy=sel
    *
    * @return string XML NameSpaces
    */
-  private function getNamespaces()
-   {
-      $xmlns = array();
-        $xmlns[] = 'xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"';
-        $xmlns[] = 'xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"';
-        $xmlns[] = 'xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"';
-        $xmlns[] = 'xmlns:fe="' . self::$SCHEMA_NS[$this->version] . '"';
-        $xmlns[] = 'xmlns:ns6="http://www.w3.org/2000/09/xmldsig#"';
-        $xmlns[] = 'xmlns:ns8="http://uri.etsi.org/01903/v1.3.2#"';
-        $xmlns[] = 'xmlns:sts="http://www.dian.gov.co/contratos/facturaelectronica/v1/Structures"';
-        $xmlns[] = 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"';
-      
-         /* $xmlns[] = 'xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"';
-          $xmlns[] = 'xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"';
-          $xmlns[] = 'xmlns:clm54217="urn:un:unece:uncefact:codelist:specification:54217:2001"';
-          $xmlns[] = 'xmlns:clm66411="urn:un:unece:uncefact:codelist:specification:66411:2001"';
-          $xmlns[] = 'xmlns:clmIANAMIMEMediaType="urn:un:unece:uncefact:codelist:specification:IANAMIMEMediaType:2003"';
-          $xmlns[] = 'xmlns:ds="http://www.w3.org/2000/09/xmldsig#"';
-          $xmlns[] = 'xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"';
-          $xmlns[] = 'xmlns:fe="' . self::$SCHEMA_NS[$this->version] . '"';
-          $xmlns[] = 'xmlns:qdt="urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2"';
-          $xmlns[] = 'xmlns:sts="http://www.dian.gov.co/contratos/facturaelectronica/v1/Structures"';
-          $xmlns[] = 'xmlns:udt="urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2"';
-          $xmlns[] = 'xmlns:xades="http://uri.etsi.org/01903/v1.3.2#"';
-          $xmlns[] = 'xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#"';
-          $xmlns[] = 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"';
-          //$xmlns[] = 'xsi:schemaLocation="http://www.dian.gov.co/contratos/facturaelectronica/v1../xsd/DIAN_UBL.xsdurn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2../../ubl2/common/UnqualifiedDataTypeSchemaModule-2.0.xsdurn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2../../ubl2/common/UBL-QualifiedDatatypes-2.0.xsd"';
-          //$xmlns[] = 'xsi:schemaLocation="http://www.dian.gov.co/contratos/facturaelectronica/v1"';
-          */
-      
-      $xmlns = implode(' ', $xmlns);
+  private function getNamespaces() {
+    $xmlns = array();
+    $xmlns[] = 'xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"';
+    $xmlns[] = 'xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"';
+    $xmlns[] = 'xmlns:clm54217="urn:un:unece:uncefact:codelist:specification:54217:2001"';
+    $xmlns[] = 'xmlns:clm66411="urn:un:unece:uncefact:codelist:specification:66411:2001"';
+    $xmlns[] = 'xmlns:clmIANAMIMEMediaType="urn:un:unece:uncefact:codelist:specification:IANAMIMEMediaType:2003"';
+    $xmlns[] = 'xmlns:ds="http://www.w3.org/2000/09/xmldsig#"';
+    $xmlns[] = 'xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"';
+    $xmlns[] = 'xmlns:fe="' . self::$SCHEMA_NS[$this->version] . '"';
+    $xmlns[] = 'xmlns:qdt="urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2"';
+    $xmlns[] = 'xmlns:sts="http://www.dian.gov.co/contratos/facturaelectronica/v1/Structures"';
+    $xmlns[] = 'xmlns:udt="urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2"';
+    $xmlns[] = 'xmlns:xades="http://uri.etsi.org/01903/v1.3.2#"';
+    $xmlns[] = 'xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#"';
+    $xmlns[] = 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"';
+    //$xmlns[] = 'xsi:schemaLocation="http://www.dian.gov.co/contratos/facturaelectronica/v1../xsd/DIAN_UBL.xsdurn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2../../ubl2/common/UnqualifiedDataTypeSchemaModule-2.0.xsdurn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2../../ubl2/common/UBL-QualifiedDatatypes-2.0.xsd"';
+
+
+
+    //$xmlns[] = 'xsi:schemaLocation="http://www.dian.gov.co/contratos/facturaelectronica/v1"';
+
+
+
+    $xmlns = implode(' ', $xmlns);
     return $xmlns;
   }
 
@@ -665,7 +659,7 @@ public function sign($publicPath, $privatePath=null, $passphrase="", $policy=sel
    * @param  string $xml Unsigned XML document
    * @return string      Signed XML document
    */
-  private function injectSignature($xml) {
+  private function injectSignature($xml,$fecha_SigningTime) {
     // Make sure we have all we need to sign the document
     if (empty($this->publicKey) || empty($this->privateKey)) return $xml;
 
@@ -691,7 +685,7 @@ public function sign($publicPath, $privatePath=null, $passphrase="", $policy=sel
             '-signedprops">' .
               '<xades:SignedSignatureProperties>' .
                // '<xades:SigningTime>' . date('c', $signTime) . '</xades:SigningTime>' .
-                '<xades:SigningTime>' . date('Y-m-d\TH:i:s.v')."-05:00" . '</xades:SigningTime>' .
+                '<xades:SigningTime>' .  $fecha_SigningTime . '</xades:SigningTime>' .
                 '<xades:SigningCertificate>' .
  //certi 1               
                   '<xades:Cert>' .
@@ -701,7 +695,7 @@ public function sign($publicPath, $privatePath=null, $passphrase="", $policy=sel
                     '</xades:CertDigest>' .
                     '<xades:IssuerSerial>' .
                      // '<ds:X509IssuerName>' . $certIssuer . '</ds:X509IssuerName>' .
-                      '<ds:X509IssuerName>' . ' C=CO,L=Bogota D.C.,O=Andes SCD.,OU=Division de certificacion entidad final,CN=CA ANDES SCD S.A. Clase II,emailAddress=info@andesscd.com.co' . '</ds:X509IssuerName>' .
+                      '<ds:X509IssuerName>' . 'C=CO,L=Bogota D.C.,O=Andes SCD.,OU=Division de certificacion entidad final,CN=CA ANDES SCD S.A. Clase II,1.2.840.113549.1.9.1=#1614696e666f40616e6465737363642e636f6d2e636f' . '</ds:X509IssuerName>' .
                       '<ds:X509SerialNumber>' . $certData['serialNumber'] . '</ds:X509SerialNumber>' .
                     '</xades:IssuerSerial>' .
                   '</xades:Cert>' .
@@ -713,7 +707,7 @@ public function sign($publicPath, $privatePath=null, $passphrase="", $policy=sel
                       '<ds:DigestValue>' . 'ydBrkDUi4OLwpDJACttO8PSuHdE=' . '</ds:DigestValue>' .
                     '</xades:CertDigest>' .
                     '<xades:IssuerSerial>' .
-                      '<ds:X509IssuerName>' . 'C=CO,L=Bogota D.C.,O=Andes SCD,OU=Division de certificacion,CN=ROOT CA ANDES SCD S.A.,emailAddress=info@andesscd.com.co' . '</ds:X509IssuerName>' .
+                      '<ds:X509IssuerName>' . 'C=CO,L=Bogota D.C.,O=Andes SCD,OU=Division de certificacion,CN=ROOT CA ANDES SCD S.A.,1.2.840.113549.1.9.1=#1614696e666f40616e6465737363642e636f6d2e636f' . '</ds:X509IssuerName>' .
                       //'<ds:X509IssuerName>' . 'emailAddress=info@andesscd.com.co,CN=ROOT CA ANDES SCD S.A.,OU=Division de certificacion entidad final,O=Andes SCD.,L=Bogota D.C.,C=CO' . '</ds:X509IssuerName>' .
                       '<ds:X509SerialNumber>' . '8136867327090815624' . '</ds:X509SerialNumber>' .
                     '</xades:IssuerSerial>' .
@@ -726,7 +720,7 @@ public function sign($publicPath, $privatePath=null, $passphrase="", $policy=sel
                       '<ds:DigestValue>' . 'OXeITae4OgBq7RWNUGqshhvKGk8=' . '</ds:DigestValue>' .
                     '</xades:CertDigest>' .
                     '<xades:IssuerSerial>' .
-                       '<ds:X509IssuerName>' . 'C=CO,L=Bogota D.C.,O=Andes SCD,OU=Division de certificacion,CN=ROOT CA ANDES SCD S.A.,emailAddress=info@andesscd.com.co' . '</ds:X509IssuerName>' .           
+                       '<ds:X509IssuerName>' . 'C=CO,L=Bogota D.C.,O=Andes SCD,OU=Division de certificacion,CN=ROOT CA ANDES SCD S.A.,1.2.840.113549.1.9.1=#1614696e666f40616e6465737363642e636f6d2e636f' . '</ds:X509IssuerName>' .           
 //                      '<ds:X509IssuerName>' . 'emailAddress=info@andesscd.com.co,CN=ROOT CA ANDES SCD S.A.,OU=Division de certificacion entidad final,O=Andes SCD.,L=Bogota D.C.,C=CO' . '</ds:X509IssuerName>' .
                       '<ds:X509SerialNumber>' . '3184328748892787122'. '</ds:X509SerialNumber>' .
                     '</xades:IssuerSerial>' .
@@ -773,9 +767,9 @@ public function sign($publicPath, $privatePath=null, $passphrase="", $policy=sel
     $exponent = base64_encode($privateData['rsa']['e']);
 
     // Generate KeyInfo
-    $kInfo = '<ds:KeyInfo Id="xmldsig-' . $this->certificateID . '-keyinfo" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">' . "\n" .
-               '<ds:X509Data xmlns:ds="http://www.w3.org/2000/09/xmldsig#">' . "\n" .
-                 '<ds:X509Certificate xmlns:ds="http://www.w3.org/2000/09/xmldsig#">' . "\n" . $publicPEM . '</ds:X509Certificate>' . "\n" .
+    $kInfo = '<ds:KeyInfo Id="xmldsig-' . $this->certificateID . '-keyinfo">' . "\n" .
+               '<ds:X509Data>' . "\n" .
+                 '<ds:X509Certificate>' . "\n" . $publicPEM . '</ds:X509Certificate>' . "\n" .
                '</ds:X509Data>' . "\n" .
               /* '<ds:KeyValue>' . "\n" .
                  '<ds:RSAKeyValue>' . "\n" .
@@ -793,44 +787,41 @@ public function sign($publicPath, $privatePath=null, $passphrase="", $policy=sel
     $documentDigest = base64_encode(sha1($xml, true));
 
     // Generate SignedInfo
-    $sInfo = '<ds:SignedInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">' . "\n" .
-               '<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">' .
+    $sInfo = '<ds:SignedInfo>' . "\n" .
+               '<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315">' .
                '</ds:CanonicalizationMethod>' . "\n" .
-               '<ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">' .
+               '<ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1">' .
                '</ds:SignatureMethod>' . "\n" .
      /*$sInfo = '<ds:SignedInfo Id="Signature-SignedInfo' . $this->signedInfoID . '">' . "\n" .
                '<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315">' .
                '</ds:CanonicalizationMethod>' . "\n" .
                '<ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1">' .
                '</ds:SignatureMethod>' . "\n" .*/
-
-//reference 2
-               '<ds:Reference URI="#xmldsig-' . $this->certificateID . '-keyinfo" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">' . "\n" .
-                 '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">' .
-                 '</ds:DigestMethod>' . "\n" .
-                 '<ds:DigestValue xmlns:ds="http://www.w3.org/2000/09/xmldsig#">' . $kInfoDigest . '</ds:DigestValue>' . "\n" .
-               '</ds:Reference>' . "\n" .
-//reference 2
-
 //reference 1
-               '<ds:Reference Id="xmldsig-' . $this->referenceID . '-ref0" URI="" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">' . "\n" .
-                 '<ds:Transforms xmlns:ds="http://www.w3.org/2000/09/xmldsig#">' . "\n" .
-                   '<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">' .
+               '<ds:Reference Id="xmldsig-' . $this->referenceID . '-ref0" URI="">' . "\n" .
+                 '<ds:Transforms>' . "\n" .
+                   '<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature">' .
                    '</ds:Transform>' . "\n" .
                  '</ds:Transforms>' . "\n" .
-                 '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">' .
+                 '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1">' .
                  '</ds:DigestMethod>' . "\n" .
-                 '<ds:DigestValue xmlns:ds="http://www.w3.org/2000/09/xmldsig#">' . $documentDigest . '</ds:DigestValue>' . "\n" .
+                 '<ds:DigestValue>' . $documentDigest . '</ds:DigestValue>' . "\n" .
                '</ds:Reference>' . "\n" .
 //reference 1
-
+//reference 2
+               '<ds:Reference URI="#xmldsig-' . $this->certificateID . '-keyinfo">' . "\n" .
+                 '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1">' .
+                 '</ds:DigestMethod>' . "\n" .
+                 '<ds:DigestValue>' . $kInfoDigest . '</ds:DigestValue>' . "\n" .
+               '</ds:Reference>' . "\n" .
+//reference 2
 //reference 3               
                '<ds:Reference ' .
                'Type="http://uri.etsi.org/01903#SignedProperties" ' .
-               'URI="#xmldsig-' . $this->signatureID . '-signedprops" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">' . "\n" .
-                 '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">' .
+               'URI="#xmldsig-' . $this->signatureID . '-signedprops">' . "\n" .
+                 '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1">' .
                  '</ds:DigestMethod>' . "\n" .
-                 '<ds:DigestValue xmlns:ds="http://www.w3.org/2000/09/xmldsig#">' . $propDigest . '</ds:DigestValue>' . "\n" .
+                 '<ds:DigestValue>' . $propDigest . '</ds:DigestValue>' . "\n" .
                '</ds:Reference>' . "\n" .
 //reference 3   
              '</ds:SignedInfo>';
@@ -847,12 +838,12 @@ public function sign($publicPath, $privatePath=null, $passphrase="", $policy=sel
             '>' . "\n" .
             //'<ds:Signature Id="xmldsig-' . $this->signatureID . '">' . "\n" .
              $sInfo . "\n" .
-             '<ds:SignatureValue Id="xmldsig-' . $this->signatureValueID . '-sigvalue" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">' . "\n" .
+             '<ds:SignatureValue Id="xmldsig-' . $this->signatureValueID . '-sigvalue">' . "\n" .
                $signatureResult .
              '</ds:SignatureValue>' . "\n" .
              $kInfo . "\n" .
              //'<ds:Object Id="Signature' . $this->signatureID . '-Object' . $this->signatureObjectID . '">' .
-             '<ds:Object xmlns:ds="http://www.w3.org/2000/09/xmldsig#">' .
+             '<ds:Object>' .
                '<xades:QualifyingProperties Target="#xmldsig-' . $this->signatureID . '" '.
                   'xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" '.
                   'xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#" '.
@@ -900,20 +891,8 @@ public function sign($publicPath, $privatePath=null, $passphrase="", $policy=sel
    * @return string|int           XML data|Written file bytes
    */
   public function export($filePath=null) {
-   // Prepare document
-    $xml = '<fe:Invoice '.        
-            'xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" '.
-            'xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" '.
-            'xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2" '.
-            'xmlns:fe="' . self::$SCHEMA_NS[$this->version] . '" '.
-            'xmlns:ns6="http://www.w3.org/2000/09/xmldsig#" '.
-            'xmlns:ns8="http://uri.etsi.org/01903/v1.3.2#" '.
-            'xmlns:sts="http://www.dian.gov.co/contratos/facturaelectronica/v1/Structures" '.
-            'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
-            'xsi:schemaLocation="http://www.dian.gov.co/contratos/facturaelectronica/v1 ../xsd/DIAN_UBL.xsd urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2 ../../ubl2/common/UnqualifiedDataTypeSchemaModule-2.0.xsd urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2 ../../ubl2/common/UBL-QualifiedDatatypes-2.0.xsd">';
-
-/*
-
+      // Prepare document
+    $xml = '<fe:Invoice '. 
 'xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" '.
 'xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" '.
 'xmlns:clm54217="urn:un:unece:uncefact:codelist:specification:54217:2001" '.
@@ -929,7 +908,7 @@ public function sign($publicPath, $privatePath=null, $passphrase="", $policy=sel
 'xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#" '.
 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
 'xsi:schemaLocation="http://www.dian.gov.co/contratos/facturaelectronica/v1 ../xsd/DIAN_UBL.xsd urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2 ../../ubl2/common/UnqualifiedDataTypeSchemaModule-2.0.xsd urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2 ../../ubl2/common/UBL-QualifiedDatatypes-2.0.xsd">';
-//'>';*/
+//'>';
 
 
 //-----------------------------------------------------------------------------------------
@@ -944,7 +923,7 @@ $nit                    = "900332178";//nit de factura
 $Prefix                 = 'PRUE';//Prefijo
 $From                   = '980000000';//De
 $To                     = '985000000';//a
-$rango                  = "980000091";
+$rango                  = "980000086";
 $InvoiceNumber          =  $Prefix.$rango;
 $InvoiceAuthorization   = '9000000105596663';//Autorización de factura
 $StartDate              = '2018-02-14';//fecha inicio resolución

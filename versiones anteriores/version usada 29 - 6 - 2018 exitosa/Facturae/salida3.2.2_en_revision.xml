@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fe:Facturae xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:fe="http://www.facturae.gob.es/formato/Versiones/Facturaev3_2_2.xml">
+	<FileHeader>
+		<SchemaVersion>3.2.2</SchemaVersion>
+		<Modality>I</Modality>
+		<InvoiceIssuerType>EM</InvoiceIssuerType>
+		<Batch>
+			<BatchIdentifier>A000000000003EMP201712</BatchIdentifier>
+			<InvoicesCount>1</InvoicesCount>
+			<TotalInvoicesAmount>
+				<TotalAmount>60.42</TotalAmount>
+			</TotalInvoicesAmount>
+			<TotalOutstandingAmount>
+				<TotalAmount>60.42</TotalAmount>
+			</TotalOutstandingAmount>
+			<TotalExecutableAmount>
+				<TotalAmount>60.42</TotalAmount>
+			</TotalExecutableAmount>
+			<InvoiceCurrencyCode>EUR</InvoiceCurrencyCode>
+		</Batch>
+	</FileHeader>
+	<Parties>
+		<SellerParty>
+			<TaxIdentification>
+				<PersonTypeCode>J</PersonTypeCode>
+				<ResidenceTypeCode>R</ResidenceTypeCode>
+				<TaxIdentificationNumber>A00000000</TaxIdentificationNumber>
+			</TaxIdentification>
+			<LegalEntity>
+				<CorporateName>Perico de los Palotes S.A.</CorporateName>
+				<AddressInSpain>
+					<Address>C/ Falsa, 123</Address>
+					<PostCode>123456</PostCode>
+					<Town>Madrid</Town>
+					<Province>Madrid</Province>
+					<CountryCode>ESP</CountryCode>
+				</AddressInSpain>
+			</LegalEntity>
+		</SellerParty>
+		<BuyerParty>
+			<TaxIdentification>
+				<PersonTypeCode>F</PersonTypeCode>
+				<ResidenceTypeCode>R</ResidenceTypeCode>
+				<TaxIdentificationNumber>00000000A</TaxIdentificationNumber>
+			</TaxIdentification>
+			<Individual>
+				<Name>Antonio</Name>
+				<FirstSurname>García</FirstSurname>
+				<SecondSurname>Pérez</SecondSurname>
+				<AddressInSpain>
+					<Address>Avda. Mayor, 7</Address>
+					<PostCode>654321</PostCode>
+					<Town>Madrid</Town>
+					<Province>Madrid</Province>
+					<CountryCode>ESP</CountryCode>
+				</AddressInSpain>
+			</Individual>
+		</BuyerParty>
+	</Parties>
+	<Invoices>
+		<Invoice>
+			<InvoiceHeader>
+				<InvoiceNumber>0003</InvoiceNumber>
+				<InvoiceSeriesCode>EMP201712</InvoiceSeriesCode>
+				<InvoiceDocumentType>FC</InvoiceDocumentType>
+				<InvoiceClass>OO</InvoiceClass>
+			</InvoiceHeader>
+			<InvoiceIssueData>
+				<IssueDate>2017-12-01</IssueDate>
+				<InvoiceCurrencyCode>EUR</InvoiceCurrencyCode>
+				<TaxCurrencyCode>EUR</TaxCurrencyCode>
+				<LanguageName>es</LanguageName>
+			</InvoiceIssueData>
+			<TaxesOutputs>
+				<Tax>
+					<TaxTypeCode>01</TaxTypeCode>
+					<TaxRate>21.00</TaxRate>
+					<TaxableBase>
+						<TotalAmount>49.93</TotalAmount>
+					</TaxableBase>
+					<TaxAmount>
+						<TotalAmount>10.49</TotalAmount>
+					</TaxAmount>
+				</Tax>
+			</TaxesOutputs>
+			<InvoiceTotals>
+				<TotalGrossAmount>49.93</TotalGrossAmount>
+				<TotalGeneralDiscounts>0.00</TotalGeneralDiscounts>
+				<TotalGeneralSurcharges>0.00</TotalGeneralSurcharges>
+				<TotalGrossAmountBeforeTaxes>49.93</TotalGrossAmountBeforeTaxes>
+				<TotalTaxOutputs>10.49</TotalTaxOutputs>
+				<TotalTaxesWithheld>0.00</TotalTaxesWithheld>
+				<InvoiceTotal>60.42</InvoiceTotal>
+				<TotalOutstandingAmount>60.42</TotalOutstandingAmount>
+				<TotalExecutableAmount>60.42</TotalExecutableAmount>
+			</InvoiceTotals>
+			<Items>
+				<InvoiceLine>
+					<ItemDescription>Lámpara de pie</ItemDescription>
+					<Quantity>3.00</Quantity>
+					<UnitOfMeasure>01</UnitOfMeasure>
+					<UnitPriceWithoutTax>16.6446281</UnitPriceWithoutTax>
+					<TotalCost>49.93</TotalCost>
+					<GrossAmount>49.93</GrossAmount>
+					<TaxesOutputs>
+						<Tax>
+							<TaxTypeCode>01</TaxTypeCode>
+							<TaxRate>21.00</TaxRate>
+							<TaxableBase>
+								<TotalAmount>49.93</TotalAmount>
+							</TaxableBase>
+							<TaxAmount>
+								<TotalAmount>10.49</TotalAmount>
+							</TaxAmount>
+						</Tax>
+					</TaxesOutputs>
+				</InvoiceLine>
+			</Items>
+		</Invoice>
+	</Invoices>
+
+
+
+
+
+
+
+	
+	
+		
+
+
+
+
+
+
+
+////X509 sobra
+			<ds:KeyValue>
+				<ds:RSAKeyValue>
+					<ds:Modulus>
+						tA5/LaGdgl7p/ut88GHnCe7zZhJkvmKLh/fOcQ3pOyJnhPZTAR1xNTOSg6O4k/7VK3BcCo+9ez3l
+						S+djbQellOPigbfp6yvkfjkk6U56ORL6c3yKEvaSyO+IR3NNe62NMKo5dJcPvJu38i34vyTuwLV/
+						3bYUvjChyHGdUkz5ZHB6pm0Dup4Ya/whpfrSpAjK4HxBSJtZL923VqpN6h65xSerNhqFTWVQk2Vv
+						5jszwjZ51Ftdiw3fynfjIzemlmz9A/yCWweNjaar/Pv6CMIAq27dLEtW8rFIHU+IpvWwYW9NDFlZ
+						jUQQXt6R+ZJ85AYndE+02bDwsojAbLYi098n6Q==
+					</ds:Modulus>
+					<ds:Exponent>AQAB</ds:Exponent>
+				</ds:RSAKeyValue>
+			</ds:KeyValue>
+////X509
+						<xades:SigningTime>2018-06-20T22:46:02+02:00</xades:SigningTime> //-5
+
+
+
+
+
+
+
+					
+						<xades:SigningCertificate>
+							
+							<xades:Cert>
+								<xades:CertDigest>
+									<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+									<ds:DigestValue>OHRKqZ2cEvaekKJjai74Gl1PXkc=</ds:DigestValue>
+								</xades:CertDigest>
+								<xades:IssuerSerial>
+									<ds:X509IssuerName>emailAddress=info@andesscd.com.co,CN=CA ANDES SCD S.A. Clase II,OU=Division de certificacion entidad final,O=Andes SCD.,L=Bogota D.C.,C=CO</ds:X509IssuerName>
+									<ds:X509SerialNumber>7785324499979575522</ds:X509SerialNumber>
+								</xades:IssuerSerial>
+							</xades:Cert>
+
+						</xades:SigningCertificate>
+
+
+						
+						<xades:SignaturePolicyIdentifier>
+							<xades:SignaturePolicyId>
+								<xades:SigPolicyId>
+									<xades:Identifier>http://www.facturae.es/politica_de_firma_formato_facturae/politica_de_firma_formato_facturae_v3_1.pdf</xades:Identifier>
+									<xades:Description>Política de Firma FacturaE v3.1</xades:Description>
+								</xades:SigPolicyId>
+								<xades:SigPolicyHash>
+									<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+									<ds:DigestValue>Ohixl6upD6av8N7pEvDABhEL6hM=</ds:DigestValue>
+								</xades:SigPolicyHash>
+							</xades:SignaturePolicyId>
+						</xades:SignaturePolicyIdentifier>
+						<xades:SignerRole>
+							<xades:ClaimedRoles>
+								<xades:ClaimedRole>emisor</xades:ClaimedRole>
+							</xades:ClaimedRoles>
+						</xades:SignerRole>
+					</xades:SignedSignatureProperties>
+					<xades:SignedDataObjectProperties>
+						<xades:DataObjectFormat ObjectReference="#Reference-ID-885086649">
+							<xades:Description>Factura electrónica</xades:Description>
+							<xades:MimeType>text/xml</xades:MimeType>
+						</xades:DataObjectFormat>
+					</xades:SignedDataObjectProperties>
+				</xades:SignedProperties>
+			</xades:QualifyingProperties>
+		</ds:Object>
+	</ds:Signature>
+</fe:Facturae>
