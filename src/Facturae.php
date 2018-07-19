@@ -215,8 +215,6 @@ class Facturae {
     }
     return $res;
   }
-
-
   /**
    * Is withheld tax
    *
@@ -228,8 +226,6 @@ class Facturae {
   public static function isWithheldTax($taxCode) {
     return in_array($taxCode, [self::TAX_IRPF]);
   }
-
-
   /**
    * Set schema version
    *
@@ -238,8 +234,6 @@ class Facturae {
   public function setSchemaVersion($schemaVersion) {
     $this->version = $schemaVersion;
   }
-
-
   /**
    * Set seller
    *
@@ -249,8 +243,6 @@ class Facturae {
   {
     $this->parties['seller'] = $seller;
   }
-
-
   /**
    * Set buyer
    *
@@ -259,8 +251,6 @@ class Facturae {
   public function setBuyer($buyer) {
     $this->parties['buyer'] = $buyer;
   }
-
-
   /**
    * Set invoice number
    *
@@ -271,8 +261,6 @@ class Facturae {
     $this->header['serie'] = $serie;
     $this->header['number'] = $number;
   }
-
-
   /**
    * Set issue date
    *
@@ -281,8 +269,6 @@ class Facturae {
   public function setIssueDate($date) {
     $this->header['issueDate'] = is_string($date) ? strtotime($date) : $date;
   }
-
-
   /**
    * Set due date
    *
@@ -291,8 +277,6 @@ class Facturae {
   public function setDueDate($date) {
     $this->header['dueDate'] = is_string($date) ? strtotime($date) : $date;
   }
-
-
   /**
    * Set billing period
    *
@@ -305,8 +289,6 @@ class Facturae {
     $this->header['startDate'] = $d_start;
     $this->header['endDate'] = $d_end;
   }
-
-
   /**
    * Set dates
    *
@@ -319,8 +301,6 @@ class Facturae {
     $this->setIssueDate($issueDate);
     $this->setDueDate($dueDate);
   }
-
-
   /**
    * Set payment method
    *
@@ -332,8 +312,6 @@ class Facturae {
     if (!is_null($iban)) $iban = str_replace(" ", "", $iban);
     $this->header['paymentIBAN'] = $iban;
   }
-
-
   /**
    * Add item
    *
@@ -361,8 +339,6 @@ class Facturae {
     }
     array_push($this->items, $item);
   }
-
-
   /**
    * Add legal literal
    *
@@ -371,8 +347,6 @@ class Facturae {
   public function addLegalLiteral($message) {
     $this->legalLiterals[] = $message;
   }
-
-
   /**
    * Get totals
    *
@@ -389,7 +363,6 @@ class Facturae {
       "totalTaxesOutputs" => 0,
       "totalTaxesWithheld" => 0
     );
-
     // Run through every item
     foreach ($this->items as $itemObj) {
       $item = $itemObj->getData();
@@ -397,7 +370,6 @@ class Facturae {
       $totals['grossAmount'] += $item['grossAmount'];
       $totals['totalTaxesOutputs'] += $item['totalTaxesOutputs'];
       $totals['totalTaxesWithheld'] += $item['totalTaxesWithheld'];
-
       // Get taxes
       foreach (["taxesOutputs", "taxesWithheld"] as $taxGroup) {
         foreach ($item[$taxGroup] as $type=>$tax) {
@@ -411,14 +383,10 @@ class Facturae {
         }
       }
     }
-
     // Fill rest of values
     $totals['grossAmountBeforeTaxes'] = $totals['grossAmount'];
-
     return $totals;
   }
-
-
   /**
    * Set sign time
    *
@@ -427,8 +395,6 @@ class Facturae {
   public function setSignTime($time) {
     $this->signTime = is_string($time) ? strtotime($time) : $time;
   }
-
-
   /**
    * Set timestamp server
    *
@@ -441,8 +407,6 @@ class Facturae {
     $this->timestampUser = $user;
     $this->timestampPass = $pass;
   }
-
-
   /**
    * Load a PKCS#12 Certificate Store
    *
@@ -458,11 +422,8 @@ class Facturae {
       $this->publicKey = openssl_x509_read($certs['cert']);
       $this->privateKey = openssl_pkey_get_private($certs['pkey']);
     }
-
     return (!empty($this->publicKey) && !empty($this->privateKey));
   }
-
-
   /**
    * Load a X.509 certificate and PEM encoded private key
    *
@@ -481,8 +442,6 @@ class Facturae {
     }
     return (!empty($this->publicKey) && !empty($this->privateKey));
   }
-
-
   /**
    * Sign
    *
@@ -492,8 +451,6 @@ class Facturae {
    * @param  array   $policy      Facturae sign policy
    * @return boolean              Success
    */
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // atributos de avalo inicio
@@ -505,8 +462,6 @@ class Facturae {
     public $FecFac       = null;
     public $created      = null;
     public $SigningTime  = null;*/
-
-
   public function  fecha() 
   {
      date_default_timezone_set("America/Bogota"); //zona horaria
@@ -519,20 +474,13 @@ class Facturae {
      $fecha['SigningTime'] = date('Y-m-d\TH:i:s.v',  $fecha_full)."-05:00";
      return $fecha;
   }
-
-
-
-
   // atributos de avalo fin
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
   public function sign($publicPath, $privatePath=null, $passphrase="", $policy=self::SIGN_POLICY_3_1) {
     $this->publicKey = null;
     $this->privateKey = null;
     $this->signPolicy = $policy;
-
     // Generate random IDs
     $this->signatureID                 = '16baa8f7-2e89-4ff9-b736-7e642ce066c3'; //$this->random();
     $this->signedInfoID                = $this->random();
@@ -542,7 +490,6 @@ class Facturae {
     $this->referenceID                 = '16baa8f7-2e89-4ff9-b736-7e642ce066c3';//$this->random();
     $this->signatureSignedPropertiesID = $this->random();
     $this->signatureObjectID           = $this->random();
-
     // Load public and private keys
     if (empty($privatePath)) {
       return $this->loadPkcs12($publicPath, $passphrase);
@@ -550,8 +497,6 @@ class Facturae {
       return $this->loadX509($publicPath, $privatePath, $passphrase);
     }
   }
-
-
   /**
    * Get XML NameSpaces
    *
@@ -572,22 +517,14 @@ class Facturae {
     $xmlns[] = 'xmlns:qdt="urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2"';
     $xmlns[] = 'xmlns:sts="http://www.dian.gov.co/contratos/facturaelectronica/v1/Structures"';
     $xmlns[] = 'xmlns:udt="urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2"';
-    $xmlns[] = 'xmlns:xades="http://uri.etsi.org/01903/v1.3.2#"';
-    $xmlns[] = 'xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#"';
+    //$xmlns[] = 'xmlns:xades="http://uri.etsi.org/01903/v1.3.2#"';
+   // $xmlns[] = 'xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#"';
     $xmlns[] = 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"';
     //$xmlns[] = 'xsi:schemaLocation="http://www.dian.gov.co/contratos/facturaelectronica/v1../xsd/DIAN_UBL.xsdurn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2../../ubl2/common/UnqualifiedDataTypeSchemaModule-2.0.xsdurn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2../../ubl2/common/UBL-QualifiedDatatypes-2.0.xsd"';
-
-
-
     //$xmlns[] = 'xsi:schemaLocation="http://www.dian.gov.co/contratos/facturaelectronica/v1"';
-
-
-
     $xmlns = implode(' ', $xmlns);
     return $xmlns;
   }
-
-
   /**
    * Inject timestamp
    *
@@ -599,13 +536,11 @@ class Facturae {
     $payload = explode('<ds:SignatureValue', $signedXml)[1];
     $payload = explode('</ds:SignatureValue>', $payload)[0];
     $payload = '<ds:SignatureValue ' . $this->getNamespaces() . $payload . '</ds:SignatureValue>';
-
     // Create TimeStampQuery in ASN1 using SHA-1
     $tsq = "302c0201013021300906052b0e03021a05000414";
     $tsq .= hash('sha256', $payload);
     $tsq .= "0201000101ff";
     $tsq = hex2bin($tsq);
-
     // Await TimeStampRequest
     $chOpts = array(
       CURLOPT_URL => $this->timestampServer,
@@ -628,20 +563,18 @@ class Facturae {
     $tsr = curl_exec($ch);
     if ($tsr === false) throw new \Exception('cURL error: ' . curl_error($ch));
     curl_close($ch);
-
     // Validate TimeStampRequest
     $responseCode = substr($tsr, 6, 3);
     if ($responseCode !== "\02\01\00") { // Bytes for INTEGER 0 in ASN1
       throw new \Exception('Invalid TSR response code');
     }
-
     // Extract TimeStamp from TimeStampRequest and inject into XML document
     $timeStamp = substr($tsr, 9);
     $tsXml = '<xades:UnsignedProperties Id="Signature' . $this->signatureID . '-UnsignedProperties' . $this->random() . '">' .
                '<xades:UnsignedSignatureProperties>' .
                  '<xades:SignatureTimeStamp Id="Timestamp-' . $this->random() . '">' .
-                   '<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315">' .
-                   '</ds:CanonicalizationMethod>' .
+                   '<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>' .
+                   //'</ds:CanonicalizationMethod>' .
                    '<xades:EncapsulatedTimeStamp>' . "\n" .
                      str_replace("\r", "", chunk_split(base64_encode($timeStamp), 76)) .
                    '</xades:EncapsulatedTimeStamp>' .
@@ -651,8 +584,6 @@ class Facturae {
     $signedXml = str_replace('</xades:QualifyingProperties>', $tsXml . '</xades:QualifyingProperties>', $signedXml);
     return $signedXml;
   }
-
-
   /**
    * Inject signature
    *
@@ -662,13 +593,10 @@ class Facturae {
   private function injectSignature($xml,$fecha_SigningTime) {
     // Make sure we have all we need to sign the document
     if (empty($this->publicKey) || empty($this->privateKey)) return $xml;
-
     // Normalize document
     $xml = str_replace("\r", "", $xml);
-
     // Define namespace
     $xmlns = $this->getNamespaces();
-
     // Prepare signed properties
     $signTime = is_null($this->signTime) ? time() : $this->signTime;
     $certData = openssl_x509_parse($this->publicKey);
@@ -679,7 +607,6 @@ class Facturae {
       $certIssuer[] = $item . '=' . $value;
     }
     $certIssuer = implode(',', $certIssuer);
-
     // Generate signed properties
     $prop = '<xades:SignedProperties Id="xmldsig-' . $this->signatureID .
             '-signedprops">' .
@@ -687,8 +614,6 @@ class Facturae {
                // '<xades:SigningTime>' . date('c', $signTime) . '</xades:SigningTime>' .
                 '<xades:SigningTime>' .  $fecha_SigningTime . '</xades:SigningTime>' .
                 '<xades:SigningCertificate>' .
-
-
  //certi 1               
                   '<xades:Cert>' .
                     '<xades:CertDigest>' .
@@ -702,8 +627,6 @@ class Facturae {
                     '</xades:IssuerSerial>' .
                   '</xades:Cert>' .
  //certi 1 
-
-
  //certi 2
                   '<xades:Cert>' .
                     '<xades:CertDigest>' .
@@ -717,8 +640,6 @@ class Facturae {
                     '</xades:IssuerSerial>' .
                   '</xades:Cert>' .
  //certi 2
-
-
  //certi 3
                   '<xades:Cert>' .
                     '<xades:CertDigest>' .
@@ -732,10 +653,6 @@ class Facturae {
                     '</xades:IssuerSerial>' .
                   '</xades:Cert>' .
  //certi 3
-
-
-
-
                 '</xades:SigningCertificate>' .
                 '<xades:SignaturePolicyIdentifier>' .
                   '<xades:SignaturePolicyId>' .
@@ -762,7 +679,6 @@ class Facturae {
                 '</xades:DataObjectFormat>' .
               '</xades:SignedDataObjectProperties>' .*/
             '</xades:SignedProperties>';
-
     // Prepare key info
     $publicPEM = "";
     openssl_x509_export($this->publicKey, $publicPEM);
@@ -770,12 +686,10 @@ class Facturae {
     $publicPEM = str_replace("-----END CERTIFICATE-----", "", $publicPEM);
     $publicPEM = str_replace("\n", "", $publicPEM);
     $publicPEM = str_replace("\r", "", chunk_split($publicPEM, 76));
-
     $privateData = openssl_pkey_get_details($this->privateKey);
     $modulus = chunk_split(base64_encode($privateData['rsa']['n']), 76);
     $modulus = str_replace("\r", "", $modulus);
     $exponent = base64_encode($privateData['rsa']['e']);
-
     // Generate KeyInfo
     $kInfo = '<ds:KeyInfo Id="xmldsig-' . $this->certificateID . '-keyinfo">' . "\n" .
                '<ds:X509Data>' . "\n" .
@@ -788,58 +702,53 @@ class Facturae {
                  '</ds:RSAKeyValue>' . "\n" .
                '</ds:KeyValue>' . "\n" .*/
              '</ds:KeyInfo>';
-
     // Calculate digests
-    $propDigest = base64_encode(hash('sha512',str_replace('<xades:SignedProperties','<xades:SignedProperties ' . $xmlns, $prop), true));
-
-
-    $kInfoDigest = base64_encode(hash('sha512',str_replace('<ds:KeyInfo','<ds:KeyInfo ' . $xmlns, $kInfo), true));
-
+    $propDigest = base64_encode(hash('sha512',str_replace('<xades:SignedProperties',
+      '<xades:SignedProperties ' . $xmlns, $prop), true));
+    $kInfoDigest = base64_encode(hash('sha512',str_replace('<ds:KeyInfo',
+      '<ds:KeyInfo ' . $xmlns, $kInfo), true));
     $documentDigest = base64_encode(hash('sha512',$xml, true));
-
     // Generate SignedInfo
     $sInfo = '<ds:SignedInfo>' . "\n" .
-               '<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315">' .
-               '</ds:CanonicalizationMethod>' . "\n" .
-               '<ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256">' .
-               '</ds:SignatureMethod>' . "\n" .
+               '<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>' .
+               "\n" .
+                // '</ds:CanonicalizationMethod>' . "\n" .
+               '<ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>' .
+               "\n" .
+               //'</ds:SignatureMethod>' . "\n" .
      /*$sInfo = '<ds:SignedInfo Id="Signature-SignedInfo' . $this->signedInfoID . '">' . "\n" .
                '<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315">' .
                '</ds:CanonicalizationMethod>' . "\n" .
                '<ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256">' .
                '</ds:SignatureMethod>' . "\n" .*/
-
-
-
 //reference 1
                '<ds:Reference Id="xmldsig-' . $this->referenceID . '-ref0" URI="">' . "\n" .
                  '<ds:Transforms>' . "\n" .
-                   '<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature">' .
-                   '</ds:Transform>' . "\n" .
+                   '<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>' .
+                   "\n" .
+                   //'</ds:Transform>' . "\n" .
                  '</ds:Transforms>' . "\n" .
-                 '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512">' .
-                 '</ds:DigestMethod>' . "\n" .
+                 '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>' .
+                      "\n" .
+                 //'</ds:DigestMethod>' . "\n" .
                  '<ds:DigestValue>' . $documentDigest . '</ds:DigestValue>' . "\n" .
                '</ds:Reference>' . "\n" .
 //reference 1
-
-
 //reference 2
                '<ds:Reference URI="#xmldsig-' . $this->certificateID . '-keyinfo">' . "\n" .
-                 '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512">' .
-                 '</ds:DigestMethod>' . "\n" .
+                 '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>' .
+                      "\n" .
+                 //'</ds:DigestMethod>' . "\n" .
                  '<ds:DigestValue>' . $kInfoDigest . '</ds:DigestValue>' . "\n" .
                '</ds:Reference>' . "\n" .
 //reference 2
-
-
-
 //reference 3               
                '<ds:Reference ' .
                'Type="http://uri.etsi.org/01903#SignedProperties" ' .
                'URI="#xmldsig-' . $this->signatureID . '-signedprops">' . "\n" .
-                 '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512">' .
-                 '</ds:DigestMethod>' . "\n" .
+                 '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>' .
+                      "\n" .
+                 //'</ds:DigestMethod>' . "\n" .
                  '<ds:DigestValue>' . $propDigest . '</ds:DigestValue>' . "\n" .
                '</ds:Reference>' . "\n" .
 //reference 3   
@@ -852,8 +761,8 @@ class Facturae {
     $signatureResult = str_replace("\r", "", $signatureResult);
 
     // Make signature
-    $sig = '<ds:Signature Id="xmldsig-' . $this->signatureID . '" ' .
-            'xmlns:ds="http://www.w3.org/2000/09/xmldsig#" '.
+    $sig = '<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" '. 
+                         'Id="xmldsig-' . $this->signatureID .'"'.
             '>' . "\n" .
             //'<ds:Signature Id="xmldsig-' . $this->signatureID . '">' . "\n" .
              $sInfo . "\n" .
@@ -865,13 +774,12 @@ class Facturae {
              '<ds:Object>' .
                '<xades:QualifyingProperties Target="#xmldsig-' . $this->signatureID . '" '.
                   'xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" '.
-                  'xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#" '.
-                  ' >' .
+                  'xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#"'.
+                  '>' .
                  $prop .
                '</xades:QualifyingProperties>' .
              '</ds:Object>' .
            '</ds:Signature>';
-
 /*    // Make signature
     $sig = '<ds:Signature xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" Id="Signature' . $this->signatureID . '">' . "\n" .
              $sInfo . "\n" .
@@ -886,21 +794,14 @@ class Facturae {
                '</xades:QualifyingProperties>' .
              '</ds:Object>' .
            '</ds:Signature>';*/
-
-
-
     // Inject signature
     $xml = str_replace('<ext:ExtensionContent></ext:ExtensionContent>', '<ext:ExtensionContent>' .$sig . '</ext:ExtensionContent>', $xml);
-
     // Inject timestamp
     if (!empty($this->timestampServer)) {
       $xml = $this->injectTimestamp($xml);
     }
-
     return $xml;
   }
-
-
   /**
    * Export
    *
@@ -923,13 +824,11 @@ class Facturae {
 'xmlns:qdt="urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2" '.
 'xmlns:sts="http://www.dian.gov.co/contratos/facturaelectronica/v1/Structures" '.
 'xmlns:udt="urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2" '.
-'xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" '.
-'xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#" '.
+//'xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" '.
+//'xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#" '.
 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
 'xsi:schemaLocation="http://www.dian.gov.co/contratos/facturaelectronica/v1 ../xsd/DIAN_UBL.xsd urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2 ../../ubl2/common/UnqualifiedDataTypeSchemaModule-2.0.xsd urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2 ../../ubl2/common/UBL-QualifiedDatatypes-2.0.xsd">';
 //'>';
-
-
 //-----------------------------------------------------------------------------------------
   $fecha = $this->fecha(); // creamos una fecha general para no recrear fechas
 /*
@@ -937,12 +836,11 @@ class Facturae {
     var_dump($fecha);
     echo "</pre>";
 */
-
 $nit                    = "900332178";//nit de factura
 $Prefix                 = 'PRUE';//Prefijo
 $From                   = '980000000';//De
 $To                     = '985000000';//a
-$rango                  = "980000094";
+$rango                  = "980000095";
 $InvoiceNumber          =  $Prefix.$rango;
 $InvoiceAuthorization   = '9000000105596663';//Autorización de factura
 $StartDate              = '2018-02-14';//fecha inicio resolución
@@ -1020,17 +918,17 @@ $cufe = sha1($NumFac.$fecha['FecFac'].$ValFac.$CodImp1.$ValImp1.$CodImp2.$ValImp
 //<!--_________________________________________fin__Extensions_firma________________________________________________-->
 //<!--_________________________________________ini__UBL_factura_____________________________________________________-->
     $xml .='<cbc:UBLVersionID>UBL 2.0</cbc:UBLVersionID>'.
-            '<cbc:ProfileID>DIAN 1.0</cbc:ProfileID>   '.
+            '<cbc:ProfileID>DIAN 1.0</cbc:ProfileID>'.
             '<cbc:ID>'.$NumFac.'</cbc:ID>'.
             '<cbc:UUID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">'.$cufe.'</cbc:UUID>'.
-            '<cbc:IssueDate>'.$fecha['IssueDate'].'</cbc:IssueDate>  '.
-            '<cbc:IssueTime>'.$fecha['IssueTime'].'</cbc:IssueTime>  '.
+            '<cbc:IssueDate>'.$fecha['IssueDate'].'</cbc:IssueDate>'.
+            '<cbc:IssueTime>'.$fecha['IssueTime'].'</cbc:IssueTime>'.
             '<cbc:InvoiceTypeCode listAgencyID="195" listAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" listSchemeURI="http://www.dian.gov.co/contratos/facturaelectronica/v1/InvoiceType">1</cbc:InvoiceTypeCode>'.
             '<cbc:Note>'.$Note.'</cbc:Note>'.
             '<cbc:DocumentCurrencyCode>COP</cbc:DocumentCurrencyCode>'.
                 '<fe:AccountingSupplierParty>'.
                   '<cbc:AdditionalAccountID>1</cbc:AdditionalAccountID>'.
-                  '<fe:Party>     '.
+                  '<fe:Party>'.
                     '<cac:PartyIdentification>'.
                       '<cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeID="31">'.$Nit.'</cbc:ID>'.
                     '</cac:PartyIdentification>'.
@@ -1135,8 +1033,8 @@ $cufe = sha1($NumFac.$fecha['FecFac'].$ValFac.$CodImp1.$ValImp1.$CodImp2.$ValImp
               '</fe:TaxTotal>'.
             '<fe:LegalMonetaryTotal>'.
               '<cbc:LineExtensionAmount currencyID="COP">'.$LineExtensionAmount.'</cbc:LineExtensionAmount>'.
-              '<cbc:TaxExclusiveAmount currencyID="COP">'.$TaxExclusiveAmount.'</cbc:TaxExclusiveAmount>  '.
-              '<cbc:PayableAmount currencyID="COP">'.$PayableAmount.'</cbc:PayableAmount>           '.
+              '<cbc:TaxExclusiveAmount currencyID="COP">'.$TaxExclusiveAmount.'</cbc:TaxExclusiveAmount>'.
+              '<cbc:PayableAmount currencyID="COP">'.$PayableAmount.'</cbc:PayableAmount>'.
             '</fe:LegalMonetaryTotal>'.
             '<fe:InvoiceLine>'.
               '<cbc:ID>1</cbc:ID>'.
@@ -1155,10 +1053,10 @@ $cufe = sha1($NumFac.$fecha['FecFac'].$ValFac.$CodImp1.$ValImp1.$CodImp2.$ValImp
     // Add signature
     $xml = $this->injectSignature($xml,$fecha['SigningTime']);
     // Prepend content type
-    $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . $xml;
-
+   $xml = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>' . "\n" . $xml;
+    /* $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . $xml;*/
     // Save document
-    if (!is_null($filePath)) return file_put_contents($filePath, $xml);
+     if (!is_null($filePath)) return file_put_contents($filePath, $xml);
 
 
 $obj_xml = new SimpleXMLElement($xml);
