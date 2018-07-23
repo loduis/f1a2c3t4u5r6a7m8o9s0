@@ -465,7 +465,7 @@ class Facturae {
   public function  fecha() 
   {
      date_default_timezone_set("America/Bogota"); //zona horaria
-     $fecha_full     = time(); ///fecha en timestamp
+     echo $fecha_full     = time(); ///fecha en timestamp
      $fecha['date']        = date('Y-m-d\TH:i:s',    $fecha_full);  
      $fecha['IssueDate']   = date('Y-m-d',           $fecha_full);//F  
      $fecha['IssueTime']   = date('H:i:s',           $fecha_full);//T
@@ -486,7 +486,7 @@ class Facturae {
     $this->signedInfoID                = $this->random();
     $this->signedPropertiesID          = $this->random();
     $this->signatureValueID            = '16baa8f7-2e89-4ff9-b736-7e642ce066c3';//$this->random();
-    $this->certificateID               = '16baa8f7-2e89-4ff9-b736-7e642ce066c3';//$this->random();
+    $this->certificateID               = '87d128b5-aa31-4f0b-8e45-3d9cfa0eec26';// key info  $this->random();
     $this->referenceID                 = '16baa8f7-2e89-4ff9-b736-7e642ce066c3';//$this->random();
     $this->signatureSignedPropertiesID = $this->random();
     $this->signatureObjectID           = $this->random();
@@ -531,58 +531,60 @@ class Facturae {
    * @param  string $signedXml Signed XML document
    * @return string            Signed and timestamped XML document
    */
-  private function injectTimestamp($signedXml) {
-    // Prepare data to timestamp
-    $payload = explode('<ds:SignatureValue', $signedXml)[1];
-    $payload = explode('</ds:SignatureValue>', $payload)[0];
-    $payload = '<ds:SignatureValue ' . $this->getNamespaces() . $payload . '</ds:SignatureValue>';
-    // Create TimeStampQuery in ASN1 using SHA-1
-    $tsq = "302c0201013021300906052b0e03021a05000414";
-    $tsq .= hash('sha256', $payload);
-    $tsq .= "0201000101ff";
-    $tsq = hex2bin($tsq);
-    // Await TimeStampRequest
-    $chOpts = array(
-      CURLOPT_URL => $this->timestampServer,
-      CURLOPT_RETURNTRANSFER => 1,
-      CURLOPT_BINARYTRANSFER => 1,
-      CURLOPT_SSL_VERIFYPEER => 0,
-      CURLOPT_FOLLOWLOCATION => 1,
-      CURLOPT_CONNECTTIMEOUT => 0,
-      CURLOPT_TIMEOUT => 10, // 10 seconds timeout
-      CURLOPT_POST => 1,
-      CURLOPT_POSTFIELDS => $tsq,
-      CURLOPT_HTTPHEADER => array("Content-Type: application/timestamp-query"),
-      CURLOPT_USERAGENT => self::$USER_AGENT
-    );
-    if (!empty($this->timestampUser) && !empty($this->timestampPass)) {
-      $chOpts[CURLOPT_USERPWD] = $this->timestampUser . ":" . $this->timestampPass;
-    }
-    $ch = curl_init();
-    curl_setopt_array($ch, $chOpts);
-    $tsr = curl_exec($ch);
-    if ($tsr === false) throw new \Exception('cURL error: ' . curl_error($ch));
-    curl_close($ch);
-    // Validate TimeStampRequest
-    $responseCode = substr($tsr, 6, 3);
-    if ($responseCode !== "\02\01\00") { // Bytes for INTEGER 0 in ASN1
-      throw new \Exception('Invalid TSR response code');
-    }
-    // Extract TimeStamp from TimeStampRequest and inject into XML document
-    $timeStamp = substr($tsr, 9);
-    $tsXml = '<xades:UnsignedProperties Id="Signature' . $this->signatureID . '-UnsignedProperties' . $this->random() . '">' .
-               '<xades:UnsignedSignatureProperties>' .
-                 '<xades:SignatureTimeStamp Id="Timestamp-' . $this->random() . '">' .
-                   '<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>' .
-                   //'</ds:CanonicalizationMethod>' .
-                   '<xades:EncapsulatedTimeStamp>' . "\n" .
-                     str_replace("\r", "", chunk_split(base64_encode($timeStamp), 76)) .
-                   '</xades:EncapsulatedTimeStamp>' .
-                 '</xades:SignatureTimeStamp>' .
-               '</xades:UnsignedSignatureProperties>' .
-             '</xades:UnsignedProperties>';
-    $signedXml = str_replace('</xades:QualifyingProperties>', $tsXml . '</xades:QualifyingProperties>', $signedXml);
-    return $signedXml;
+  private function injectTimestamp($signedXml) 
+  {
+        // Prepare data to timestamp
+        $payload = explode('<ds:SignatureValue', $signedXml)[1];
+        $payload = explode('</ds:SignatureValue>', $payload)[0];
+        $payload = '<ds:SignatureValue ' . $this->getNamespaces() . $payload . '</ds:SignatureValue>';
+        // Create TimeStampQuery in ASN1 using SHA-1
+        $tsq = "302c0201013021300906052b0e03021a05000414";
+        $tsq .= hash('sha256', $payload);
+        $tsq .= "0201000101ff";
+        $tsq = hex2bin($tsq);
+        // Await TimeStampRequest
+        $chOpts = array(
+          CURLOPT_URL => $this->timestampServer,
+          CURLOPT_RETURNTRANSFER => 1,
+          CURLOPT_BINARYTRANSFER => 1,
+          CURLOPT_SSL_VERIFYPEER => 0,
+          CURLOPT_FOLLOWLOCATION => 1,
+          CURLOPT_CONNECTTIMEOUT => 0,
+          CURLOPT_TIMEOUT => 10, // 10 seconds timeout
+          CURLOPT_POST => 1,
+          CURLOPT_POSTFIELDS => $tsq,
+          CURLOPT_HTTPHEADER => array("Content-Type: application/timestamp-query"),
+          CURLOPT_USERAGENT => self::$USER_AGENT
+        );
+        if (!empty($this->timestampUser) && !empty($this->timestampPass)) {
+          $chOpts[CURLOPT_USERPWD] = $this->timestampUser . ":" . $this->timestampPass;
+        }
+        $ch = curl_init();
+        curl_setopt_array($ch, $chOpts);
+        $tsr = curl_exec($ch);
+        if ($tsr === false) throw new \Exception('cURL error: ' . curl_error($ch));
+        curl_close($ch);
+        // Validate TimeStampRequest
+        $responseCode = substr($tsr, 6, 3);
+        if ($responseCode !== "\02\01\00") { // Bytes for INTEGER 0 in ASN1
+          throw new \Exception('Invalid TSR response code');
+        }
+
+        // Extract TimeStamp from TimeStampRequest and inject into XML document
+        $timeStamp = substr($tsr, 9);
+        $tsXml = '<xades:UnsignedProperties Id="Signature' . $this->signatureID . '-UnsignedProperties' . $this->random() . '">' .
+                   '<xades:UnsignedSignatureProperties>' .
+                     '<xades:SignatureTimeStamp Id="Timestamp-' . $this->random() . '">' .
+                       '<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>' .
+                       //'</ds:CanonicalizationMethod>' .
+                       '<xades:EncapsulatedTimeStamp>' . "\n" .
+                         str_replace("\r", "", chunk_split(base64_encode($timeStamp), 76)) .
+                       '</xades:EncapsulatedTimeStamp>' .
+                     '</xades:SignatureTimeStamp>' .
+                   '</xades:UnsignedSignatureProperties>' .
+                 '</xades:UnsignedProperties>';
+        $signedXml = str_replace('</xades:QualifyingProperties>', $tsXml . '</xades:QualifyingProperties>', $signedXml);
+        return $signedXml;
   }
   /**
    * Inject signature
@@ -590,26 +592,31 @@ class Facturae {
    * @param  string $xml Unsigned XML document
    * @return string      Signed XML document
    */
-  private function injectSignature($xml,$fecha_SigningTime) {
+  private function injectSignature($xml,$fecha_SigningTime) 
+  {
     // Make sure we have all we need to sign the document
     if (empty($this->publicKey) || empty($this->privateKey)) return $xml;
     // Normalize document
     $xml = str_replace("\r", "", $xml);
     // Define namespace
     $xmlns = $this->getNamespaces();
+
+
     // Prepare signed properties
     $signTime = is_null($this->signTime) ? time() : $this->signTime;
     $certData = openssl_x509_parse($this->publicKey);
     $certDigest = openssl_x509_fingerprint($this->publicKey, "sha512", true);
     $certDigest = base64_encode($certDigest);
     $certIssuer = array();
-    foreach ($certData['issuer'] as $item=>$value) {
-      $certIssuer[] = $item . '=' . $value;
-    }
+    foreach ($certData['issuer'] as $item=>$value) 
+        {
+          $certIssuer[] = $item . '=' . $value;
+        }
     $certIssuer = implode(',', $certIssuer);
+
+
     // Generate signed properties
-    $prop = '<xades:SignedProperties Id="xmldsig-' . $this->signatureID .
-            '-signedprops">' .
+    $prop = '<xades:SignedProperties Id="xmldsig-'.$this->signatureID .'-signedprops">' .
               '<xades:SignedSignatureProperties>' .
                // '<xades:SigningTime>' . date('c', $signTime) . '</xades:SigningTime>' .
                 '<xades:SigningTime>' .  $fecha_SigningTime . '</xades:SigningTime>' .
@@ -617,7 +624,7 @@ class Facturae {
  //certi 1               
                   '<xades:Cert>' .
                     '<xades:CertDigest>' .
-                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></ds:DigestMethod>' .
+                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>' .
                       '<ds:DigestValue>' . $certDigest . '</ds:DigestValue>' .
                     '</xades:CertDigest>' .
                     '<xades:IssuerSerial>' .
@@ -630,7 +637,7 @@ class Facturae {
  //certi 2
                   '<xades:Cert>' .
                     '<xades:CertDigest>' .
-                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></ds:DigestMethod>' .
+                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>' .
                       '<ds:DigestValue>' . 'TZdLsy//YK5nRSfiz/SOgMlTbU3DEfCk6CUDf8EI4rhzURHg71mfjB7++WC4eav/HCq14hQdgo0rGL/t+Gt28A==' . '</ds:DigestValue>' .
                     '</xades:CertDigest>' .
                     '<xades:IssuerSerial>' .
@@ -643,7 +650,7 @@ class Facturae {
  //certi 3
                   '<xades:Cert>' .
                     '<xades:CertDigest>' .
-                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></ds:DigestMethod>' .
+                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>' .
                       '<ds:DigestValue>' . '5fhNFBE6/8oBbUSwDj3N9RVEkrOW6ePre2qHKN0w67IbMKmh49a3PYjFj+ZF04uaW6n9kQKGFg+1NIFlHRua1Q==' . '</ds:DigestValue>' .
                     '</xades:CertDigest>' .
                     '<xades:IssuerSerial>' .
@@ -661,7 +668,7 @@ class Facturae {
                      // '<xades:Description>' . $this->signPolicy['name'] . '</xades:Description>' .
                     '</xades:SigPolicyId>' .
                     '<xades:SigPolicyHash>' .
-                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></ds:DigestMethod>' .
+                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>' .
                       '<ds:DigestValue>' . $this->signPolicy['digest'] . '</ds:DigestValue>' .
                     '</xades:SigPolicyHash>' .
                   '</xades:SignaturePolicyId>' .
@@ -679,6 +686,9 @@ class Facturae {
                 '</xades:DataObjectFormat>' .
               '</xades:SignedDataObjectProperties>' .*/
             '</xades:SignedProperties>';
+
+
+
     // Prepare key info
     $publicPEM = "";
     openssl_x509_export($this->publicKey, $publicPEM);
@@ -702,12 +712,15 @@ class Facturae {
                  '</ds:RSAKeyValue>' . "\n" .
                '</ds:KeyValue>' . "\n" .*/
              '</ds:KeyInfo>';
+   
     // Calculate digests
     $propDigest = base64_encode(hash('sha512',str_replace('<xades:SignedProperties',
       '<xades:SignedProperties ' . $xmlns, $prop), true));
     $kInfoDigest = base64_encode(hash('sha512',str_replace('<ds:KeyInfo',
       '<ds:KeyInfo ' . $xmlns, $kInfo), true));
     $documentDigest = base64_encode(hash('sha512',$xml, true));
+
+
     // Generate SignedInfo
     $sInfo = '<ds:SignedInfo>' . "\n" .
                '<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>' .
@@ -759,6 +772,7 @@ class Facturae {
     openssl_sign($signaturePayload, $signatureResult, $this->privateKey);
     $signatureResult = chunk_split(base64_encode($signatureResult), 76);
     $signatureResult = str_replace("\r", "", $signatureResult);
+    
 
     // Make signature
     $sig = '<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" '. 
@@ -772,9 +786,10 @@ class Facturae {
              $kInfo . "\n" .
              //'<ds:Object Id="Signature' . $this->signatureID . '-Object' . $this->signatureObjectID . '">' .
              '<ds:Object>' .
-               '<xades:QualifyingProperties Target="#xmldsig-' . $this->signatureID . '" '.
+               '<xades:QualifyingProperties '.
                   'xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" '.
                   'xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#"'.
+                  ' Target="#xmldsig-' . $this->signatureID . '"'.
                   '>' .
                  $prop .
                '</xades:QualifyingProperties>' .
@@ -797,9 +812,10 @@ class Facturae {
     // Inject signature
     $xml = str_replace('<ext:ExtensionContent></ext:ExtensionContent>', '<ext:ExtensionContent>' .$sig . '</ext:ExtensionContent>', $xml);
     // Inject timestamp
-    if (!empty($this->timestampServer)) {
-      $xml = $this->injectTimestamp($xml);
-    }
+    if (!empty($this->timestampServer)) 
+      {
+        $xml = $this->injectTimestamp($xml);
+      }
     return $xml;
   }
   /**
@@ -810,9 +826,10 @@ class Facturae {
    * @param  string     $filePath Path to save invoice
    * @return string|int           XML data|Written file bytes
    */
-  public function export($filePath=null) {
+  public function export($filePath=null) 
+  {
       // Prepare document
-    $xml = '<fe:Invoice '. 
+$xml = '<fe:Invoice '. 
 'xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" '.
 'xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" '.
 'xmlns:clm54217="urn:un:unece:uncefact:codelist:specification:54217:2001" '.
@@ -840,7 +857,7 @@ $nit                    = "900332178";//nit de factura
 $Prefix                 = 'PRUE';//Prefijo
 $From                   = '980000000';//De
 $To                     = '985000000';//a
-$rango                  = "980000095";
+$rango                  = "980000096";
 $InvoiceNumber          =  $Prefix.$rango;
 $InvoiceAuthorization   = '9000000105596663';//Autorización de factura
 $StartDate              = '2018-02-14';//fecha inicio resolución
@@ -876,7 +893,7 @@ $NitOFE = $Nit; //NIT del Facturador Electrónico sin puntos ni guiones, sin dig
 $TipAdq = '31';  // tipo de adquiriente, de acuerdo con el valor registrado en /fe:Invoice/fe:AccountingCustomerParty/fe:Party/cac:PartyIdentification/cbc:ID/@schemeID la tabla Tipos de documentos de identidad del «Anexo 001 Formato estándar XML de la Factura, notas débito y notas crédito electrónicos»; si no se determinó y es un NIT, entonces use el valor “O-99”, de lo contrario use “R-00-PN”. //fe:Invoice/fe:AccountingCustomerParty/fe:Party/cac:PartyIdentification/cbc:ID
 $NumAdq = $nit; // Número de identificación del adquirente sin puntos ni guiones, sin digito de verificación. 
 $ClTec  = $ClTec; //clave tenica de la resolucion
-$cufe = sha1($NumFac.$fecha['FecFac'].$ValFac.$CodImp1.$ValImp1.$CodImp2.$ValImp2.$CodImp3.$ValImp3.$ValImp.$NitOFE.$TipAdq.$NumAdq.$ClTec);
+$cufe = hash('sha256',$NumFac.$fecha['FecFac'].$ValFac.$CodImp1.$ValImp1.$CodImp2.$ValImp2.$CodImp3.$ValImp3.$ValImp.$NitOFE.$TipAdq.$NumAdq.$ClTec);
 //_________________________________________________________ cufe_______________________________________
 
 //<!--_________________________________________ini__Extensions_firma________________________________________________-->
@@ -1056,7 +1073,7 @@ $cufe = sha1($NumFac.$fecha['FecFac'].$ValFac.$CodImp1.$ValImp1.$CodImp2.$ValImp
    $xml = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>' . "\n" . $xml;
     /* $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . $xml;*/
     // Save document
-     if (!is_null($filePath)) return file_put_contents($filePath, $xml);
+     //if (!is_null($filePath)) return file_put_contents($filePath, $xml);
 
 
 $obj_xml = new SimpleXMLElement($xml);

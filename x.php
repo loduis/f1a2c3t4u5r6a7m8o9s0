@@ -1,5 +1,11 @@
 <?php 
 
+//hash('sha256','politicadefirmav1.pdf', true)
+echo $hash =  hash_file('sha512', 'politicadefirmav1.pdf',true);
+echo "<br>";
+echo base64_encode($hash );
+exit();
+
 $xml = 'jajajjajajajajjajaj';
 $documentDigest = base64_encode(hash('sha256',$xml, true));
 

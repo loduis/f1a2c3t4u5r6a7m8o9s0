@@ -67,7 +67,8 @@ for ($i=0; $i < 2 ; $i++)
 
 // Ya solo queda firmar la factura ...
 //$fac->sign(  "clavepublica.pem",  "claveprivada.pem",  "persona_juridica_pruebas1");
-$fac->sign("persona_juridica_pruebas_vigente.p12", NULL, "persona_juridica_pruebas1");
+//$fac->sign("persona_juridica_pruebas_vigente.p12", NULL, "persona_juridica_pruebas1");
+$fac->sign("463458.p12", NULL, "-fI95*zVu_");
 
 // ... y exportarlo a un archivo
 $fac->export("salida3.2.2.xml");
