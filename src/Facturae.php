@@ -659,42 +659,30 @@ class Facturae {
    * @param  string $xml Unsigned XML document
    * @return string      Signed XML document
    */
-private function injectSignature($xml,$fecha_SigningTime) 
-  {
+  private function injectSignature($xml,$fecha_SigningTime) {
     // Make sure we have all we need to sign the document
     if (empty($this->publicKey) || empty($this->privateKey)) return $xml;
+
     // Normalize document
     $xml = str_replace("\r", "", $xml);
+
     // Define namespace
     $xmlns = $this->getNamespaces();
-
 
     // Prepare signed properties
     $signTime = is_null($this->signTime) ? time() : $this->signTime;
     $certData = openssl_x509_parse($this->publicKey);
-    $certDigest = openssl_x509_fingerprint($this->publicKey, "sha512", true);
+    $certDigest = openssl_x509_fingerprint($this->publicKey, "RSA-SHA512", true);
     $certDigest = base64_encode($certDigest);
-    $certDigest = chunk_split($certDigest, 76);
-
     $certIssuer = array();
-    foreach ($certData['issuer'] as $item=>$value) 
-        {
-          $certIssuer[] = $item . '=' . $value;
-        }
+    foreach ($certData['issuer'] as $item=>$value) {
+      $certIssuer[] = $item . '=' . $value;
+    }
     $certIssuer = implode(',', $certIssuer);
 
-
-
-
-
-                $cer2 ='TZdLsy//YK5nRSfiz/SOgMlTbU3DEfCk6CUDf8EI4rhzURHg71mfjB7++WC4eav/HCq14hQdgo0rGL/t+Gt28A==';
-                $cer2 = chunk_split($cer2, 76);
-
-                $cer3 ='5fhNFBE6/8oBbUSwDj3N9RVEkrOW6ePre2qHKN0w67IbMKmh49a3PYjFj+ZF04uaW6n9kQKGFg+1NIFlHRua1Q==';
-                $cer3 = chunk_split($cer3, 76);
-
     // Generate signed properties
-    $prop = '<xades:SignedProperties Id="xmldsig-'.$this->signatureID .'-signedprops">' .
+    $prop = '<xades:SignedProperties Id="xmldsig-' . $this->signatureID .
+            '-signedprops">' .
               '<xades:SignedSignatureProperties>' .
                // '<xades:SigningTime>' . date('c', $signTime) . '</xades:SigningTime>' .
                 '<xades:SigningTime>' .  $fecha_SigningTime . '</xades:SigningTime>' .
@@ -702,12 +690,12 @@ private function injectSignature($xml,$fecha_SigningTime)
  //certi 1               
                   '<xades:Cert>' .
                     '<xades:CertDigest>' .
-                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>' .
+                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></ds:DigestMethod>' .
                       '<ds:DigestValue>' . $certDigest . '</ds:DigestValue>' .
                     '</xades:CertDigest>' .
                     '<xades:IssuerSerial>' .
                      // '<ds:X509IssuerName>' . $certIssuer . '</ds:X509IssuerName>' .
-                      '<ds:X509IssuerName>' . 'C=CO,L=Bogota D.C.,O=Andes SCD.,OU=Division de certificacion entidad final,CN=CA ANDES SCD S.A. Clase II,1.2.840.113549.1.9.1=#1614696e666f40616e6465737363642e636f6d2e636f' . '</ds:X509IssuerName>' .
+                      '<ds:X509IssuerName>' . 'C=CO, L=Bogota D.C., O=Andes SCD., OU=Division de certificacion entidad final, CN=CA ANDES SCD S.A. Clase II, emailAddress=info@andesscd.com.co' . '</ds:X509IssuerName>' .
                       '<ds:X509SerialNumber>' . $certData['serialNumber'] . '</ds:X509SerialNumber>' .
                     '</xades:IssuerSerial>' .
                   '</xades:Cert>' .
@@ -715,24 +703,24 @@ private function injectSignature($xml,$fecha_SigningTime)
  //certi 2
                   '<xades:Cert>' .
                     '<xades:CertDigest>' .
-                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>' .
-                      '<ds:DigestValue>' . $cer2 . '</ds:DigestValue>' .
+                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></ds:DigestMethod>' .
+                      '<ds:DigestValue>' . 'YEz+1GrvZ9ZHIaEZ/K8HLW1s7jkT/u85nYqGYgR3YlRPw/ryHdUZ1otcJ4FjRP+9n4XkcHeiox/BYjyDZbtkRA==' . '</ds:DigestValue>' .
                     '</xades:CertDigest>' .
                     '<xades:IssuerSerial>' .
-                      '<ds:X509IssuerName>' . 'C=CO,L=Bogota D.C.,O=Andes SCD,OU=Division de certificacion,CN=ROOT CA ANDES SCD S.A.,1.2.840.113549.1.9.1=#1614696e666f40616e6465737363642e636f6d2e636f' . '</ds:X509IssuerName>' .
+                      '<ds:X509IssuerName>' . 'C=CO, L=Bogota D.C., O=Andes SCD, OU=Division de certificacion, CN=ROOT CA ANDES SCD S.A., emailAddress=info@andesscd.com.co' . '</ds:X509IssuerName>' .
                       //'<ds:X509IssuerName>' . 'emailAddress=info@andesscd.com.co,CN=ROOT CA ANDES SCD S.A.,OU=Division de certificacion entidad final,O=Andes SCD.,L=Bogota D.C.,C=CO' . '</ds:X509IssuerName>' .
-                      '<ds:X509SerialNumber>' . '8136867327090815624' . '</ds:X509SerialNumber>' .
+                      '<ds:X509SerialNumber>' . '6985070537642442490' . '</ds:X509SerialNumber>' .
                     '</xades:IssuerSerial>' .
                   '</xades:Cert>' .
  //certi 2
  //certi 3
                   '<xades:Cert>' .
                     '<xades:CertDigest>' .
-                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>' .
-                      '<ds:DigestValue>' . $cer3 . '</ds:DigestValue>' .
+                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></ds:DigestMethod>' .
+                      '<ds:DigestValue>' . 'L+GR4ozHO/SpmNwQVKr25N+ItB6Xdx9tq2zvkPe4NXOFKdzNnmwNetYg1w14zfWP8XFejj5bZtxmbdy9d2GPjQ==' . '</ds:DigestValue>' .
                     '</xades:CertDigest>' .
                     '<xades:IssuerSerial>' .
-                       '<ds:X509IssuerName>' . 'C=CO,L=Bogota D.C.,O=Andes SCD,OU=Division de certificacion,CN=ROOT CA ANDES SCD S.A.,1.2.840.113549.1.9.1=#1614696e666f40616e6465737363642e636f6d2e636f' . '</ds:X509IssuerName>' .           
+                       '<ds:X509IssuerName>' . 'C=CO, L=Bogota D.C., O=Andes SCD, OU=Division de certificacion, CN=ROOT CA ANDES SCD S.A., emailAddress=info@andesscd.com.co' . '</ds:X509IssuerName>' .           
 //                      '<ds:X509IssuerName>' . 'emailAddress=info@andesscd.com.co,CN=ROOT CA ANDES SCD S.A.,OU=Division de certificacion entidad final,O=Andes SCD.,L=Bogota D.C.,C=CO' . '</ds:X509IssuerName>' .
                       '<ds:X509SerialNumber>' . '3184328748892787122'. '</ds:X509SerialNumber>' .
                     '</xades:IssuerSerial>' .
@@ -746,8 +734,8 @@ private function injectSignature($xml,$fecha_SigningTime)
                      // '<xades:Description>' . $this->signPolicy['name'] . '</xades:Description>' .
                     '</xades:SigPolicyId>' .
                     '<xades:SigPolicyHash>' .
-                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>' .
-                      '<ds:DigestValue>' . chunk_split($this->signPolicy['digest'],76)  . '</ds:DigestValue>' .
+                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></ds:DigestMethod>' .
+                      '<ds:DigestValue>' . $this->signPolicy['digest'] . '</ds:DigestValue>' .
                     '</xades:SigPolicyHash>' .
                   '</xades:SignaturePolicyId>' .
                 '</xades:SignaturePolicyIdentifier>' .
@@ -765,8 +753,6 @@ private function injectSignature($xml,$fecha_SigningTime)
               '</xades:SignedDataObjectProperties>' .*/
             '</xades:SignedProperties>';
 
-
-
     // Prepare key info
     $publicPEM = "";
     openssl_x509_export($this->publicKey, $publicPEM);
@@ -774,10 +760,12 @@ private function injectSignature($xml,$fecha_SigningTime)
     $publicPEM = str_replace("-----END CERTIFICATE-----", "", $publicPEM);
     $publicPEM = str_replace("\n", "", $publicPEM);
     $publicPEM = str_replace("\r", "", chunk_split($publicPEM, 76));
+
     $privateData = openssl_pkey_get_details($this->privateKey);
     $modulus = chunk_split(base64_encode($privateData['rsa']['n']), 76);
     $modulus = str_replace("\r", "", $modulus);
     $exponent = base64_encode($privateData['rsa']['e']);
+
     // Generate KeyInfo
     $kInfo = '<ds:KeyInfo Id="xmldsig-' . $this->certificateID . '-keyinfo">' . "\n" .
                '<ds:X509Data>' . "\n" .
@@ -790,115 +778,88 @@ private function injectSignature($xml,$fecha_SigningTime)
                  '</ds:RSAKeyValue>' . "\n" .
                '</ds:KeyValue>' . "\n" .*/
              '</ds:KeyInfo>';
-   
-    // Calculate digests
-    $propDigest = base64_encode(hash('sha512',str_replace('<xades:SignedProperties',
-      '<xades:SignedProperties ' . $xmlns, $prop), true));
-    $kInfoDigest = base64_encode(hash('sha512',str_replace('<ds:KeyInfo',
-      '<ds:KeyInfo ' . $xmlns, $kInfo), true));
-    $documentDigest = base64_encode(hash('sha512',$xml, true));
 
+    // Calculate digests
+    $propDigest = str_replace('<xades:SignedProperties','<xades:SignedProperties ' . $xmlns, $prop);
+    $propDigest = hash('sha512',$propDigest,true);
+    $propDigest = base64_encode($propDigest);
+
+    $kInfoDigest = str_replace('<ds:KeyInfo','<ds:KeyInfo ' . $xmlns, $kInfo);
+    $kInfoDigest = hash('sha512',$kInfoDigest,true);
+    $kInfoDigest = base64_encode($kInfoDigest);
+
+    $documentDigest = hash('sha512',$xml,true);
+    $documentDigest = base64_encode($documentDigest);
 
     // Generate SignedInfo
     $sInfo = '<ds:SignedInfo>' . "\n" .
-               '<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>' .
-               "\n" .
-                // '</ds:CanonicalizationMethod>' . "\n" .
-               '<ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>' .
-               "\n" .
-               //'</ds:SignatureMethod>' . "\n" .
+               '<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315">' .
+               '</ds:CanonicalizationMethod>' . "\n" .
+               '<ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256">' .
+               '</ds:SignatureMethod>' . "\n" .
      /*$sInfo = '<ds:SignedInfo Id="Signature-SignedInfo' . $this->signedInfoID . '">' . "\n" .
                '<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315">' .
                '</ds:CanonicalizationMethod>' . "\n" .
-               '<ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256">' .
+               '<ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1">' .
                '</ds:SignatureMethod>' . "\n" .*/
 //reference 1
                '<ds:Reference Id="xmldsig-' . $this->referenceID . '-ref0" URI="">' . "\n" .
                  '<ds:Transforms>' . "\n" .
-                   '<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>' .
-                   "\n" .
-                   //'</ds:Transform>' . "\n" .
+                   '<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature">' .
+                   '</ds:Transform>' . "\n" .
                  '</ds:Transforms>' . "\n" .
-                 '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>' .
-                      "\n" .
-                 //'</ds:DigestMethod>' . "\n" .
-                 '<ds:DigestValue>' . chunk_split($documentDigest,76)  . '</ds:DigestValue>' . "\n" .
+                 '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512">' .
+                 '</ds:DigestMethod>' . "\n" .
+                 '<ds:DigestValue>' . $documentDigest . '</ds:DigestValue>' . "\n" .
                '</ds:Reference>' . "\n" .
 //reference 1
 //reference 2
                '<ds:Reference URI="#xmldsig-' . $this->certificateID . '-keyinfo">' . "\n" .
-                 '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>' .
-                      "\n" .
-                 //'</ds:DigestMethod>' . "\n" .
-                 '<ds:DigestValue>' . chunk_split($kInfoDigest,76) . '</ds:DigestValue>' . "\n" .
+                 '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512">' .
+                 '</ds:DigestMethod>' . "\n" .
+                 '<ds:DigestValue>' . $kInfoDigest . '</ds:DigestValue>' . "\n" .
                '</ds:Reference>' . "\n" .
 //reference 2
 //reference 3               
                '<ds:Reference ' .
                'Type="http://uri.etsi.org/01903#SignedProperties" ' .
                'URI="#xmldsig-' . $this->signatureID . '-signedprops">' . "\n" .
-                 '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>' .
-                      "\n" .
-                 //'</ds:DigestMethod>' . "\n" .
-                 '<ds:DigestValue>' . chunk_split($propDigest,76) . '</ds:DigestValue>' . "\n" .
+                 '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512">' .
+                 '</ds:DigestMethod>' . "\n" .
+                 '<ds:DigestValue>' . $propDigest . '</ds:DigestValue>' . "\n" .
                '</ds:Reference>' . "\n" .
 //reference 3   
              '</ds:SignedInfo>';
 
+
     // Calculate signature
     $signaturePayload = str_replace('<ds:SignedInfo', '<ds:SignedInfo ' . $xmlns, $sInfo);
-    // añadido avalo
     $signing_algorithm = OPENSSL_ALGO_SHA256;
     openssl_sign($signaturePayload, $signatureResult, $this->privateKey, $signing_algorithm);
     $signatureResult = chunk_split(base64_encode($signatureResult), 76);
     $signatureResult = str_replace("\r", "", $signatureResult);
-            
-           /*  echo "<pre>";
-             var_dump($xmlns);
-             echo "</pre>";
-             echo "<br>";
-             echo "<pre>------------------------------------------------\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-             var_dump($sInfo);
-             echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\n----------------------------------------------------</pre>";
-             echo "<br>";
-             //exit();*/
-    
 
     // Make signature
-    $sig = '<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" '. 
-                         'Id="xmldsig-' . $this->signatureID .'"'.
+    $sig = '<ds:Signature Id="xmldsig-' . $this->signatureID . '" ' .
+            'xmlns:ds="http://www.w3.org/2000/09/xmldsig#" '.
             '>' . "\n" .
             //'<ds:Signature Id="xmldsig-' . $this->signatureID . '">' . "\n" .
              $sInfo . "\n" .
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
              '<ds:SignatureValue Id="xmldsig-' . $this->signatureValueID . '-sigvalue">' . "\n" .
                $signatureResult .
              '</ds:SignatureValue>' . "\n" .
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
              $kInfo . "\n" .
              //'<ds:Object Id="Signature' . $this->signatureID . '-Object' . $this->signatureObjectID . '">' .
              '<ds:Object>' .
-               '<xades:QualifyingProperties '.
+               '<xades:QualifyingProperties Target="#xmldsig-' . $this->signatureID . '" '.
                   'xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" '.
-                  'xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#"'.
-                  ' Target="#xmldsig-' . $this->signatureID . '"'.
-                  '>' .
+                  'xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#" '.
+                  ' >' .
                  $prop .
                '</xades:QualifyingProperties>' .
              '</ds:Object>' .
            '</ds:Signature>';
+
 /*    // Make signature
     $sig = '<ds:Signature xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" Id="Signature' . $this->signatureID . '">' . "\n" .
              $sInfo . "\n" .
@@ -913,13 +874,17 @@ private function injectSignature($xml,$fecha_SigningTime)
                '</xades:QualifyingProperties>' .
              '</ds:Object>' .
            '</ds:Signature>';*/
+
+
+
     // Inject signature
     $xml = str_replace('<ext:ExtensionContent></ext:ExtensionContent>', '<ext:ExtensionContent>' .$sig . '</ext:ExtensionContent>', $xml);
+
     // Inject timestamp
-    if (!empty($this->timestampServer)) 
-      {
-        $xml = $this->injectTimestamp($xml);
-      }
+    if (!empty($this->timestampServer)) {
+      $xml = $this->injectTimestamp($xml);
+    }
+
     return $xml;
   }
 
@@ -965,7 +930,7 @@ $nit                    = "900332178";//nit de factura
 $Prefix                 = 'PRUE';//Prefijo
 $From                   = '980000000';//De
 $To                     = '985000000';//a
-$rango                  = "980000090";
+$rango                  = "980000101";
 $InvoiceNumber          =  $Prefix.$rango;
 $InvoiceAuthorization   = '9000000105596663';//Autorización de factura
 $StartDate              = '2018-02-14';//fecha inicio resolución
