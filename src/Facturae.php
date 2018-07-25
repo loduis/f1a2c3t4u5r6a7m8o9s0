@@ -695,7 +695,7 @@ class Facturae {
                     '</xades:CertDigest>' .
                     '<xades:IssuerSerial>' .
                      // '<ds:X509IssuerName>' . $certIssuer . '</ds:X509IssuerName>' .
-                      '<ds:X509IssuerName>' . 'C=CO, L=Bogota D.C., O=Andes SCD., OU=Division de certificacion entidad final, CN=CA ANDES SCD S.A. Clase II, emailAddress=info@andesscd.com.co' . '</ds:X509IssuerName>' .
+                      '<ds:X509IssuerName>' . 'C=CO,L=Bogota D.C.,O=Andes SCD.,OU=Division de certificacion entidad final,CN=CA ANDES SCD S.A. Clase II,emailAddress=info@andesscd.com.co' . '</ds:X509IssuerName>' .
                       '<ds:X509SerialNumber>' . $certData['serialNumber'] . '</ds:X509SerialNumber>' .
                     '</xades:IssuerSerial>' .
                   '</xades:Cert>' .
@@ -707,7 +707,7 @@ class Facturae {
                       '<ds:DigestValue>' . 'YEz+1GrvZ9ZHIaEZ/K8HLW1s7jkT/u85nYqGYgR3YlRPw/ryHdUZ1otcJ4FjRP+9n4XkcHeiox/BYjyDZbtkRA==' . '</ds:DigestValue>' .
                     '</xades:CertDigest>' .
                     '<xades:IssuerSerial>' .
-                      '<ds:X509IssuerName>' . 'C=CO, L=Bogota D.C., O=Andes SCD, OU=Division de certificacion, CN=ROOT CA ANDES SCD S.A., emailAddress=info@andesscd.com.co' . '</ds:X509IssuerName>' .
+                      '<ds:X509IssuerName>' . 'C=CO,L=Bogota D.C.,O=Andes SCD,OU=Division de certificacion,CN=ROOT CA ANDES SCD S.A.,emailAddress=info@andesscd.com.co' . '</ds:X509IssuerName>' .
                       //'<ds:X509IssuerName>' . 'emailAddress=info@andesscd.com.co,CN=ROOT CA ANDES SCD S.A.,OU=Division de certificacion entidad final,O=Andes SCD.,L=Bogota D.C.,C=CO' . '</ds:X509IssuerName>' .
                       '<ds:X509SerialNumber>' . '6985070537642442490' . '</ds:X509SerialNumber>' .
                     '</xades:IssuerSerial>' .
@@ -720,7 +720,7 @@ class Facturae {
                       '<ds:DigestValue>' . 'L+GR4ozHO/SpmNwQVKr25N+ItB6Xdx9tq2zvkPe4NXOFKdzNnmwNetYg1w14zfWP8XFejj5bZtxmbdy9d2GPjQ==' . '</ds:DigestValue>' .
                     '</xades:CertDigest>' .
                     '<xades:IssuerSerial>' .
-                       '<ds:X509IssuerName>' . 'C=CO, L=Bogota D.C., O=Andes SCD, OU=Division de certificacion, CN=ROOT CA ANDES SCD S.A., emailAddress=info@andesscd.com.co' . '</ds:X509IssuerName>' .           
+                       '<ds:X509IssuerName>' . 'C=CO,L=Bogota D.C.,O=Andes SCD,OU=Division de certificacion,CN=ROOT CA ANDES SCD S.A.,emailAddress=info@andesscd.com.co' . '</ds:X509IssuerName>' .           
 //                      '<ds:X509IssuerName>' . 'emailAddress=info@andesscd.com.co,CN=ROOT CA ANDES SCD S.A.,OU=Division de certificacion entidad final,O=Andes SCD.,L=Bogota D.C.,C=CO' . '</ds:X509IssuerName>' .
                       '<ds:X509SerialNumber>' . '3184328748892787122'. '</ds:X509SerialNumber>' .
                     '</xades:IssuerSerial>' .
@@ -930,7 +930,7 @@ $nit                    = "900332178";//nit de factura
 $Prefix                 = 'PRUE';//Prefijo
 $From                   = '980000000';//De
 $To                     = '985000000';//a
-$rango                  = "980000101";
+$rango                  = "980000105";
 $InvoiceNumber          =  $Prefix.$rango;
 $InvoiceAuthorization   = '9000000105596663';//Autorización de factura
 $StartDate              = '2018-02-14';//fecha inicio resolución
