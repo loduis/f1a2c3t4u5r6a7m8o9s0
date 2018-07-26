@@ -1,0 +1,43 @@
+<html>
+<head>
+<link href="multiupload/css/uploadfile.css" rel="stylesheet">
+<script src="multiupload/js/jquery.min.js"></script>
+<script src="multiupload/js/jquery.uploadfile.js"></script>
+</head>
+<body>
+<div id="fileuploader">SUBIR</div>
+<script>
+$(document).ready(function()
+{
+/*	$('#tipo').change(function()
+	{  
+
+		$("#tipoinput").val($(this).val());
+		alert($("#tipoinput").val());
+ 	});*/
+
+	$("#fileuploader").uploadFile({
+	url:"multiupload/php/upload.php",
+	fileName:"myfile",
+	allowedTypes:"pdf",
+	showProgress:true,
+	showAbort: false,
+	dragDropStr: "<span><b>Arrastra aquì los archivos</b></span>",
+	abortStr: "Abortar",
+    cancelStr: "Cancelar",
+    deletelStr: "Eliminar",
+    doneStr: "Subido",
+    multiDragErrorStr: "NO ESTA DISPONIBLE.",
+    extErrorStr: "is not allowed. Allowed extensions: ",
+    sizeErrorStr: "is not allowed. Allowed Max size: ",
+    uploadErrorStr: "Upload is not allowed",
+    maxFileSize: 2092965,
+    maxFileCountErrorStr: " is not allowed. Maximum allowed files are:"
+
+
+	});
+});
+</script>
+</body>
+</html>
+
