@@ -38,8 +38,8 @@ class Facturae {
   const SCHEMA_3_2_2 = "3.2.2";
   const SIGN_POLICY_3_1 = array(
     "name" => "Política de Firma FacturaE v3.1",
-    "url" => "https://facturaelectronica.dian.gov.co/politicadefirma/v1/politicadefirmav1.pdf",
-    "digest" => "5CL0Atx0jWqWoGG7rhuKOU7RN/kXCnupNAZb+fMiUu8JFLaUZb7mWXBCO2lzgKuzUObeBz1nGXtL9+0Rqw8X+Q=="
+    "url" => "https://facturaelectronica.dian.gov.co/politicadefirma/v2/politicadefirmav2.pdf",
+    "digest" => "sbcECQ7v+y/m3OcBCJyvmkBhtFs="
   );
 
   const PAYMENT_CASH = "01";
@@ -672,7 +672,7 @@ class Facturae {
     // Prepare signed properties
     $signTime = is_null($this->signTime) ? time() : $this->signTime;
     $certData = openssl_x509_parse($this->publicKey);
-    $certDigest = openssl_x509_fingerprint($this->publicKey, "RSA-SHA512", true);
+    $certDigest = openssl_x509_fingerprint($this->publicKey, "sha1", true);
     $certDigest = base64_encode($certDigest);
     $certIssuer = array();
     foreach ($certData['issuer'] as $item=>$value) {
@@ -690,12 +690,12 @@ class Facturae {
  //certi 1               
                   '<xades:Cert>' .
                     '<xades:CertDigest>' .
-                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></ds:DigestMethod>' .
+                      '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></ds:DigestMethod>' .
                       '<ds:DigestValue>' . $certDigest . '</ds:DigestValue>' .
                     '</xades:CertDigest>' .
                     '<xades:IssuerSerial>' .
                      // '<ds:X509IssuerName>' . $certIssuer . '</ds:X509IssuerName>' .
-                      '<ds:X509IssuerName>' . 'C=CO,L=Bogota D.C.,O=Andes SCD.,OU=Division de certificacion entidad final,CN=CA ANDES SCD S.A. Clase II,emailAddress=info@andesscd.com.co' . '</ds:X509IssuerName>' .
+                      '<ds:X509IssuerName>' . 'C=CO,L=Bogota D.C.,O=Andes SCD.,OU=Division de certificacion entidad final,CN=CA ANDES SCD S.A. Clase II,1.2.840.113549.1.9.1=#1614696e666f40616e6465737363642e636f6d2e636f' . '</ds:X509IssuerName>' .
                       '<ds:X509SerialNumber>' . $certData['serialNumber'] . '</ds:X509SerialNumber>' .
                     '</xades:IssuerSerial>' .
                   '</xades:Cert>' .
@@ -703,24 +703,24 @@ class Facturae {
  //certi 2
                   '<xades:Cert>' .
                     '<xades:CertDigest>' .
-                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></ds:DigestMethod>' .
-                      '<ds:DigestValue>' . 'YEz+1GrvZ9ZHIaEZ/K8HLW1s7jkT/u85nYqGYgR3YlRPw/ryHdUZ1otcJ4FjRP+9n4XkcHeiox/BYjyDZbtkRA==' . '</ds:DigestValue>' .
+                      '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></ds:DigestMethod>' .
+                      '<ds:DigestValue>' . 'ydBrkDUi4OLwpDJACttO8PSuHdE=' . '</ds:DigestValue>' .
                     '</xades:CertDigest>' .
                     '<xades:IssuerSerial>' .
-                      '<ds:X509IssuerName>' . 'C=CO,L=Bogota D.C.,O=Andes SCD,OU=Division de certificacion,CN=ROOT CA ANDES SCD S.A.,emailAddress=info@andesscd.com.co' . '</ds:X509IssuerName>' .
+                      '<ds:X509IssuerName>' . 'C=CO,L=Bogota D.C.,O=Andes SCD,OU=Division de certificacion,CN=ROOT CA ANDES SCD S.A.,1.2.840.113549.1.9.1=#1614696e666f40616e6465737363642e636f6d2e636f' . '</ds:X509IssuerName>' .
                       //'<ds:X509IssuerName>' . 'emailAddress=info@andesscd.com.co,CN=ROOT CA ANDES SCD S.A.,OU=Division de certificacion entidad final,O=Andes SCD.,L=Bogota D.C.,C=CO' . '</ds:X509IssuerName>' .
-                      '<ds:X509SerialNumber>' . '6985070537642442490' . '</ds:X509SerialNumber>' .
+                      '<ds:X509SerialNumber>' . '8136867327090815624' . '</ds:X509SerialNumber>' .
                     '</xades:IssuerSerial>' .
                   '</xades:Cert>' .
  //certi 2
  //certi 3
                   '<xades:Cert>' .
                     '<xades:CertDigest>' .
-                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></ds:DigestMethod>' .
-                      '<ds:DigestValue>' . 'L+GR4ozHO/SpmNwQVKr25N+ItB6Xdx9tq2zvkPe4NXOFKdzNnmwNetYg1w14zfWP8XFejj5bZtxmbdy9d2GPjQ==' . '</ds:DigestValue>' .
+                      '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></ds:DigestMethod>' .
+                      '<ds:DigestValue>' . 'OXeITae4OgBq7RWNUGqshhvKGk8=' . '</ds:DigestValue>' .
                     '</xades:CertDigest>' .
                     '<xades:IssuerSerial>' .
-                       '<ds:X509IssuerName>' . 'C=CO,L=Bogota D.C.,O=Andes SCD,OU=Division de certificacion,CN=ROOT CA ANDES SCD S.A.,emailAddress=info@andesscd.com.co' . '</ds:X509IssuerName>' .           
+                       '<ds:X509IssuerName>' . 'C=CO,L=Bogota D.C.,O=Andes SCD,OU=Division de certificacion,CN=ROOT CA ANDES SCD S.A.,1.2.840.113549.1.9.1=#1614696e666f40616e6465737363642e636f6d2e636f' . '</ds:X509IssuerName>' .           
 //                      '<ds:X509IssuerName>' . 'emailAddress=info@andesscd.com.co,CN=ROOT CA ANDES SCD S.A.,OU=Division de certificacion entidad final,O=Andes SCD.,L=Bogota D.C.,C=CO' . '</ds:X509IssuerName>' .
                       '<ds:X509SerialNumber>' . '3184328748892787122'. '</ds:X509SerialNumber>' .
                     '</xades:IssuerSerial>' .
@@ -734,7 +734,7 @@ class Facturae {
                      // '<xades:Description>' . $this->signPolicy['name'] . '</xades:Description>' .
                     '</xades:SigPolicyId>' .
                     '<xades:SigPolicyHash>' .
-                      '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"></ds:DigestMethod>' .
+                      '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></ds:DigestMethod>' .
                       '<ds:DigestValue>' . $this->signPolicy['digest'] . '</ds:DigestValue>' .
                     '</xades:SigPolicyHash>' .
                   '</xades:SignaturePolicyId>' .
@@ -780,22 +780,17 @@ class Facturae {
              '</ds:KeyInfo>';
 
     // Calculate digests
-    $propDigest = str_replace('<xades:SignedProperties','<xades:SignedProperties ' . $xmlns, $prop);
-    $propDigest = hash('sha512',$propDigest,true);
-    $propDigest = base64_encode($propDigest);
-
-    $kInfoDigest = str_replace('<ds:KeyInfo','<ds:KeyInfo ' . $xmlns, $kInfo);
-    $kInfoDigest = hash('sha512',$kInfoDigest,true);
-    $kInfoDigest = base64_encode($kInfoDigest);
-
-    $documentDigest = hash('sha512',$xml,true);
-    $documentDigest = base64_encode($documentDigest);
+    $propDigest = base64_encode(sha1(str_replace('<xades:SignedProperties',
+      '<xades:SignedProperties ' . $xmlns, $prop), true));
+    $kInfoDigest = base64_encode(sha1(str_replace('<ds:KeyInfo',
+      '<ds:KeyInfo ' . $xmlns, $kInfo), true));
+    $documentDigest = base64_encode(sha1($xml, true));
 
     // Generate SignedInfo
     $sInfo = '<ds:SignedInfo>' . "\n" .
                '<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315">' .
                '</ds:CanonicalizationMethod>' . "\n" .
-               '<ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256">' .
+               '<ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1">' .
                '</ds:SignatureMethod>' . "\n" .
      /*$sInfo = '<ds:SignedInfo Id="Signature-SignedInfo' . $this->signedInfoID . '">' . "\n" .
                '<ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315">' .
@@ -808,14 +803,14 @@ class Facturae {
                    '<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature">' .
                    '</ds:Transform>' . "\n" .
                  '</ds:Transforms>' . "\n" .
-                 '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512">' .
+                 '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1">' .
                  '</ds:DigestMethod>' . "\n" .
                  '<ds:DigestValue>' . $documentDigest . '</ds:DigestValue>' . "\n" .
                '</ds:Reference>' . "\n" .
 //reference 1
 //reference 2
                '<ds:Reference URI="#xmldsig-' . $this->certificateID . '-keyinfo">' . "\n" .
-                 '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512">' .
+                 '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1">' .
                  '</ds:DigestMethod>' . "\n" .
                  '<ds:DigestValue>' . $kInfoDigest . '</ds:DigestValue>' . "\n" .
                '</ds:Reference>' . "\n" .
@@ -824,18 +819,16 @@ class Facturae {
                '<ds:Reference ' .
                'Type="http://uri.etsi.org/01903#SignedProperties" ' .
                'URI="#xmldsig-' . $this->signatureID . '-signedprops">' . "\n" .
-                 '<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512">' .
+                 '<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1">' .
                  '</ds:DigestMethod>' . "\n" .
                  '<ds:DigestValue>' . $propDigest . '</ds:DigestValue>' . "\n" .
                '</ds:Reference>' . "\n" .
 //reference 3   
              '</ds:SignedInfo>';
 
-
     // Calculate signature
     $signaturePayload = str_replace('<ds:SignedInfo', '<ds:SignedInfo ' . $xmlns, $sInfo);
-    $signing_algorithm = OPENSSL_ALGO_SHA256;
-    openssl_sign($signaturePayload, $signatureResult, $this->privateKey, $signing_algorithm);
+    openssl_sign($signaturePayload, $signatureResult, $this->privateKey);
     $signatureResult = chunk_split(base64_encode($signatureResult), 76);
     $signatureResult = str_replace("\r", "", $signatureResult);
 
@@ -930,7 +923,7 @@ $nit                    = "900332178";//nit de factura
 $Prefix                 = 'PRUE';//Prefijo
 $From                   = '980000000';//De
 $To                     = '985000000';//a
-$rango                  = "980000105";
+$rango                  = "980000107";
 $InvoiceNumber          =  $Prefix.$rango;
 $InvoiceAuthorization   = '9000000105596663';//Autorización de factura
 $StartDate              = '2018-02-14';//fecha inicio resolución
@@ -1146,7 +1139,7 @@ $cufe = sha1($NumFac.$fecha['FecFac'].$ValFac.$CodImp1.$ValImp1.$CodImp2.$ValImp
     $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . $xml;
 
     // Save document
-    if (!is_null($filePath)) return file_put_contents($filePath, $xml);
+    //if (!is_null($filePath)) return file_put_contents($filePath, $xml);
 
 
 $obj_xml = new SimpleXMLElement($xml);
