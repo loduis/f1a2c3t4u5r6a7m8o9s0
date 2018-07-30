@@ -8,12 +8,20 @@ if(isset($_FILES["myfile"])) //carga del archivo
 
 			if (move_uploaded_file($_FILES["myfile"]["tmp_name"],$output_dir.$fileName))
 				{
-					$custom_error = 'entro al if;';
-					return json_encode($custom_error);
+					if ($_FILES["myfile"]["type"]=='text/plain') 
+					{
+						echo "<pre>";
+						var_dump($_FILES);
+						echo "</pre>";
+					}
+
+
+					//$custom_error = 'entro al if;';
+					//echo json_encode($custom_error);
 				}
 			else
 				{
-					echo 'entro al else';
+					echo 'archivo no permitido';
 					
 				}
 			//$ret = array();
