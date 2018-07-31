@@ -19,26 +19,51 @@ $gestor = fopen($file, "r");
 //valinadmos que halla una ruta a un documento
 if ($gestor) 
 {		//recorremos linea a linea el documento
+		$contador=0;
 		while ($linea = fgets($gestor)) 
 			{	
 
-				echo $linea."<br><br><br><br>";
+				//echo $linea."<br><br><br><br>";
 				$linea = explode(";",$linea);
-
-				$vector = array();
-				foreach ($linea as $key) 
-					{
-						$vector[] = trim($key);
-						if ($vector['0'])
+				if ($linea['0'])
 						{
-							$vector['0'] = str_replace(' ', '', $vector['0']);
+							$linea['0'] = str_replace(' ', '', $linea['0']);
 						}
-						//var_dump($vector);
-					}
-				echo "<pre>";
-					print_r($vector);
-				echo "</pre>";
+				$vector= "x";
+				$vector = array(
+									'Numero_Factura'  => $linea['0'],
+									'Fecha_Factura '  => $linea['2'],
+									'Vencimiento   '  => $linea['3'],
+									'Condicion     '  => $linea['4'],
+								);
+				var($vector);
+					echo "<br><br><br><br>";
+				$contador++;
+			}
 
+
+
+echo "<pre>";
+				print_r($linea);
+				echo "<br><br><br><br>";
+echo "</pre>";				
+
+
+echo "<pre>";
+	print_r($vector);
+echo "</pre>";
+
+
+
+
+		//prefuntamos si el puntero esta en la ultima linea 
+		if (!feof($gestor)) 
+		{
+			echo "Error: fallo inesperado de fgets()\n";
+		}
+		//cerramos el documento
+	fclose($gestor);
+	//echo "if";
 				/*
 				if (substr($linea,0,1) <> 'C') 
 				{
@@ -48,15 +73,6 @@ if ($gestor)
 					$array2[][substr($linea,0,3)]= trim(substr($linea,3));
 				}
 				//$array[substr($linea,0,3)]= substr($linea,3);   */ 
-			}
-		//prefuntamos si el puntero esta en la ultima linea 
-		if (!feof($gestor)) 
-		{
-			echo "Error: fallo inesperado de fgets()\n";
-		}
-		//cerramos el documento
-	fclose($gestor);
-	echo "if";
 }
 
 
