@@ -7,6 +7,10 @@
  *
  * Represents a party, which is an entity defined by Facturae that can be
  * the seller or the buyer of an invoice.
+ * @package avalohack\Facturamos
+ * @version 0.0.1
+ * @license http://www.opensource.org/licenses/mit-license.php  MIT License
+ * @author  avalohack
  */
 class FacturaeParty {
   public $isLegalEntity = true;    // By default is a company and not a person

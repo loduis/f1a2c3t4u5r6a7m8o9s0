@@ -1,0 +1,7 @@
+nombre aplicacion 
+	facturamos
+vercion	
+	0.0.1
+desarrolo
+	avalohack
+	elemental software

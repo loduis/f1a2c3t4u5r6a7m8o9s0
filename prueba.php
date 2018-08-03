@@ -62,7 +62,9 @@ $i = 0;
 for ($i=0; $i < 2 ; $i++)
 { 
     $x = $fac->addItem("Lámpara de pie", 20.14+$i, 3, Facturae::TAX_IVA, 21);
-    echo $x."<br>";
+    echo "-----------------------------------";
+       echo $x."<br>";
+    echo "-----------------------------------";
 }
 
 // Ya solo queda firmar la factura ...

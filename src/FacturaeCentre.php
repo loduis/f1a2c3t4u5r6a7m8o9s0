@@ -6,6 +6,10 @@
  * Facturae Administrative Centre
  *
  * Represents an administrative centre, which can be linked to a party.
+ * @package avalohack\Facturamos
+ * @version 0.0.1
+ * @license http://www.opensource.org/licenses/mit-license.php  MIT License
+ * @author  avalohack
  */
 class FacturaeCentre {
 
@@ -29,7 +33,7 @@ class FacturaeCentre {
   public $postCode = NULL;
   public $town = NULL;
   public $province = NULL;
-  public $countryCode = "ESP";
+  public $countryCode = "CO";
 
 
   /**

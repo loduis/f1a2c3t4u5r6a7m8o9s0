@@ -1,11 +1,15 @@
 <?php
 
-//namespace josemmo\Facturae;
+//namespace avalohack\Facturamos;
 
 /**
- * Facturae Item
+ * Facturamos Item
  *
  * Represents an invoice item
+ * @package avalohack\Facturamos
+ * @version 0.0.1
+ * @license http://www.opensource.org/licenses/mit-license.php  MIT License
+ * @author  avalohack
  */
 class FacturaeItem {
   private $name = NULL;

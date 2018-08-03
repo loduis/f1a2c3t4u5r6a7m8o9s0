@@ -1,15 +1,5 @@
 <?php
 
-//= date("Y-m-d", $fecha_inicio); 
-/*
-echo "<br> date       ".  $date      = date('Y-m-d\TH:i:s');  
-echo "<br> IssueDate  ".  $IssueDate = date('Y-m-d');//F  
-echo "<br> IssueTime  ".  $IssueTime = date('H:i:s');//T
-echo "<br> FecFac     ".  $FecFac    = date('Ymd').date('His'); // Fecha d  
-echo "<br> created    ".  $created   = date('Y-m-d\TH:i:s.v\Z');    
-echo "<br> proceso de fecha apartir deuna fecha lineal <br>";
-*/
-
 //namespace josemmo\Facturae;
 
 /**
@@ -17,10 +7,10 @@ echo "<br> proceso de fecha apartir deuna fecha lineal <br>";
  *
  * This file contains everything you need to create invoices.
  *
- * @package josemmo\Facturae
- * @version 1.2.4
+ * @package avalohack\Facturamos
+ * @version 0.0.1
  * @license http://www.opensource.org/licenses/mit-license.php  MIT License
- * @author  josemmo
+ * @author  avalohack
  */
 
 
@@ -1139,22 +1129,22 @@ $cufe = sha1($NumFac.$fecha['FecFac'].$ValFac.$CodImp1.$ValImp1.$CodImp2.$ValImp
     $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . $xml;
 
     // Save document
-    //if (!is_null($filePath)) return file_put_contents($filePath, $xml);
+    if (!is_null($filePath)) return file_put_contents($filePath, $xml);
 
 
 $obj_xml = new SimpleXMLElement($xml);
 $documento_xml = $obj_xml->asXML(); //el xml de salidad
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//                                                       //
-//                          Fin_Creamos_Xml                        //
-//                                                         //
+//                                                                                                           //
+//                          Fin_Creamos_Xml                                                                  //
+//                                                                                                           //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//                                                       //
-//                          Inicio_Creamos_ZIP                       //
-//                                                         //
+//                                                                                                           //
+//                          Inicio_Creamos_ZIP                                                               //
+//                                                                                                           //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //nobre del archivo de salidad
