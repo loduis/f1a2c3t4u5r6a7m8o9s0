@@ -157,28 +157,59 @@ echo "vueltas".$contador."<br>";
 		echo "</pre>";
 echo "----------------vector -----------------";
 		echo "<pre>";
-			print_r($vector);
+			//print_r($vector);
 		echo "</pre>";	
 echo "----------------foreach -----------------";
-foreach ($vector as $key) 
-		{
-			echo "<pre>";
-				//	print_r($vector);
-				var_dump( $key);
-			echo "</pre>";
 
-				if (isset($key["detalle"])) 
-				{exit();
-					foreach ($key["detalle"] as $detalles) 
+// $vector contiene todos las facturas del archivo plano
+foreach ($vector as $key_facturas => $value_facturas) 
+		{
+				echo "<br>"; 
+
+				echo "<pre>";
+					echo $value_facturas['Fac_Enc_PrefijoF'];
+					echo $value_facturas['Fac_Enca_Numero' ];
+				echo "</pre>";	
+						
+					if (isset($value_facturas['detalle']))
+							{						
+								echo "entra al if";
+								
+								// recorremos Vetor $value_facturas['detalle']
+								foreach ($value_facturas['detalle'] as $detalles_factura => $value_detalles)
+									{
+										
+										//echo $value["Produ_Codigo_Producto"]."<br>";
+											var_dump($value_detalles);
+											'<fe:InvoiceLine>'.
+								              '<cbc:ID>1</cbc:ID>'.
+								              '<cbc:InvoicedQuantity>1</cbc:InvoicedQuantity>'.
+								              '<cbc:LineExtensionAmount currencyID="COP">500.00</cbc:LineExtensionAmount>'.
+								              '<fe:Item>'.
+								                '<cbc:Description>cascos d2</cbc:Description>'.
+								              '</fe:Item>'.
+								              '<fe:Price>'.
+								                '<cbc:PriceAmount currencyID="COP">500.00</cbc:PriceAmount>'.
+								              '</fe:Price>'.
+								            '</fe:InvoiceLine>';
+										
+									}
+							}	
+						
+
+			/*	if (isset($key["detalle"])) 
 					{
-						echo "<pre>";
-							//	print_r($vector);
-							print "$detalles";
-						echo "</pre>";	
-						echo "<br>___otra detalle___<br>";
+						echo "esta en detalle";
+						foreach ($key["detalle"] as $detalles) 
+						{
+							echo "<pre>";
+								//	print_r($vector);
+								print "$detalles";
+							echo "</pre>";	
+							echo "<br>___otra detalle___<br>";
+						}
 					}
-				}
-				
+					*/
 
 			echo "<br>___otra factura_____<br>";
 		}		
