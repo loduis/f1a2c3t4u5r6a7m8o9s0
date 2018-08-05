@@ -179,8 +179,11 @@ foreach ($vector as $key_facturas => $value_facturas)
 								foreach ($value_facturas['detalle'] as $detalles_factura => $value_detalles)
 									{
 										
-										//echo $value["Produ_Codigo_Producto"]."<br>";
-											var_dump($value_detalles);
+										/*echo $value_detalles["Produ_Codigo_Producto"]."<br>";
+											echo "<pre>";
+												var_dump($value_detalles);
+											echo "</pre>";	
+										*/
 											'<fe:InvoiceLine>'.
 								              '<cbc:ID>1</cbc:ID>'.
 								              '<cbc:InvoicedQuantity>1</cbc:InvoicedQuantity>'.
