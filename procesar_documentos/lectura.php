@@ -1,11 +1,11 @@
 <?php 
 
 // Cambiar el puntero leyendo un archivo:
-$file ="PRUEBA.TXT";
+$file ="a.txt";
 /*
 	if (!$fp = fopen($file, "r"))
 		{
-		    echo "No se ha podido abrir el archivo";
+			echo "No se ha podido abrir el archivo";
 		}
 	$datos = fread($fp,filesize($file));
 fclose($fp);
@@ -25,9 +25,14 @@ if ($gestor)
 		$vector = array();
 		while ($linea = fgets($gestor)) 
 			{	
-				
+				/*				echo "<pre>";
+					echo $linea;
+					//echo $value_facturas['Fac_Enca_Numero' ];
+				echo "</pre>";
+				*/
+				$linea = explode("==",$linea);
 
-				$linea = explode("¬",$linea);
+
 
 
 				if ($linea['1']=='' or $linea['1']==null) 
@@ -94,9 +99,9 @@ if ($gestor)
 														'Fac_Totales_IVA_5'               =>  trim($linea['41']),
 														'Fac_Totales_Valor_Total'         =>  trim($linea['42']),
 														'Fac_Enca_Observaciones'          =>  trim($linea['43']),
-														'Fac_Enca_Emp_Codigo_Tercero'     =>  trim($linea['44']),
 														'detalle' 		 				  => [],
 														);
+														//'Fac_Enca_Emp_Codigo_Tercero'     =>  trim($linea['44']),
 
 										$detalle =[
 													'Produ_Codigo_Producto'           =>  trim($linea['27']),
@@ -175,15 +180,15 @@ echo "----------------foreach -----------------";
 
 function  fecha() 
   {
-     date_default_timezone_set("America/Bogota"); //zona horaria
-     $fecha_full    	   = time(); ///fecha en timestamp
-     $fecha['date']        = date('Y-m-d\TH:i:s',    $fecha_full);  
-     $fecha['IssueDate']   = date('Y-m-d',           $fecha_full);//F  
-     $fecha['IssueTime']   = date('H:i:s',           $fecha_full);//T
-     $fecha['FecFac']      = date('YmdHis',          $fecha_full); // Fecha d  
-     $fecha['created']     = date('Y-m-d\TH:i:s.v\Z',$fecha_full);    
-     $fecha['SigningTime'] = date('Y-m-d\TH:i:s.v',  $fecha_full)."-05:00";
-     return $fecha;
+	 date_default_timezone_set("America/Bogota"); //zona horaria
+	 $fecha_full    	   = time(); ///fecha en timestamp
+	 $fecha['date']        = date('Y-m-d\TH:i:s',    $fecha_full);  
+	 $fecha['IssueDate']   = date('Y-m-d',           $fecha_full);//F  
+	 $fecha['IssueTime']   = date('H:i:s',           $fecha_full);//T
+	 $fecha['FecFac']      = date('YmdHis',          $fecha_full); // Fecha d  
+	 $fecha['created']     = date('Y-m-d\TH:i:s.v\Z',$fecha_full);    
+	 $fecha['SigningTime'] = date('Y-m-d\TH:i:s.v',  $fecha_full)."-05:00";
+	 return $fecha;
   }
 
 
@@ -270,164 +275,168 @@ $cufe = sha1($NumFac.$fecha['FecFac'].$ValFac.$CodImp1.$ValImp1.$CodImp2.$ValImp
 				'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
 				'xsi:schemaLocation="http://www.dian.gov.co/contratos/facturaelectronica/v1 ../xsd/DIAN_UBL.xsd urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2 ../../ubl2/common/UnqualifiedDataTypeSchemaModule-2.0.xsd urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2 ../../ubl2/common/UBL-QualifiedDatatypes-2.0.xsd">';
 		//<!--_________________________________________ini__Extensions_firma________________________________________________-->
-    	$xml .='<ext:UBLExtensions>';
-        //<!--_____________________________________ini__ExtensionContent_info_factura_____________________________________-->
-        $xml .='<ext:UBLExtension>'.
-                '<ext:ExtensionContent>'.
-                  '<sts:DianExtensions>'.
-                    '<sts:InvoiceControl>'.
-                      '<sts:InvoiceAuthorization>'.$InvoiceAuthorization.'</sts:InvoiceAuthorization>'.
-                      '<sts:AuthorizationPeriod>'.
-                        '<cbc:StartDate>'.$StartDate.'</cbc:StartDate>'.
-                        '<cbc:EndDate>'.$EndDate.'</cbc:EndDate>'.
-                      '</sts:AuthorizationPeriod>'.
-                      '<sts:AuthorizedInvoices>'.
-                        '<sts:Prefix>'.$Prefix.'</sts:Prefix>'.
-                        '<sts:From>'.$From.'</sts:From>'.
-                        '<sts:To>'.$To.'</sts:To>'.
-                      '</sts:AuthorizedInvoices>'.
-                    '</sts:InvoiceControl>'.
-                    '<sts:InvoiceSource>'.
-                      '<cbc:IdentificationCode listAgencyID="6" listAgencyName="United Nations Economic Commission for Europe" listSchemeURI="urn:oasis:names:specification:ubl:codelist:gc:CountryIdentificationCode-2.0">'.$IdentificationCode.'</cbc:IdentificationCode>'.
-                    '</sts:InvoiceSource>'.
-                    '<sts:SoftwareProvider>'.
-                      '<sts:ProviderID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">'.$ProviderID.'</sts:ProviderID>'.
-                      '<sts:SoftwareID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">'.$SoftwareID.'</sts:SoftwareID>'.
-                    '</sts:SoftwareProvider>'.
-                    '<sts:SoftwareSecurityCode schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeName="SoftwareSecurityCode" schemeURI="http://www.dian.gov.co/contratos/facturaelectronica/v1/anexo_v1_0.html#SofwareSecurityCode">'.$SoftwareSecurityCode.'</sts:SoftwareSecurityCode>'.
-                  '</sts:DianExtensions>'.
-                '</ext:ExtensionContent>'.
-              '</ext:UBLExtension>';
-        //<!--_____________________________________fin__ExtensionContent_info_factura_____________________________________-->
-        //<!--_____________________________________ini__ExtensionContent_firma_factura____________________________________-->
-        $xml .= '<ext:UBLExtension>'.
-                  '<ext:ExtensionContent></ext:ExtensionContent>'.
-                '</ext:UBLExtension>';
-        //<!--_____________________________________fin__ExtensionContent_firma_factura____________________________________-->
+		$xml .='<ext:UBLExtensions>';
+		//<!--_____________________________________ini__ExtensionContent_info_factura_____________________________________-->
+		$xml .='<ext:UBLExtension>'.
+				'<ext:ExtensionContent>'.
+				  '<sts:DianExtensions>'.
+					'<sts:InvoiceControl>'.
+					  '<sts:InvoiceAuthorization>'.$InvoiceAuthorization.'</sts:InvoiceAuthorization>'.
+					  '<sts:AuthorizationPeriod>'.
+						'<cbc:StartDate>'.$StartDate.'</cbc:StartDate>'.
+						'<cbc:EndDate>'.$EndDate.'</cbc:EndDate>'.
+					  '</sts:AuthorizationPeriod>'.
+					  '<sts:AuthorizedInvoices>'.
+						'<sts:Prefix>'.$Prefix.'</sts:Prefix>'.
+						'<sts:From>'.$From.'</sts:From>'.
+						'<sts:To>'.$To.'</sts:To>'.
+					  '</sts:AuthorizedInvoices>'.
+					'</sts:InvoiceControl>'.
+					'<sts:InvoiceSource>'.
+					  '<cbc:IdentificationCode listAgencyID="6" listAgencyName="United Nations Economic Commission for Europe" listSchemeURI="urn:oasis:names:specification:ubl:codelist:gc:CountryIdentificationCode-2.0">'.$IdentificationCode.'</cbc:IdentificationCode>'.
+					'</sts:InvoiceSource>'.
+					'<sts:SoftwareProvider>'.
+					  '<sts:ProviderID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">'.$ProviderID.'</sts:ProviderID>'.
+					  '<sts:SoftwareID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">'.$SoftwareID.'</sts:SoftwareID>'.
+					'</sts:SoftwareProvider>'.
+					'<sts:SoftwareSecurityCode schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeName="SoftwareSecurityCode" schemeURI="http://www.dian.gov.co/contratos/facturaelectronica/v1/anexo_v1_0.html#SofwareSecurityCode">'.$SoftwareSecurityCode.'</sts:SoftwareSecurityCode>'.
+				  '</sts:DianExtensions>'.
+				'</ext:ExtensionContent>'.
+			  '</ext:UBLExtension>';
+		//<!--_____________________________________fin__ExtensionContent_info_factura_____________________________________-->
+		//<!--_____________________________________ini__ExtensionContent_firma_factura____________________________________-->
+		$xml .= '<ext:UBLExtension>'.
+				  '<ext:ExtensionContent></ext:ExtensionContent>'.
+				'</ext:UBLExtension>';
+		//<!--_____________________________________fin__ExtensionContent_firma_factura____________________________________-->
 		$xml .='</ext:UBLExtensions>';
 		//<!--_________________________________________fin__Extensions_firma________________________________________________-->
 		//<!--_________________________________________ini__UBL_factura_____________________________________________________-->
-	    $xml .='<cbc:UBLVersionID>UBL 2.0</cbc:UBLVersionID>'.
-	            '<cbc:ProfileID>DIAN 1.0</cbc:ProfileID>   '.
-	            '<cbc:ID>'.$value_facturas['Fac_Enca_Prefijo'].$value_facturas['Fac_Enca_Numero'].'</cbc:ID>'.
-	            '<cbc:UUID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">'.$cufe.'</cbc:UUID>'.
-	            '<cbc:IssueDate>'.$value_facturas['Fac_Enca_Fecha'].'</cbc:IssueDate>  '.
-	            '<cbc:IssueTime>'.$value_facturas['Fac_Enca_Hora'].'</cbc:IssueTime>  '.
-	            '<cbc:InvoiceTypeCode listAgencyID="195" listAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" listSchemeURI="http://www.dian.gov.co/contratos/facturaelectronica/v1/InvoiceType">1</cbc:InvoiceTypeCode>'.
-	            '<cbc:Note>'.$value_facturas['Fac_Enca_Observaciones'].'</cbc:Note>'.
-	            '<cbc:DocumentCurrencyCode>COP</cbc:DocumentCurrencyCode>'.
-	                '<fe:AccountingSupplierParty>'.
-	                  '<cbc:AdditionalAccountID>1</cbc:AdditionalAccountID>'.
+		$xml .='<cbc:UBLVersionID>UBL 2.0</cbc:UBLVersionID>'.
+				'<cbc:ProfileID>DIAN 1.0</cbc:ProfileID>   '.
+				'<cbc:ID>'.$value_facturas['Fac_Enca_Prefijo'].$value_facturas['Fac_Enca_Numero'].'</cbc:ID>'.
+				'<cbc:UUID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">'.$cufe.'</cbc:UUID>'.
+				'<cbc:IssueDate>'.$value_facturas['Fac_Enca_Fecha'].'</cbc:IssueDate>  '.
+				'<cbc:IssueTime>'.$value_facturas['Fac_Enca_Hora'].'</cbc:IssueTime>  '.
+				'<cbc:InvoiceTypeCode listAgencyID="195" listAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" listSchemeURI="http://www.dian.gov.co/contratos/facturaelectronica/v1/InvoiceType">1</cbc:InvoiceTypeCode>'.
+				'<cbc:Note>'.$value_facturas['Fac_Enca_Observaciones'].'</cbc:Note>'.
+				'<cbc:DocumentCurrencyCode>COP</cbc:DocumentCurrencyCode>'.
+					'<fe:AccountingSupplierParty>'.
+					  '<cbc:AdditionalAccountID>1</cbc:AdditionalAccountID>'.
 //////////////////////////////////////////////////////ini facturador
-	                  '<fe:Party>     '.
-	                    '<cac:PartyIdentification>'.
-	                      '<cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeID="31">'.$Nit.'</cbc:ID>'.
-	                    '</cac:PartyIdentification>'.
-	                      '<cac:PartyName>'.
-	                      '<cbc:Name>PJ - 900373115 - Adquiriente FE</cbc:Name>'.
-	                    '</cac:PartyName>'.
-	                    '<fe:PhysicalLocation>'.
-	                      '<fe:Address>'.
-	                        '<cbc:Department>Distrito Capital</cbc:Department>'.
-	                        '<cbc:CitySubdivisionName>Centro</cbc:CitySubdivisionName>'.
-	                        '<cbc:CityName>Bogotá</cbc:CityName>'.
-	                        '<cac:AddressLine>'.
-	                          '<cbc:Line>carrera 8 Nº 6C - 78</cbc:Line>'.
-	                        '</cac:AddressLine>'.
-	                        '<cac:Country>'.
-	                          '<cbc:IdentificationCode>CO</cbc:IdentificationCode>'.
-	                        '</cac:Country>'.
-	                      '</fe:Address>'.
-	                    '</fe:PhysicalLocation>'.
-	                    '<fe:PartyTaxScheme>'.
-	                      '<cbc:TaxLevelCode>0</cbc:TaxLevelCode>'.
-	                      '<cac:TaxScheme>'.
-	                      '</cac:TaxScheme>'.
-	                    '</fe:PartyTaxScheme>'.
-	                    '<fe:PartyLegalEntity>'.
-	                      '<cbc:RegistrationName>PJ - 900373115</cbc:RegistrationName>'.
-	                    '</fe:PartyLegalEntity>'.
-	                  '</fe:Party>'.
+					  '<fe:Party>     '.
+						'<cac:PartyIdentification>'.
+						  '<cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeID="31">'.$value_facturas['Fac_Enca_Emp_Codigo_Tercero'].'</cbc:ID>'.
+						'</cac:PartyIdentification>'.
+						  '<cac:PartyName>'.
+						  '<cbc:Name>'.$value_facturas['Fac_Enca_Emp_Nombre_Tercero'].'</cbc:Name>'.
+						'</cac:PartyName>'.
+						'<fe:PhysicalLocation>'.
+						  '<fe:Address>'.
+							'<cbc:Department>ANTIOQUIA</cbc:Department>'.
+							'<cbc:CitySubdivisionName></cbc:CitySubdivisionName>'.
+							'<cbc:CityName>MEDELLIN</cbc:CityName>'.
+							'<cac:AddressLine>'.
+							  '<cbc:Line>'.$value_facturas['Fac_Enca_Emp_Direccion'] .'</cbc:Line>'.
+							'</cac:AddressLine>'.
+							'<cac:Country>'.
+							  '<cbc:IdentificationCode>CO</cbc:IdentificationCode>'.
+							'</cac:Country>'.
+						  '</fe:Address>'.
+						'</fe:PhysicalLocation>'.
+						'<fe:PartyTaxScheme>'.
+							//////////////////////////_se_usa_2_regimen_comun
+						  '<cbc:TaxLevelCode>2</cbc:TaxLevelCode>'.
+							//////////////////////////_se_usa_2_regimen_comun
+						  '<cac:TaxScheme>'.
+						  '</cac:TaxScheme>'.
+						'</fe:PartyTaxScheme>'.
+						'<fe:PartyLegalEntity>'.
+						  '<cbc:RegistrationName>'.$value_facturas['Fac_Enca_Emp_Nombre_Tercero'].'</cbc:RegistrationName>'.
+						'</fe:PartyLegalEntity>'.
+					  '</fe:Party>'.
 //////////////////////////////////////////////////////fin facturador
-	                '</fe:AccountingSupplierParty>'.
-	                '<fe:AccountingCustomerParty>'.
-	                  '<cbc:AdditionalAccountID>2</cbc:AdditionalAccountID>'.
-	                  '<fe:Party>'.
-	                    '<cac:PartyIdentification>'.
-	                      '<cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeID="31">'.$Nit.'</cbc:ID>'.
-	                    '</cac:PartyIdentification>'.
-	                    '<fe:PhysicalLocation>'.
-	                      '<fe:Address>'.
-	                        '<cbc:Department>Valle del Cauca</cbc:Department>'.
-	                        '<cbc:CitySubdivisionName>Centro</cbc:CitySubdivisionName>'.
-	                        '<cbc:CityName>Toribio</cbc:CityName>'.
-	                        '<cac:AddressLine>'.
-	                          '<cbc:Line>carrera 8 Nº 6C - 46</cbc:Line>'.
-	                        '</cac:AddressLine>'.
-	                        '<cac:Country>'.
-	                          '<cbc:IdentificationCode>CO</cbc:IdentificationCode>'.
-	                        '</cac:Country>'.
-	                      '</fe:Address>'.
-	                    '</fe:PhysicalLocation>'.
-	                    '<fe:PartyTaxScheme>'.
-	                      '<cbc:TaxLevelCode>0</cbc:TaxLevelCode>'.
-	                      '<cac:TaxScheme>'.
-	                      '</cac:TaxScheme>'.
-	                    '</fe:PartyTaxScheme>'.
-	                    '<fe:Person>'.
-	                      '<cbc:FirstName>Primer-N</cbc:FirstName>'.
-	                      '<cbc:FamilyName>Apellido-11333000</cbc:FamilyName>'.
-	                      '<cbc:MiddleName>Segundo-N</cbc:MiddleName>'.
-	                    '</fe:Person>'.
-	                  '</fe:Party>'.
-	                '</fe:AccountingCustomerParty>'.
-	              '<fe:TaxTotal>'.
-	                '<cbc:TaxAmount currencyID="COP">'.$ValImp1.'</cbc:TaxAmount>'.
-	                '<cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator>'.
-	                '<fe:TaxSubtotal>'.
-	                  '<cbc:TaxableAmount currencyID="COP">'.$LineExtensionAmount.'</cbc:TaxableAmount>'.
-	                  '<cbc:TaxAmount currencyID="COP">'.$ValImp1.'</cbc:TaxAmount>'.
-	                  '<cbc:Percent>19</cbc:Percent>'.
-	                  '<cac:TaxCategory>'.
-	                    '<cac:TaxScheme>'.
-	                      '<cbc:ID>'.$CodImp1.'</cbc:ID>'.
-	                    '</cac:TaxScheme>'.
-	                  '</cac:TaxCategory>'.
-	                '</fe:TaxSubtotal>'.
-	              '</fe:TaxTotal>'.
-	              '<fe:TaxTotal>'.
-	                '<cbc:TaxAmount currencyID="COP">'.$ValImp2.'</cbc:TaxAmount>'.
-	                '<cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator>'.
-	                '<fe:TaxSubtotal>'.
-	                  '<cbc:TaxableAmount currencyID="COP">0.00</cbc:TaxableAmount>'.
-	                  '<cbc:TaxAmount currencyID="COP">'.$ValImp2.'</cbc:TaxAmount>'.
-	                  '<cbc:Percent>0</cbc:Percent>'.
-	                  '<cac:TaxCategory>'.
-	                    '<cac:TaxScheme>'.
-	                      '<cbc:ID>'.$CodImp2.'</cbc:ID>'.
-	                    '</cac:TaxScheme>'.
-	                  '</cac:TaxCategory>'.
-	                '</fe:TaxSubtotal>'.
-	              '</fe:TaxTotal>'.
-	              '<fe:TaxTotal>'.
-	                '<cbc:TaxAmount currencyID="COP">'.$ValImp3.'</cbc:TaxAmount>'.
-	                '<cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator>'.
-	                '<fe:TaxSubtotal>'.
-	                  '<cbc:TaxableAmount currencyID="COP">0.00</cbc:TaxableAmount>'.
-	                  '<cbc:TaxAmount currencyID="COP">'.$ValImp3.'</cbc:TaxAmount>'.
-	                  '<cbc:Percent>0</cbc:Percent>'.
-	                  '<cac:TaxCategory>'.
-	                    '<cac:TaxScheme>'.
-	                      '<cbc:ID>'.$CodImp3.'</cbc:ID>'.
-	                    '</cac:TaxScheme>'.
-	                  '</cac:TaxCategory>'.
-	                '</fe:TaxSubtotal>'.
-	              '</fe:TaxTotal>'.
-	            '<fe:LegalMonetaryTotal>'.
-	              '<cbc:LineExtensionAmount currencyID="COP">'.$LineExtensionAmount.'</cbc:LineExtensionAmount>'.
-	              '<cbc:TaxExclusiveAmount currencyID="COP">'.$TaxExclusiveAmount.'</cbc:TaxExclusiveAmount>  '.
-	              '<cbc:PayableAmount currencyID="COP">'.$PayableAmount.'</cbc:PayableAmount>           '.
-	            '</fe:LegalMonetaryTotal>';
+					'</fe:AccountingSupplierParty>'.
+					'<fe:AccountingCustomerParty>'.
+					  '<cbc:AdditionalAccountID>2</cbc:AdditionalAccountID>'.
+//////////////////////////////////////////////////////ini tercero					  
+					  '<fe:Party>'.
+						'<cac:PartyIdentification>'.
+						  '<cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeID="'.$value_facturas['Fac_Enca_Tipo_ID'].'">'.$Nit.'</cbc:ID>'.
+						'</cac:PartyIdentification>'.
+						'<fe:PhysicalLocation>'.
+						  '<fe:Address>'.
+							'<cbc:Department>'.$value_facturas['Fac_Enca_Direccion2'].'</cbc:Department>'.
+							'<cbc:CitySubdivisionName></cbc:CitySubdivisionName>'.
+							'<cbc:CityName>'.$value_facturas['Fac_Enca_Tercero_Ciudad'] .'</cbc:CityName>'.
+							'<cac:AddressLine>'.
+							  '<cbc:Line>'.$value_facturas['Fac_Enca_Tercero_Direccion'] .'</cbc:Line>'.
+							'</cac:AddressLine>'.
+							'<cac:Country>'.
+							  '<cbc:IdentificationCode>CO</cbc:IdentificationCode>'.
+							'</cac:Country>'.
+						  '</fe:Address>'.
+						'</fe:PhysicalLocation>'.
+						'<fe:PartyTaxScheme>'.
+						  '<cbc:TaxLevelCode>0</cbc:TaxLevelCode>'.
+						  '<cac:TaxScheme>'.
+						  '</cac:TaxScheme>'.
+						'</fe:PartyTaxScheme>'.
+						'<fe:Person>'.
+						  '<cbc:FirstName>'.$value_facturas['Fac_Enca_Tercero_Nombre_Tercero'].'</cbc:FirstName>'.
+						  '<cbc:FamilyName>'.$value_facturas['Fac_Enca_Tercero_Nombre_Tercero'].'</cbc:FamilyName>'.
+						  '<cbc:MiddleName>'.$value_facturas['Fac_Enca_Tercero_Nombre_Tercero'].'</cbc:MiddleName>'.
+						'</fe:Person>'.
+					  '</fe:Party>'.
+//////////////////////////////////////////////////////fin tercero					  
+					'</fe:AccountingCustomerParty>'.
+				  '<fe:TaxTotal>'.
+					'<cbc:TaxAmount currencyID="COP">'.$ValImp1.'</cbc:TaxAmount>'.
+					'<cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator>'.
+					'<fe:TaxSubtotal>'.
+					  '<cbc:TaxableAmount currencyID="COP">'.$LineExtensionAmount.'</cbc:TaxableAmount>'.
+					  '<cbc:TaxAmount currencyID="COP">'.$ValImp1.'</cbc:TaxAmount>'.
+					  '<cbc:Percent>19</cbc:Percent>'.
+					  '<cac:TaxCategory>'.
+						'<cac:TaxScheme>'.
+						  '<cbc:ID>'.$CodImp1.'</cbc:ID>'.
+						'</cac:TaxScheme>'.
+					  '</cac:TaxCategory>'.
+					'</fe:TaxSubtotal>'.
+				  '</fe:TaxTotal>'.
+				  '<fe:TaxTotal>'.
+					'<cbc:TaxAmount currencyID="COP">'.$ValImp2.'</cbc:TaxAmount>'.
+					'<cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator>'.
+					'<fe:TaxSubtotal>'.
+					  '<cbc:TaxableAmount currencyID="COP">0.00</cbc:TaxableAmount>'.
+					  '<cbc:TaxAmount currencyID="COP">'.$ValImp2.'</cbc:TaxAmount>'.
+					  '<cbc:Percent>0</cbc:Percent>'.
+					  '<cac:TaxCategory>'.
+						'<cac:TaxScheme>'.
+						  '<cbc:ID>'.$CodImp2.'</cbc:ID>'.
+						'</cac:TaxScheme>'.
+					  '</cac:TaxCategory>'.
+					'</fe:TaxSubtotal>'.
+				  '</fe:TaxTotal>'.
+				  '<fe:TaxTotal>'.
+					'<cbc:TaxAmount currencyID="COP">'.$ValImp3.'</cbc:TaxAmount>'.
+					'<cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator>'.
+					'<fe:TaxSubtotal>'.
+					  '<cbc:TaxableAmount currencyID="COP">0.00</cbc:TaxableAmount>'.
+					  '<cbc:TaxAmount currencyID="COP">'.$ValImp3.'</cbc:TaxAmount>'.
+					  '<cbc:Percent>0</cbc:Percent>'.
+					  '<cac:TaxCategory>'.
+						'<cac:TaxScheme>'.
+						  '<cbc:ID>'.$CodImp3.'</cbc:ID>'.
+						'</cac:TaxScheme>'.
+					  '</cac:TaxCategory>'.
+					'</fe:TaxSubtotal>'.
+				  '</fe:TaxTotal>'.
+				'<fe:LegalMonetaryTotal>'.
+				  '<cbc:LineExtensionAmount currencyID="COP">'.$LineExtensionAmount.'</cbc:LineExtensionAmount>'.
+				  '<cbc:TaxExclusiveAmount currencyID="COP">'.$TaxExclusiveAmount.'</cbc:TaxExclusiveAmount>  '.
+				  '<cbc:PayableAmount currencyID="COP">'.$PayableAmount.'</cbc:PayableAmount>           '.
+				'</fe:LegalMonetaryTotal>';
 
 
 
@@ -448,17 +457,17 @@ $cufe = sha1($NumFac.$fecha['FecFac'].$ValFac.$CodImp1.$ValImp1.$CodImp2.$ValImp
 								$calculo_ejemplo = $value_detalles['Cantidad'] * $value_detalles['Produ_Precio_Unitario'];
 								$xml .=
 									'<fe:InvoiceLine>'.
-						              '<cbc:ID>'.$numero_iten.'</cbc:ID>'.
-						              '<cbc:InvoicedQuantity>'.$value_detalles['Cantidad'].'</cbc:InvoicedQuantity>'.
-						              '<cbc:LineExtensionAmount currencyID="COP">'.$calculo_ejemplo.'</cbc:LineExtensionAmount>'.
-							              '<fe:Item>'.
-							               	 '<cbc:Description>'.$value_detalles['Produ_Nombre_Producto'].'</cbc:Description>'.
-							              '</fe:Item>'.
-						              '<fe:Price>'.
-						                '<cbc:PriceAmount currencyID="COP">'.$value_detalles['Produ_Precio_Unitario'].'</cbc:PriceAmount>'.
-						              '</fe:Price>'.
-						            '</fe:InvoiceLine>';
-						        $numero_iten++;					
+									  '<cbc:ID>'.$numero_iten.'</cbc:ID>'.
+									  '<cbc:InvoicedQuantity>'.$value_detalles['Cantidad'].'</cbc:InvoicedQuantity>'.
+									  '<cbc:LineExtensionAmount currencyID="COP">'.$calculo_ejemplo.'</cbc:LineExtensionAmount>'.
+										  '<fe:Item>'.
+											 '<cbc:Description>'.$value_detalles['Produ_Nombre_Producto'].'</cbc:Description>'.
+										  '</fe:Item>'.
+									  '<fe:Price>'.
+										'<cbc:PriceAmount currencyID="COP">'.$value_detalles['Produ_Precio_Unitario'].'</cbc:PriceAmount>'.
+									  '</fe:Price>'.
+									'</fe:InvoiceLine>';
+								$numero_iten++;					
 							}
 					}	
 				/*	
@@ -474,22 +483,22 @@ $cufe = sha1($NumFac.$fecha['FecFac'].$ValFac.$CodImp1.$ValImp1.$CodImp2.$ValImp
 					'Dscto2'                          =>  trim($linea['34']),
 					'Parcial'                         =>  trim($linea['35']),
 				 ];
-	            '<fe:InvoiceLine>'.
-	              '<cbc:ID>1</cbc:ID>'.
-	              '<cbc:InvoicedQuantity>1</cbc:InvoicedQuantity>'.
-	              '<cbc:LineExtensionAmount currencyID="COP">500.00</cbc:LineExtensionAmount>'.
-	              '<fe:Item>'.
-	                '<cbc:Description>cascos d2</cbc:Description>'.
-	              '</fe:Item>'.
-	              '<fe:Price>'.
-	                '<cbc:PriceAmount currencyID="COP">500.00</cbc:PriceAmount>'.
-	              '</fe:Price>'.
-	            '</fe:InvoiceLine>';
-	            */
+				'<fe:InvoiceLine>'.
+				  '<cbc:ID>1</cbc:ID>'.
+				  '<cbc:InvoicedQuantity>1</cbc:InvoicedQuantity>'.
+				  '<cbc:LineExtensionAmount currencyID="COP">500.00</cbc:LineExtensionAmount>'.
+				  '<fe:Item>'.
+					'<cbc:Description>cascos d2</cbc:Description>'.
+				  '</fe:Item>'.
+				  '<fe:Price>'.
+					'<cbc:PriceAmount currencyID="COP">500.00</cbc:PriceAmount>'.
+				  '</fe:Price>'.
+				'</fe:InvoiceLine>';
+				*/
 
 	//<!--_________________________________________fin__UBL_factura_____________________________________________________-->
-	    // Close invoice and document
-	    $xml .= '</fe:Invoice>';
+		// Close invoice and document
+		$xml .= '</fe:Invoice>';
 
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . $xml;
 
@@ -513,17 +522,17 @@ $cufe = sha1($NumFac.$fecha['FecFac'].$ValFac.$CodImp1.$ValImp1.$CodImp2.$ValImp
 										////
 											$detalle =
 											'<fe:InvoiceLine>'.
-								              '<cbc:ID>1</cbc:ID>'.
-								              '<cbc:InvoicedQuantity>1</cbc:InvoicedQuantity>'.
-								              '<cbc:LineExtensionAmount currencyID="COP">500.00</cbc:LineExtensionAmount>'.
-								              '<fe:Item>'.
-								                '<cbc:Description>cascos d2</cbc:Description>'.
-								              '</fe:Item>'.
-								              '<fe:Price>'.
-								                '<cbc:PriceAmount currencyID="COP">500.00</cbc:PriceAmount>'.
-								              '</fe:Price>'.
-								            '</fe:InvoiceLine>';
-								            echo $detalle;
+											  '<cbc:ID>1</cbc:ID>'.
+											  '<cbc:InvoicedQuantity>1</cbc:InvoicedQuantity>'.
+											  '<cbc:LineExtensionAmount currencyID="COP">500.00</cbc:LineExtensionAmount>'.
+											  '<fe:Item>'.
+												'<cbc:Description>cascos d2</cbc:Description>'.
+											  '</fe:Item>'.
+											  '<fe:Price>'.
+												'<cbc:PriceAmount currencyID="COP">500.00</cbc:PriceAmount>'.
+											  '</fe:Price>'.
+											'</fe:InvoiceLine>';
+											echo $detalle;
 										
 									}
 							}	
