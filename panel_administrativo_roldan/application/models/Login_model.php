@@ -20,7 +20,7 @@ class Login_model extends CI_Model
 		//$clave=$_POST['clave'];
 		// proceso de setear las variables con codeigniter
 		$correo=$this->input->post('correo');
-		$clave=md5($this->input->post('clave'));
+		$clave=sha1($this->input->post('clave'));
 		// crear la sentencia que me permite
 		// buscar el usuario en la tabla correspondiente
 		$sql=" select * from login ";

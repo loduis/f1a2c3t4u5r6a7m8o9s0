@@ -36,36 +36,25 @@ public function acceso()
 			{ 
 				// puede continuar 	// mandar a la vista principal del sitio o el app  	//asociar las variables de session que son basadas en el objeto vetor $data //$this->load->view('principal'); //print_r($data);
 				$usuario_session=array
-				(
-					"correo"=>$data[0]["correo"],
-					"nombre_empresa"=>$data[0]["nombre_empresa"],
-					"cantidad_factura"=>$data[0]["cantidad_factura"],
-					"id_empresa"=>$data[0]["id_empresa"],
-					"nit"=>$data[0]["nit"],
-				);
+						(
+							"correo"=>$data[0]["correo"],
+							/*"nombre_empresa"=>$data[0]["nombre_empresa"],
+							"cantidad_factura"=>$data[0]["cantidad_factura"],
+							"id_empresa"=>$data[0]["id_empresa"],
+							"nit"=>$data[0]["nit"],*/
+						);
 				//para crear las variables de session se usa la libreria set_userdata. este metodo pide que los valores sean enviados en un vector o array
 					$this->session->set_userdata($usuario_session);
-					$logo = $this->empresa_model->select_logo();
-					$logo = $logo[0]["logo"];
-					if ($logo <> "") 
-						{
-							$usuario_session["logo"]=$logo;
-						}
-					else
-						{
-							$usuario_session["logo"]= "logo.jpg";
-						}
-					$this->session->set_userdata($usuario_session);
 				//redirect hace parte de una libreria que se llama url_helper
-					redirect('factura');
+					redirect('welcome');
 			} 
 		else 
 			{
-			// mandar a la pagina de inicio
-			//con mensaje que diga "usuario o clave incorrecto"
-			// los datos de salida o impresion de una vista se pasan por medio de vectores
-			$vector["mensaje"]="Correo o clave incorrecto. Intente de nuevo"; 			
-			$this->load->view('v_login',$vector);
+				// mandar a la pagina de inicio
+				//con mensaje que diga "usuario o clave incorrecto"
+				// los datos de salida o impresion de una vista se pasan por medio de vectores
+				$vector["mensaje"]="Correo o clave incorrecto. Intente de nuevo"; 			
+				$this->load->view('login_vista',$vector);
 			}
 	}//acceso fin
 }
