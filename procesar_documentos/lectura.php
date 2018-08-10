@@ -362,7 +362,10 @@ $cufe = sha1($NumFac.$fecha['FecFac'].$ValFac.$CodImp1.$ValImp1.$CodImp2.$ValImp
 //////////////////////////////////////////////////////ini tercero					  
 					  '<fe:Party>'.
 						'<cac:PartyIdentification>'.
-						  '<cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeID="'.$value_facturas['Fac_Enca_Tipo_ID'].'">'.$Nit.'</cbc:ID>'.
+						  	'<cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeID="'.
+						  			$value_facturas['Fac_Enca_Tipo_ID'].'">'.
+						  			$value_facturas["Fac_Enca_Tercero_Codigo_Tercero"].
+			  				'</cbc:ID>'.
 						'</cac:PartyIdentification>'.
 						'<fe:PhysicalLocation>'.
 						  '<fe:Address>'.
@@ -390,6 +393,7 @@ $cufe = sha1($NumFac.$fecha['FecFac'].$ValFac.$CodImp1.$ValImp1.$CodImp2.$ValImp
 					  '</fe:Party>'.
 //////////////////////////////////////////////////////fin tercero					  
 					'</fe:AccountingCustomerParty>'.
+
 				  '<fe:TaxTotal>'.
 					'<cbc:TaxAmount currencyID="COP">'.$ValImp1.'</cbc:TaxAmount>'.
 					'<cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator>'.
@@ -404,6 +408,8 @@ $cufe = sha1($NumFac.$fecha['FecFac'].$ValFac.$CodImp1.$ValImp1.$CodImp2.$ValImp
 					  '</cac:TaxCategory>'.
 					'</fe:TaxSubtotal>'.
 				  '</fe:TaxTotal>'.
+
+
 				  '<fe:TaxTotal>'.
 					'<cbc:TaxAmount currencyID="COP">'.$ValImp2.'</cbc:TaxAmount>'.
 					'<cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator>'.
@@ -418,6 +424,8 @@ $cufe = sha1($NumFac.$fecha['FecFac'].$ValFac.$CodImp1.$ValImp1.$CodImp2.$ValImp
 					  '</cac:TaxCategory>'.
 					'</fe:TaxSubtotal>'.
 				  '</fe:TaxTotal>'.
+
+
 				  '<fe:TaxTotal>'.
 					'<cbc:TaxAmount currencyID="COP">'.$ValImp3.'</cbc:TaxAmount>'.
 					'<cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator>'.
@@ -432,8 +440,14 @@ $cufe = sha1($NumFac.$fecha['FecFac'].$ValFac.$CodImp1.$ValImp1.$CodImp2.$ValImp
 					  '</cac:TaxCategory>'.
 					'</fe:TaxSubtotal>'.
 				  '</fe:TaxTotal>'.
-				'<fe:LegalMonetaryTotal>'.
-				  '<cbc:LineExtensionAmount currencyID="COP">'.$LineExtensionAmount.'</cbc:LineExtensionAmount>'.
+
+
+				'<fe:LegalMonetaryTotal>';
+				$LineExtensionAmount  = $value_facturas["Fac_Totales_Antes_Impuestos"];
+				$TaxExclusiveAmount   = $value_facturas["Fac_Totales_IVA_19"]+$value_facturas["Fac_Totales_IVA_5"];
+				$PayableAmount 		  = $LineExtensionAmount + $TaxExclusiveAmount;
+
+		$xml .=  '<cbc:LineExtensionAmount currencyID="COP">'.$LineExtensionAmount  .'</cbc:LineExtensionAmount>'.
 				  '<cbc:TaxExclusiveAmount currencyID="COP">'.$TaxExclusiveAmount.'</cbc:TaxExclusiveAmount>  '.
 				  '<cbc:PayableAmount currencyID="COP">'.$PayableAmount.'</cbc:PayableAmount>           '.
 				'</fe:LegalMonetaryTotal>';
