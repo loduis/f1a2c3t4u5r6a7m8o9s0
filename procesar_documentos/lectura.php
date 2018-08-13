@@ -25,26 +25,15 @@ if ($gestor)
 		$vector = array();
 		while ($linea = fgets($gestor)) 
 			{	
-				/*				echo "<pre>";
-					echo $linea;
-					//echo $value_facturas['Fac_Enca_Numero' ];
-				echo "</pre>";
-				*/
 				$linea = explode("==",$linea);
-
-
-
-
 				if ($linea['1']=='' or $linea['1']==null) 
 						{ 
 							echo "documento no cumple con especificaciones"; exit();
 						}
-
 					if ($linea['1'])
 							{
 								$linea['1'] = str_replace(' ', '', $linea['1']);
 							}
-
 						if (array_key_exists($linea['1'], $vector)) 
 							{
 								$detalle =[						
