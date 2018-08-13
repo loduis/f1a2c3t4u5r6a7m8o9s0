@@ -1,4 +1,5 @@
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title><?php echo $titulo; ?></title>
   <!-- Tell the browser to be responsive to screen width -->
@@ -8,7 +9,7 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="/f1a2c3t4u5r6a7m8o9s0/panel_administrativo_roldan/vendor/css/font-awesome.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="/f1a2c3t4u5r6a7m8o9s0/panel_administrativo_roldan/vendor/css/AdminLTE.css">
+  <link rel="stylesheet" href="/f1a2c3t4u5r6a7m8o9s0/panel_administrativo_roldan/vendor/css/css.css">
 
 
 

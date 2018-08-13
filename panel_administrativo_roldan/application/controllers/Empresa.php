@@ -1,23 +1,9 @@
-<?php
+<?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Welcome extends CI_Controller {
-
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
-	 */
+class Empresa extends CI_controller
+{
+	
 	public function __construct() 
 	{
 		parent:: __construct(); // siempre crgar esta linea si deseo ejecutar librerias, bases de datos, clases, ayudador o helpers		
@@ -32,9 +18,27 @@ class Welcome extends CI_Controller {
 								redirect('login');
 							}
 	}
+	//vista principal
 	public function index()
-	{
+		{			
+			$vector['get']= $this->empresa_model->get_empresa();
+			$vector['titulo']= "Info Empresa";
+			$this->load->view('empresa_vista',$vector);
+		}
 
-		$this->load->view('welcome_message');
-	}
+	public function set_empresa()
+		{
+				$vector['get']= $this->empresa_model->get_empresa();
+				if(count($vector['get'])>0)
+					{
+						$vector['insert'] =	$this->empresa_model->update_empresa();
+					}
+				else
+					{
+						$vector['insert'] =	$this->empresa_model->set_empresa();
+					}
+				redirect('empresa');
+				//$this->load->view('empresa_vista',$vector);		
+		}
+		
 }

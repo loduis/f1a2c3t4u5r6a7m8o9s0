@@ -9,11 +9,9 @@ class Login extends CI_Controller
 public function __construct() 
 	{
 		parent:: __construct(); // siempre crgar esta linea si deseo ejecutar librerias, bases de datos, clases, ayudador o helpers		
-	    $this->load->helper('form'); // este helepr o ayuda me  permite acceder a las manipulacion del form que posee el framework 
+	    $this->load->helper(array('form','url')); // este helepr o ayuda me  permite acceder a las manipulacion del form que posee el framework 
 	    $this->load->library('form_validation'); // esta libreria permite formatear los valores que se pasan en un formulario
 		// invocar el modelo
-		//libreria o ayuda de url 
-		$this->load->helper("url_helper");
 		//ayuda de la bd o modelo
 		$this->load->model("login_model");
 		//$this->load->model("empresa_model");
@@ -38,6 +36,7 @@ public function acceso()
 				$usuario_session=array
 						(
 							"correo"=>$data[0]["correo"],
+							"id_empresa"=>$data[0]["id_empresa"],
 							/*"nombre_empresa"=>$data[0]["nombre_empresa"],
 							"cantidad_factura"=>$data[0]["cantidad_factura"],
 							"id_empresa"=>$data[0]["id_empresa"],
