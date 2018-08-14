@@ -1,3 +1,5 @@
+<?php //header("Content-type: text/xml"); echo $xml['1']['xml']; ?>
+
 <html>
 <head>
 <title>Upload Form</title>
@@ -8,7 +10,10 @@
 
 <ul>
 <?php 
-echo $xxx;
+
+echo "<pre>";
+ print_r($xml);
+echo "</pre>"; 
 
 echo "<pre>";
  print_r($upload_data);

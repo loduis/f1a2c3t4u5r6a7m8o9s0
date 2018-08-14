@@ -145,12 +145,13 @@ if ( ! function_exists('xml_generar'))
 {
     function xml_generar($vector,$empresa)
     {
+    	/*
 echo "<pre>";
-				//print_r($vector);
+				print_r($vector);
 echo "</pre>";
 echo "<pre>";
 				var_dump($empresa);
-echo "</pre>";
+echo "</pre>";*/
 $InvoiceAuthorization   = $empresa["0"]["InvoiceAuthorization"];//Autorización de factura
 
 $StartDate              = $empresa["0"]["StartDate"];//fecha inicio resolución
@@ -163,28 +164,49 @@ $SoftwareID             = $empresa["0"]["SoftwareID"];//identificacion del factu
 
 $Pin                    = $empresa["0"]["Pin"];//pin secreto 
 $SoftwareSecurityCode   =  hash('sha384',$SoftwareID.$Pin);
+
+$ClTec                  = $empresa["0"]["ClTec"];
+
+
 /*$nit                    = "900332178";//nit de factura
 $rango                  = "980000107";
 $IdentificationCode     = 'CO';//Código de identificación
 
-$ClTec                  = 'dd85db55545bd6566f36b0fd3be9fd8555c36e';
 
 $id_producto            = '1';
 $cantidad               = '765';
 $descripcion            = 'Línea-1 PRUE980007161 f-s0001_900373115_0d2e2_R9000000500017960-PRUE-A_cufe';
-$Precio                 = '1483.4518917264927';
-$LineExtensionAmount    = '500.00';//<!-- Valor de la factura sin IVA-->
-$TaxExclusiveAmount     = '95.00'; //<!--Importe exclusivo de impuestos -->
-$PayableAmount          = '595.00'; //<!-- Valor total de la factura con impuestos -->
+
 $Nit                    =   $nit;//nit facturador
-$Note                   = 'Nota';//prueba de nota
 */
+$con = 0;
 ///////////////if ini
 foreach ($vector as $key_facturas => $value_facturas) 
-	{
+{
 	$ProviderID         = $value_facturas["Fac_Enca_Emp_Codigo_Tercero"];//identificacion del facturador ante la dian
+	$nit 				= $ProviderID;
 	$Prefix             = $value_facturas["Fac_Enca_Prefijo"];//Prefijo
-	$InvoiceNumber      =  $Prefix.$value_facturas["Fac_Enca_Numero"];
+	$InvoiceNumber      = $Prefix.$value_facturas["Fac_Enca_Numero"];
+
+	$LineExtensionAmount    = $value_facturas['Fac_Totales_Antes_Impuestos'];//<!-- Valor de la factura sin IVA-->
+	$TaxExclusiveAmount     = $value_facturas['Fac_Totales_IVA_19']+ $value_facturas['Fac_Totales_IVA_5']; //<!--Importe exclusivo de impuestos -->
+	$PayableAmount          = $value_facturas['Fac_Totales_Valor_Total']; //<!-- Valor total de la factura con impuestos -->
+	$Note                   = $value_facturas['Fac_Enca_Observaciones'];//prueba de nota
+
+	$fecha = strtotime(str_replace(" ","/",$value_facturas['Fac_Enca_Fecha'].$value_facturas['Fac_Enca_Hora'])) ;
+	//$hora  = 	strtotime($value_facturas['Fac_Enca_Hora']);	
+
+
+	$IssueDate = date('Y-m-d' ,$fecha);//F 
+	$IssueTime = date('H:i:s' ,$fecha);//T
+	$FecFac    = date('YmdHis',$fecha);// Fecha de factura en formato (Java) YYYYmmddHHMMss
+	
+	/*echo "<br>-------------------------<br>";
+	echo "<br>".$IssueDate;
+	echo "<br>".$IssueTime;
+	echo "<br>".$FecFac;*/
+	
+
 		//var_dump($value_facturas);
 	 $xml =
 	'<fe:Invoice '. 
@@ -243,7 +265,7 @@ foreach ($vector as $key_facturas => $value_facturas)
 		//<!--_________________________________________fin__Extensions_firma________________________________________________-->
 	//________________________________________________________ cufe_______________________________________
 	$NumFac = $InvoiceNumber;   //Número de factura.
-	//$FecFac = $FecFac; // Fecha de factura en formato (Java) YYYYmmddHHMMss
+	$FecFac = $FecFac; // Fecha de factura en formato (Java) YYYYmmddHHMMss
 	$ValFac = $LineExtensionAmount; //Valor Factura sin IVA, con punto decimal, con decimales a dos (2) dígitos, sin separadores de miles, ni símbolo pesos.
 	$CodImp1 = '01'; //  01  fe:Invoice/fe:TaxTotal[x]/fe:TaxSubtotal/cac:TaxCategory/cac:TaxScheme/cbc:ID = 01
 	$ValImp1 = '95.00';//  Valor impuesto 01, con punto decimal, con decimales a dos (2)  dígitos, sin separadores de miles, ni símbolo pesos.    fe:Invoice/fe:TaxTotal[x]/fe:TaxSubtotal/cbc:   TaxAmount
@@ -252,20 +274,20 @@ foreach ($vector as $key_facturas => $value_facturas)
 	$CodImp3 = '03';//fe:Invoice/fe:TaxTotal[z]/fe:TaxSubtotal/cac:TaxCategory/cac:TaxScheme/cbc:ID = 03
 	$ValImp3 = '0.00';// Valor impuesto 03, con punto decimal, con decimales a dos (2)  dígitos, sin separadores de miles, ni símbolo pesos.   fe:Invoice/fe:TaxTotal[z]/fe:TaxSubtotal/cbc:TaxAmount
 	$ValImp = $PayableAmount; //Valor total, con punto decimal, con decimales a dos (2) dígitos, sin separadores de miles, ni símbolo pesos.   fe:Invoice/fe:LegalMonetaryTotal/cbc:PayableAmount cantidad a pagar
-	$NitOFE = $Nit; //NIT del Facturador Electrónico sin puntos ni guiones, sin digito de verificación.   fe:Invoice/fe:AccountingSupplierParty/fe:Party/cac:PartyIdentification/cbc:ID
+	$NitOFE = $nit; //NIT del Facturador Electrónico sin puntos ni guiones, sin digito de verificación.   fe:Invoice/fe:AccountingSupplierParty/fe:Party/cac:PartyIdentification/cbc:ID
 	$TipAdq = '31';  // tipo de adquiriente, de acuerdo con el valor registrado en /fe:Invoice/fe:AccountingCustomerParty/fe:Party/cac:PartyIdentification/cbc:ID/@schemeID la tabla Tipos de documentos de identidad del «Anexo 001 Formato estándar XML de la Factura, notas débito y notas crédito electrónicos»; si no se determinó y es un NIT, entonces use el valor “O-99”, de lo contrario use “R-00-PN”. //fe:Invoice/fe:AccountingCustomerParty/fe:Party/cac:PartyIdentification/cbc:ID
 	$NumAdq = $nit; // Número de identificación del adquirente sin puntos ni guiones, sin digito de verificación. 
 	$ClTec  = $ClTec; //clave tenica de la resolucion
-	$cufe = sha1($NumFac.$fecha['FecFac'].$ValFac.$CodImp1.$ValImp1.$CodImp2.$ValImp2.$CodImp3.$ValImp3.$ValImp.$NitOFE.$TipAdq.$NumAdq.$ClTec);
+	$cufe = sha1($NumFac.$FecFac.$ValFac.$CodImp1.$ValImp1.$CodImp2.$ValImp2.$CodImp3.$ValImp3.$ValImp.$NitOFE.$TipAdq.$NumAdq.$ClTec);
 		//<!--_________________________________________ini__UBL_factura_____________________________________________________-->
 	$xml .='<cbc:UBLVersionID>UBL 2.0</cbc:UBLVersionID>'.
 			'<cbc:ProfileID>DIAN 1.0</cbc:ProfileID>   '.
-			'<cbc:ID>'.$value_facturas['Fac_Enca_Prefijo'].$value_facturas['Fac_Enca_Numero'].'</cbc:ID>'.
+			'<cbc:ID>'.$InvoiceNumber.'</cbc:ID>'.
 			'<cbc:UUID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">'.$cufe.'</cbc:UUID>'.
-			'<cbc:IssueDate>'.$value_facturas['Fac_Enca_Fecha'].'</cbc:IssueDate>  '.
-			'<cbc:IssueTime>'.$value_facturas['Fac_Enca_Hora'].'</cbc:IssueTime>  '.
+			'<cbc:IssueDate>'.$IssueDate.'</cbc:IssueDate>  '.
+			'<cbc:IssueTime>'.$IssueTime.'</cbc:IssueTime>  '.
 			'<cbc:InvoiceTypeCode listAgencyID="195" listAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" listSchemeURI="http://www.dian.gov.co/contratos/facturaelectronica/v1/InvoiceType">1</cbc:InvoiceTypeCode>'.
-			'<cbc:Note>'.$value_facturas['Fac_Enca_Observaciones'].'</cbc:Note>'.
+			'<cbc:Note>'.$Note.'</cbc:Note>'.
 			'<cbc:DocumentCurrencyCode>COP</cbc:DocumentCurrencyCode>'.
 				'<fe:AccountingSupplierParty>'.
 				  '<cbc:AdditionalAccountID>1</cbc:AdditionalAccountID>'.
@@ -423,7 +445,24 @@ foreach ($vector as $key_facturas => $value_facturas)
 		// Close invoice and document
 		$xml .= '</fe:Invoice>';
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . $xml;
+
+		
+$vector_xml[$con]=array(
+						"factura_numero" =>$InvoiceNumber,
+						"tercero_numero" =>$value_facturas["Fac_Enca_Tercero_Codigo_Tercero"],
+						"tercero_nombre" =>$value_facturas['Fac_Enca_Tercero_Nombre_Tercero'],
+						"factura_fecha"  =>$FecFac,
+						"PayableAmount"  =>$PayableAmount,
+						"xml"            =>$xml
+						);
+
+$con++;
 }
+return $vector_xml;
+/*
+echo "<pre>";
+var_dump($vector_xml);
+echo "</pre>";*/
 ////////////////if fin
     }
 }
