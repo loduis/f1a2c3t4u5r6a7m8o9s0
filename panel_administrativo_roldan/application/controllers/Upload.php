@@ -25,6 +25,7 @@ class Upload extends CI_controller
 			$vector['titulo']= "Upload";
 			$this->load->view('upload_vista',$vector);
 		}
+
 	//procesar documento
 	public function generar_xml($ruta)
 		{		
@@ -37,10 +38,36 @@ class Upload extends CI_controller
 			return $xml;
 		}
 	//guardar xml en bd para suposterior consulta
-	public function set_xml()
-	{
+	public function set_xml($data)
+		{//inicio set_xml
+			$this->load->model('Upload_model');//instanciamos modelo Upload_model
+			foreach ($data as $key => $value)//recorremos el vector par almacenar vectores
+				{
+					$count_factura_numero = count($this->Upload_model->get_xml($value["factura_numero"]));//prguntamos si existe factura
+					//echo $count_factura_numero;
+					if ($count_factura_numero==0) 
+						{
+							$factura 	= array(
+											    "id_empresa"     =>  $this->session->userdata("id_empresa"),
+												"factura_numero" =>  $value["factura_numero"],
+												"tercero_numero" =>  $value["tercero_numero"],
+												"tercero_nombre" =>  $value["tercero_nombre"],
+												"factura_fecha"  =>  $value["factura_fecha"],
+												"PayableAmount"  =>  $value["PayableAmount"],
+												"xml"            =>  $value["xml"],
+												);
+							$mensaje[] = "Factura ".$value["factura_numero"]."subida correctamente".$this->Upload_model->set_xml($factura);
+						}
+					if ($count_factura_numero>0) 
+						{
+							$mensaje[] = 'la factura con Número " '.$value["factura_numero"].'" ya fue subida';
+						}
+					
+				}
+				
 
-	}
+		 	return $mensaje;
+		}//fin set_xml	
 
 	//subir documento
 	public function do_upload()
@@ -63,7 +90,9 @@ class Upload extends CI_controller
 	                    echo "<pre>";
 						 	print_r($ruta);
 						echo "</pre>"; */
-                    	$data['xml'] = $this->generar_xml($ruta);
+                    	$set_xml['xml'] = $this->generar_xml($ruta);                    	
+                    	$data['resultado'] = $this->set_xml($set_xml['xml']);
+
 
 //imprimir el xml completo en web o htmlspecialchars()
 //echo htmlentities($data['xml']['0']['xml']);
@@ -76,6 +105,7 @@ $xml = new DomDocument('1.0', 'UTF-8');
 
 
                     	//var_dump($data);
+						$vector['titulo']= "results upload";
 	                    $this->load->view('upload_success', $data);
 		            }
         }

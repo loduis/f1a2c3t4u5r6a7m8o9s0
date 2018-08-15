@@ -1,14 +1,64 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+
+<?php //header("Content-type: text/xml"); echo $xml['1']['xml']; ?>
 <!DOCTYPE html>
 <html>
   <head>
        <?php  include 'include/head.php';?>
   </head> 
 <body>
-<?php  include 'include/nav.php';?>
+  <?php  include 'include/nav.php';?>
+  <div class="container box">
 
+    <div class="row ">
+        <br>  <br>  <br>
+          <div class="col-md-8 col-md-offset-2"><!-- display de errores --><section>   <!--error--> </section></div>
+     </div>
 
+      <div class="row ">
+        <br>
+          <div class="col-md-12 col-md-offset-2">
+          <section class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>No. Factura        </th>
+                    <th>Facturado A        </th>
+                    <th>Nombre             </th>
+                    <th>Fecha de Factura   </th>
+                    <th>Renviar            </th>
+                    <th>Otro               </th>
+                    <th>Respuesta          </th>
+                    <th>Ver                </th>
+                    <th>Acción             </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php foreach ($facturas as $key => $value){ ?>
+                  <tr>
+                    <td>            <?php echo $value['factura_numero'];?>            </td>
+                    <td>            <?php echo $value['tercero_numero'];?>            </td>
+                    <td>            <?php echo $value['tercero_nombre'];?>            </td>
+                    <td>            <?php echo $value['factura_fecha']; ?>            </td>
+                    <td>            <?php echo $value['PayableAmount']; ?>            </td>
+                    <td> <textarea> <?php echo $value['xml'];           ?></textarea> </td>
+                    <td>            <?php //echo $value['dian_r'];        ?>            </td>
+                    <td>            <?php //echo $value['cliente_r'];     ?>            </td>
+                    <td><a>-></a><a>x</a></td>
+                  </tr>
+                  <?php  } ?>
+                  
+                </tbody>
+              </table>
+            </section>
+          </div>
+    </div>
+  <br><br>
+  </div>
+
+  <!-- js  -->
+<?php  include 'include/js.php';?>
 </body>
 </html>

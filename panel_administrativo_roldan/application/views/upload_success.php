@@ -1,29 +1,39 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
 <?php //header("Content-type: text/xml"); echo $xml['1']['xml']; ?>
-
+<!DOCTYPE html>
 <html>
-<head>
-<title>Upload Form</title>
-</head>
+  <head>
+       <?php  include 'include/head.php';?>
+  </head> 
 <body>
+  <?php  include 'include/nav.php';?>
+  <h3>Su archivo fue cargado correctamente</h3>
+  <div class="container box">
 
-<h3>Your file was successfully uploaded!</h3>
+    <div class="row ">
+        <br>  <br>  <br>
+          <div class="col-md-8 col-md-offset-2"><!-- display de errores --><section>   <!--error--> </section></div>
+     </div>
 
-<ul>
-<?php 
+	    <div class="row ">
+		        <br>
+		          <div class="col-md-8 col-md-offset-2">
 
-echo "<pre>";
- print_r($xml);
-echo "</pre>"; 
+				<ul class="list-group"><?php 
+					 foreach ($resultado as $item => $value):?>
+							<li class="list-group-item"><?php echo $item;?>: <?php echo $value;?></li>
+					<?php endforeach; ?>
+				</ul>
 
-echo "<pre>";
- print_r($upload_data);
-echo "</pre>"; 
- foreach ($upload_data as $item => $value):?>
-<li><?php echo $item;?>: <?php echo $value;?></li>
-<?php endforeach; ?>
-</ul>
+				<p><?php echo anchor('upload', 'Sube otro archivo!'); ?></p>
+	     </div>
+     </div>
+  <br><br>
+  </div>
 
-<p><?php echo anchor('upload', 'Upload Another File!'); ?></p>
-
+  <!-- js  -->
+<?php  include 'include/js.php';?>
 </body>
 </html>

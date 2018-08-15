@@ -446,9 +446,8 @@ foreach ($vector as $key_facturas => $value_facturas)
 		$xml .= '</fe:Invoice>';
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . $xml;
 
-		
 $vector_xml[$con]=array(
-						"factura_numero" =>$InvoiceNumber,
+						"factura_numero" =>$value_facturas["Fac_Enca_Numero"],
 						"tercero_numero" =>$value_facturas["Fac_Enca_Tercero_Codigo_Tercero"],
 						"tercero_nombre" =>$value_facturas['Fac_Enca_Tercero_Nombre_Tercero'],
 						"factura_fecha"  =>$FecFac,

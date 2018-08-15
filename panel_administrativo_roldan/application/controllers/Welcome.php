@@ -23,9 +23,8 @@ class Welcome extends CI_Controller {
 		parent:: __construct(); // siempre crgar esta linea si deseo ejecutar librerias, bases de datos, clases, ayudador o helpers		
 	    		$this->load->helper(array('form', 'url'));
 	   			$this->load->library('form_validation'); // esta libreria permite formatear los valores que se pasan en un formulario
-				$this->load->model('empresa_model');
+				$this->load->model(array('factura_model','login_model'));
 				//ayuda de la bd o modelo
-				$this->load->model("login_model");
 				//$this->load->model("empresa_model");
 				if (!$this->session->userdata('correo'))
 							{
@@ -34,7 +33,9 @@ class Welcome extends CI_Controller {
 	}
 	public function index()
 	{
+		$dato['facturas'] = $this->factura_model->get_factura();
 
-		$this->load->view('welcome_message');
+		
+		$this->load->view('welcome_message',$dato);
 	}
 }
