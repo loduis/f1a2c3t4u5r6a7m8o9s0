@@ -21,18 +21,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <br>
           <div class="col-md-12 col-md-offset-2">
           <section class="table-responsive">
-              <table class="table table-striped">
-                <thead>
+              <table class="table table-striped  text-secondary">
+                <thead >
                   <tr>
                     <th>No. Factura        </th>
                     <th>Facturado A        </th>
                     <th>Nombre             </th>
                     <th>Fecha de Factura   </th>
-                    <th>Renviar            </th>
-                    <th>Otro               </th>
-                    <th>Respuesta          </th>
-                    <th>Ver                </th>
-                    <th>Acción             </th>
+                    <th>Valor total       </th>
+                    <th>xml               </th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -44,9 +42,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <td>            <?php echo $value['factura_fecha']; ?>            </td>
                     <td>            <?php echo $value['PayableAmount']; ?>            </td>
                     <td> <textarea> <?php echo $value['xml'];           ?></textarea> </td>
-                    <td>            <?php //echo $value['dian_r'];        ?>            </td>
-                    <td>            <?php //echo $value['cliente_r'];     ?>            </td>
-                    <td><a>-></a><a>x</a></td>
+                          <!-- acciones iconos descargar renviar a correo enviar dian -->
+                          <td> 
+                              <a href="#" title="Descargar" class="text-secondary">
+                                  <span class="fa fa-download">XML</span>
+                              </a>
+                              <a href="#" title="Renviar  Correo" class="text-secondary">
+                                  <span class="fa fa-envelope">Mail</span>
+                              </a> 
+                              <a href="#" title="enviar dian" class="text-secondary">
+                                 <span class="fa fa-telegram">Dian</span>
+                              </a>
+                          </td>
+
                   </tr>
                   <?php  } ?>
                   

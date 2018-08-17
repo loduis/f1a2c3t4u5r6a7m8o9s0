@@ -71,6 +71,23 @@
      </div>
 
 
+<!-- ///////////////////temporal para manejar el numero de factura -->
+<hr  />
+<br>
+<div class="row ">
+       
+          <div class="col-md-8 col-md-offset-2">            
+              <?php  echo form_open('empresa/numero_factura_temporal','class="form-inline"'); ?>
+                  <div class="form-group">
+                          <label for="factura_inicial">Factura inicial</label>                
+                          <input class="form-control" type ="text" name="factura_inicial" required value="<?php if(isset($get_temporal['0']['factura_inicial'])) echo $get_temporal['0']['factura_inicial'] ?>">
+                  </div>
+                  <input type="submit" value="guardar" />
+              </form>  
+          </div>
+ </div>
+
+<br><br>
 
   </div>
   <!-- js  -->

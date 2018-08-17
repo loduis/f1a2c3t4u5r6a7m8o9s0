@@ -71,11 +71,32 @@ class Empresa_model extends CI_Model
 	public function get_empresa()
 		{
 			$id_empresa = $this->session->userdata('id_empresa');
-			$sql  =" select * from empresa";
+			$sql  =" SELECT * from empresa";
 			$sql .=" where id_empresa = ? ";
 			$query =$this->db->query($sql,array($id_empresa));
 			return $query->result_array();
+		}	
+
+//temporal
+	public function numero_factura_temporal_set()
+		{
+			$numero_factura_temporal = array( 'factura_inicial' => $this->input->post('factura_inicial'));
+			$id_empresa = $this->session->userdata('id_empresa');
+
+
+			$this->db->where("id_empresa",$id_empresa);
+			return $this->db->update("numero_factura_temporal",$numero_factura_temporal);
 		}		
+//temporal
+	public function numero_factura_temporal_get()
+		{
+			$id_empresa = $this->session->userdata('id_empresa');
+
+			$sql  = "SELECT factura_inicial from  numero_factura_temporal ";
+			$sql .= " where id_empresa = ?";
+			$query = $this->db->query($sql,array($id_empresa));
+			return $query->result_array();
+		}
 }
 
 ?>
