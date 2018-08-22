@@ -47,6 +47,40 @@ class Upload extends CI_controller
 					//echo $count_factura_numero;
 					if ($count_factura_numero==0) 
 						{
+						// xml para firmar
+						$xml = $value["xml"];
+							/////////////////////////////////////////////////////////////
+							/////////////////////////////////////////////////////////////
+							/////////////////////////////////////////////////////////////
+								//firmar facturas							
+								$this->load->helper('firma_helper'); //helper para procesar plano
+										$Username = '79cadac2-aa74-4ed1-95b3-1af07694027c';
+										$password = 'Bello2010R';
+										$nit	  =  '890912995';
+										//$InvoiceNumber
+										//$IssueDate
+										//$content
+
+								$xml = firmar(
+										$Username,
+										$password ,
+										$nit,
+										$xml,
+										$value["factura_fecha"],
+										$value["factura_numero"]);
+								
+								echo "<pre>";	
+									var_dump($xml);
+								echo "<pre>";	
+								exit();
+
+
+
+							/////////////////////////////////////////////////////////////
+							/////////////////////////////////////////////////////////////
+							/////////////////////////////////////////////////////////////
+
+							
 							$factura 	= array(
 											    "id_empresa"     =>  $this->session->userdata("id_empresa"),
 												"factura_numero" =>  $value["factura_numero"],
@@ -54,8 +88,10 @@ class Upload extends CI_controller
 												"tercero_nombre" =>  $value["tercero_nombre"],
 												"factura_fecha"  =>  $value["factura_fecha"],
 												"PayableAmount"  =>  $value["PayableAmount"],
-												"xml"            =>  $value["xml"],
+												"xml"            =>  $xml,
 												);
+
+
 							$mensaje[] = "Factura ".$value["factura_numero"]."subida correctamente".$this->Upload_model->set_xml($factura);
 						}
 					if ($count_factura_numero>0) 

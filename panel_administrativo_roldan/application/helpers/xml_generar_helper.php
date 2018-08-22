@@ -40,7 +40,7 @@ if ($gestor)//valinadmos que halla una ruta a un documento
 						else
 							{
 								$vector[$linea['1']] = array(
-														'Fac_Enca_Prefijo'				  =>  trim($linea['0']),
+														'Fac_Enca_Prefijo'				  =>  'prue',//trim($linea['0']),
 														'Fac_Enca_Numero'                 =>  trim($linea['1']),
 														'Fac_Enca_Fecha'                  =>  trim($linea['2']),
 														'Fac_Enca_Vencimiento'            =>  trim($linea['3']),
@@ -93,6 +93,8 @@ if ($gestor)//valinadmos que halla una ruta a un documento
 								array_push($vector[$linea['1']]["detalle"], $detalle);
 							}
 
+			//temporal para manejar numero de factura para roldan
+							
 
 				$contador++;
 			}
@@ -301,7 +303,7 @@ echo "<br>";
 	$cufe = sha1($NumFac.$FecFac.$ValFac.$CodImp1.$ValImp1.$CodImp2.$ValImp2.$CodImp3.$ValImp3.$ValImp.$NitOFE.$TipAdq.$NumAdq.$ClTec);
 
 
-
+/*
 
 echo "<br> ________NumFac. ------>".$NumFac."<br>";
 echo "<br> ________FecFac. ------>".$FecFac."<br>";
@@ -318,7 +320,7 @@ echo "<br> ________TipAdq. ------>".$TipAdq."<br>";
 echo "<br> ________NumAdq. ------>".$NumAdq."<br>";
 echo "<br> ________ClTec.  ------>".$ClTec."<br>";
 
-
+*/
 
 
 
