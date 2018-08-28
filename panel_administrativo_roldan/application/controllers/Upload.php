@@ -29,8 +29,53 @@ class Upload extends CI_controller
 	//procesar documento
 	public function generar_xml($ruta)
 		{		
+			////////////////////////////////////////////////////
+			////////////////////////////////////////////////////
+			////////////////////////////////////////////////////
+			////////////////////////////////////////////////////
+					$this->load->model('factura_model');
+					//leer numero actual de la resolucion
+					$numero_temporal = $this->factura_model->get_numero_temporal();
+					$numero_temporal =$numero_temporal[0]["factura_inicial"];
+			////////////////////////////////////////////////////
+			////////////////////////////////////////////////////
+			////////////////////////////////////////////////////
+			////////////////////////////////////////////////////
+
 			$this->load->helper('xml_generar'); //helper para procesar plano
-			$vector = vector_plano($ruta);		//pasamos la ruta del documento vector_plano() para proceso
+			$vector = vector_plano($ruta,$numero_temporal);		//pasamos la ruta del documento vector_plano() para proceso
+
+				// echo "<pre>";
+				// 	print_r($vector);
+				// echo "</pre><br><br><br><br><br>";
+
+
+				// $vector = array_diff($vector, array('numero_temporal_retorno'));
+
+				// echo "<pre>";
+				// 	print_r($vector);
+				// echo "</pre><br><br><br><br><br>";
+
+
+
+				// exit();
+			////////////////////////////////////////////////////
+			////////////////////////////////////////////////////
+			////////////////////////////////////////////////////
+			////////////////////////////////////////////////////
+					$this->load->model('factura_model');
+					//leer numero actual de la resolucion
+					$respuesta = $this->factura_model->set_numero_temporal($vector['numero_temporal_retorno']);
+					//echo  $respuesta;
+					//$numero_temporal =$numero_temporal[0]["factura_inicial"];
+			//exit();
+			//echo $vector['numero_temporal_retorno'];		
+			unset($vector['numero_temporal_retorno']);
+			//exit();
+			////////////////////////////////////////////////////
+			////////////////////////////////////////////////////
+			////////////////////////////////////////////////////
+			////////////////////////////////////////////////////
 			$this->load->model("empresa_model");//instanciamos modelo empresa
 			$empresa= $this->empresa_model->get_empresa();//datoso de configuracion de empresa desde la bd			
 			$xml = xml_generar($vector,$empresa);//peticion para generar los xml	
@@ -69,10 +114,10 @@ class Upload extends CI_controller
 										$value["factura_fecha"],
 										$value["factura_numero"]);
 								
-								echo "<pre>";	
-									var_dump($xml);
-								echo "<pre>";	
-								exit();
+								// echo "<pre>";	
+								// 	var_dump($xml);
+								// echo "<pre>";	
+								// exit();
 
 
 
@@ -93,6 +138,7 @@ class Upload extends CI_controller
 
 
 							$mensaje[] = "Factura ".$value["factura_numero"]."subida correctamente".$this->Upload_model->set_xml($factura);
+							
 						}
 					if ($count_factura_numero>0) 
 						{

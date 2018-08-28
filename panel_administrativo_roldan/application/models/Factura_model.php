@@ -41,7 +41,26 @@ class Factura_model extends CI_Model
 			$sql .=" where id_empresa = ? ";
 			$query =$this->db->query($sql,array($id_empresa));
 			return $query->result_array();
+		}	
+
+
+	public function get_numero_temporal()
+		{
+			$id_empresa = $this->session->userdata('id_empresa');
+			$sql  =" select factura_inicial from numero_factura_temporal";
+			$sql .=" where id_empresa = ? ";
+			$query =$this->db->query($sql,array($id_empresa));
+			return $query->result_array();
+
 		}		
+
+	public function set_numero_temporal($numero)
+	{
+		//echo $numero;
+			$id_empresa =$this->session->userdata("id_empresa");
+			$factura_inicial 	= array("factura_inicial"=> $numero);
+			$this->db->where("id_empresa",$id_empresa);
+			return $this->db->update("numero_factura_temporal",$factura_inicial); 
+	}	
 }
 
-?>

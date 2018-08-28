@@ -1,5 +1,5 @@
 <?php
-
+set_time_limit(900);
 //namespace josemmo\Facturae;
 
 /**
@@ -981,7 +981,7 @@ $content = base64_encode(file_get_contents($ruta));
 $parameters =
 '<ns1:EnvioFacturaElectronicaPeticion>
 <ns1:NIT>'.$nit.'</ns1:NIT>
-<ns1:InvoiceNumber>'.$InvoiceNumber.'</ns1:InvoiceNumber>
+<ns1:InvoiceNumber>PRUE'.$InvoiceNumber.'</ns1:InvoiceNumber>
 <ns1:IssueDate>'.$IssueDate.'</ns1:IssueDate>
 <ns1:Document>'.$content.'</ns1:Document>
 </ns1:EnvioFacturaElectronicaPeticion>
@@ -1000,9 +1000,13 @@ echo "**************************************////********************************
                 // print "<pre>\n";
                 // print "<br />\n Request : ".htmlspecialchars($client->__getLastRequest());
                 // print "</pre>";
-
 // echo "---------------------------------------Response---------------------------------------------------<br><pre>";    
+      
+            // print "<pre>\n";
+            //     print "<br />\n Request : ".htmlspecialchars($client->__getLastResponse());
+            // print "</pre>";
       $respuesta = htmlspecialchars($client->__getLastResponse());
+
 // echo "</pre><br>---------------------------------------Response---------------------------------------------------";
 
 //echo"valores<br>".$value."<br>";

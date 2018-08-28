@@ -25,10 +25,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <thead >
                   <tr>
                     <th>No. Factura        </th>
-                    <!-- <th>Facturado A        </th> -->
-                    <!-- <th>Nombre             </th> -->
-                    <!-- <th>Fecha de Factura   </th> -->
-                    <!-- <th>Valor total       </th> -->
+                    <th>Facturado A        </th>
+                    <th>Nombre             </th>
+                    <th>Fecha de Factura   </th>
+                    <th>Valor total       </th>
                     <th>xml               </th>
                     <th></th>
                   </tr>
@@ -37,10 +37,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   <?php foreach ($facturas as $key => $value){ ?>
                   <tr>
                     <td>            <?php echo $value['factura_numero'];?>            </td>
-                    <!-- <td>            <?php echo $value['tercero_numero'];?>            </td> -->
-                    <!-- <td>            <?php echo $value['tercero_nombre'];?>            </td> -->
-                    <!-- <td>            <?php echo $value['factura_fecha']; ?>            </td> -->
-                    <!-- <td>            <?php echo $value['PayableAmount']; ?>            </td> -->
+                    <td>            <?php echo $value['tercero_numero'];?>            </td>
+                    <td>            <?php echo $value['tercero_nombre'];?>            </td>
+                    <td>            <?php echo $value['factura_fecha']; ?>            </td>
+                    <td>            <?php echo $value['PayableAmount']; ?>            </td>
                     <td> <textarea> <?php echo $value['xml'];           ?></textarea> </td>
                           <!-- acciones iconos descargar renviar a correo enviar dian -->
                           <td> 

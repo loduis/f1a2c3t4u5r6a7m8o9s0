@@ -3,7 +3,7 @@
 ////////////////////////////////////////////////////////////////// helper
 if ( ! function_exists('vector_plano'))
 {
-    function vector_plano($ruta)
+    function vector_plano($ruta,$numero_temporal)
     {
 // inicio f open
 $gestor = fopen($ruta, "r");//open file txt
@@ -39,9 +39,13 @@ if ($gestor)//valinadmos que halla una ruta a un documento
 							}
 						else
 							{
+								//echo $numero_temporal;
+								//exit();
+								//trim($linea['0']),
+								//trim($linea['1']),
 								$vector[$linea['1']] = array(
-														'Fac_Enca_Prefijo'				  =>  'prue',//trim($linea['0']),
-														'Fac_Enca_Numero'                 =>  trim($linea['1']),
+														'Fac_Enca_Prefijo'				  =>  'PRUE',
+														'Fac_Enca_Numero'                 =>  $numero_temporal,
 														'Fac_Enca_Fecha'                  =>  trim($linea['2']),
 														'Fac_Enca_Vencimiento'            =>  trim($linea['3']),
 														'Fac_Enca_Condicion'              =>  trim($linea['4']),
@@ -91,6 +95,13 @@ if ($gestor)//valinadmos que halla una ruta a un documento
 													'Parcial'                         =>  trim($linea['35']),
 												 ];
 								array_push($vector[$linea['1']]["detalle"], $detalle);
+
+								// echo "<pre>";
+								// var_dump($vector);
+								// echo "</pre>";
+								$numero_temporal = $numero_temporal+1;
+								$vector['numero_temporal_retorno'] = $numero_temporal;
+								//exit();
 							}
 
 			//temporal para manejar numero de factura para roldan
@@ -185,6 +196,11 @@ $con = 0;
 ///////////////if ini
 foreach ($vector as $key_facturas => $value_facturas) 
 {
+	// if temporal
+	if($key_facturas=='numero_temporal_retorno]')
+		{echo "entro en el if";}
+
+
 	$ProviderID         = $value_facturas["Fac_Enca_Emp_Codigo_Tercero"];//identificacion del facturador ante la dian
 	$nit 				= $ProviderID;
 	$Prefix             = $value_facturas["Fac_Enca_Prefijo"];//Prefijo
