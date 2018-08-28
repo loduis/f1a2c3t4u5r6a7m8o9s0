@@ -157,7 +157,7 @@ class Upload extends CI_controller
 			//configuracion
 	        $config['upload_path']          = './uploads/';
 	        $config['allowed_types']        = 'txt';
-	        $config['max_size']             = 100;	       
+	        $config['max_size']             = 0;//tamaño maximo del archivo	       
 	        $this->load->library('upload', $config);//libreria uplod CI
 		        if ( ! $this->upload->do_upload('userfile'))
 		            {

@@ -12,9 +12,7 @@ if ($gestor)//valinadmos que halla una ruta a un documento
 	$contador=0; //contadores
 	$vector = array();
 		while ($linea = fgets($gestor)) 
-			{
-$línea =str_replace('ñ','&ntilde;', $linea);	
-$línea =str_replace('Ñ','&ntilde;', $linea);	
+			{	
 				$linea = explode("==",$linea);
 				if ($linea['1']=='' or $linea['1']==null) 
 						{ 
@@ -525,3 +523,4 @@ echo "</pre>";*/
 ////////////////if fin
     }
 }
+

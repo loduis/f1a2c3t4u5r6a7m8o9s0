@@ -34,7 +34,13 @@ class Welcome extends CI_Controller {
 	public function index()
 	{
 		$vector['titulo']= "home";
-		$vector['facturas'] = $this->factura_model->get_factura();		
+		$vector['facturas'] = $this->factura_model->get_factura();
+		$vector['nit']='890912995';
+
+		// echo "<pre>";
+		// 	print_r($vector);
+		// echo "</pre>";
+		// exit();
 		$this->load->view('welcome_message',$vector);
 	}
 }
