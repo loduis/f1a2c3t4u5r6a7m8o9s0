@@ -884,25 +884,50 @@ class Facturae {
   {
    
 
+// //header("Content-type: text/xml");
+//   echo ($xml);
 
+// exit();
 
       $xml = str_replace('<?xml version="1.0" encoding="UTF-8"?>', '' ,$xml);
       $xml = str_replace("\n", '', $xml);
       $xml = str_replace("\r", '', $xml);
      $fecha = $this->fecha(); // creamos una fecha general para no recrear fechas
      
-  
+    //$xml = utf8_encode($xml);// pasamos todo el xml a utf-8 antes de firmarlos
     // Add signature
     $xml = $this->injectSignature($xml,$fecha['SigningTime']);
     // Prepend content type
     $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . $xml;
 
-    // Save document
-   // if (!is_null($filePath)) return file_put_contents($filePath, $xml);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////// Save document/////////////////////////////////////////////////////////////
+                                      //  $filePath = "z____".$InvoiceNumber.".xml" ;
+                                      // if (!is_null($filePath)) return file_put_contents($filePath, $xml);
+    
 
 
-$obj_xml = new SimpleXMLElement($xml);
-$documento_xml = $obj_xml->asXML(); //el xml de salidad
+
+
+
+
+
+
+
+
+
+
+
+
+
+//$obj_xml = new SimpleXMLElement($xml);
+$documento_xml = $xml; //el xml de salidad
+
+// header('content-type: text/xml');
+// $xml = utf8_encode($xml);
+// echo $xml;
+// exit();
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                           //
