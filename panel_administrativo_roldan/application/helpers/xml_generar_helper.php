@@ -324,15 +324,20 @@ echo "<br>";
 			/////////////////////////////////////////////////////////////////////////
 			////////////////////////////////////////////////////////////////impuesto1
 			$CodImp1 = '01'; //  01  fe:Invoice/fe:TaxTotal[x]/fe:TaxSubtotal/cac:TaxCategory/cac:TaxScheme/cbc:ID = 01
-			$ValImp1 = $value_facturas['Fac_Totales_IVA_19'];//  Valor impuesto 01, con punto decimal, con decimales a dos (2)  dígitos, sin separadores de miles, ni símbolo pesos.    fe:Invoice/fe:TaxTotal[x]/fe:TaxSubtotal/cbc:   TaxAmount
+			$ValImp1 = $value_facturas['Fac_Totales_IVA_19'] + $value_facturas['Fac_Totales_IVA_5'];
+			$ValImp1 = number_format($ValImp1, 2, '.', '');
+			//  Valor impuesto 01, con punto decimal, con decimales a dos (2)  dígitos, sin separadores de miles, ni símbolo pesos.    fe:Invoice/fe:TaxTotal[x]/fe:TaxSubtotal/cbc:   TaxAmount
+			//$ValImp1 = $value_facturas['Fac_Totales_IVA_5'];//Valor impuesto 02, con punto decimal, con decimales a dos (2)  dígitos, sin separadores de miles, ni símbolo pesos. fe:Invoice/fe:TaxTotal[y]/fe:TaxSubtotal/cbc:TaxAmount
 			$Percent19 = '19';
+			$Percent5  = '5';
 			$impuestos =
 			'<fe:TaxTotal>'.
 			'<cbc:TaxAmount currencyID="COP">'.$ValImp1.'</cbc:TaxAmount>'.
 			'<cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator>'.
+					////////////////////////////////////////////////////////////////////////////////////////////
 					'<fe:TaxSubtotal>'.
 					  '<cbc:TaxableAmount currencyID="COP">'.$LineExtensionAmount.'</cbc:TaxableAmount>'.
-					  '<cbc:TaxAmount currencyID="COP">'.$ValImp1.'</cbc:TaxAmount>'.
+					  '<cbc:TaxAmount currencyID="COP">'.$value_facturas['Fac_Totales_IVA_19'].'</cbc:TaxAmount>'.
 					  '<cbc:Percent>'.$Percent19.'</cbc:Percent>'.
 					  '<cac:TaxCategory>'.
 						'<cac:TaxScheme>'.
@@ -340,19 +345,31 @@ echo "<br>";
 						'</cac:TaxScheme>'.
 					  '</cac:TaxCategory>'.
 					'</fe:TaxSubtotal>'.
+					////////////////////////////////////////////////////////////////////////////////////////////
+					'<fe:TaxSubtotal>'.
+					  '<cbc:TaxableAmount currencyID="COP">'.$LineExtensionAmount.'</cbc:TaxableAmount>'.
+					  '<cbc:TaxAmount currencyID="COP">'.$value_facturas['Fac_Totales_IVA_5'].'</cbc:TaxAmount>'.
+					  '<cbc:Percent>'.$Percent5.'</cbc:Percent>'.
+					  '<cac:TaxCategory>'.
+						'<cac:TaxScheme>'.
+						  '<cbc:ID>'.$CodImp1.'</cbc:ID>'.
+						'</cac:TaxScheme>'.
+					  '</cac:TaxCategory>'.
+					'</fe:TaxSubtotal>'.
+					////////////////////////////////////////////////////////////////////////////////////////////
 			'</fe:TaxTotal>';
 
 			/////////////////////////////////////////////////////////////////////////
 			////////////////////////////////////////////////////////////////impuesto2
 			$CodImp2 = '02';//  02  fe:Invoice/fe:TaxTotal[y]/fe:TaxSubtotal/cac:TaxCategory/cac:TaxScheme/cbc:ID = 02
-			$ValImp2 = $value_facturas['Fac_Totales_IVA_5'];//Valor impuesto 02, con punto decimal, con decimales a dos (2)  dígitos, sin separadores de miles, ni símbolo pesos. fe:Invoice/fe:TaxTotal[y]/fe:TaxSubtotal/cbc:TaxAmount
-			$Percent2 ='5';
+			$ValImp2 = '0.00';//Valor impuesto 02, con punto decimal, con decimales a dos (2)  dígitos, sin separadores de miles, ni símbolo pesos. fe:Invoice/fe:TaxTotal[y]/fe:TaxSubtotal/cbc:TaxAmount
+			$Percent2 ='0';
 			$impuestos .=
 			'<fe:TaxTotal>'.
 			'<cbc:TaxAmount currencyID="COP">'.$ValImp2.'</cbc:TaxAmount>'.
 			'<cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator>'.
 			'<fe:TaxSubtotal>'.
-			  '<cbc:TaxableAmount currencyID="COP">'.$LineExtensionAmount.'</cbc:TaxableAmount>'.
+			  '<cbc:TaxableAmount currencyID="COP">0.00</cbc:TaxableAmount>'.
 			  '<cbc:TaxAmount currencyID="COP">'.$ValImp2.'</cbc:TaxAmount>'.
 			  '<cbc:Percent>'.$Percent2.'</cbc:Percent>'.
 			  '<cac:TaxCategory>'.
