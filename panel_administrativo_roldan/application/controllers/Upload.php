@@ -29,45 +29,30 @@ class Upload extends CI_controller
 	//procesar documento
 	public function generar_xml($ruta)
 		{		
-			////////////////////////////////////////////////////
-			////////////////////////////////////////////////////
-			////////////////////////////////////////////////////
-			////////////////////////////////////////////////////
-					$this->load->model('factura_model');
-					//leer numero actual de la resolucion
-					$numero_temporal = $this->factura_model->get_numero_temporal();
-					$numero_temporal =$numero_temporal[0]["factura_inicial"];
-			////////////////////////////////////////////////////
-			////////////////////////////////////////////////////
-			////////////////////////////////////////////////////
-			////////////////////////////////////////////////////
+			$this->load->model('factura_model'); //cargamos el modelo de la factura
+			//leer numero actual de la resolucion
+			$numero_temporal = $this->factura_model->get_numero_temporal();
+			$numero_temporal =$numero_temporal[0]["factura_inicial"];
 
-			$this->load->helper('xml_generar'); //helper para procesar plano
-			$vector = vector_plano($ruta,$numero_temporal);		//pasamos la ruta del documento vector_plano() para proceso
+
+			$this->load->helper('xml_generar'); 				//new helper para procesar plano xml_generar_helper.php
+
+			$vector = vector_plano($ruta,$numero_temporal);		//ruta y numero temporal para proccesar .txt
 
 				// echo "<pre>";
 				// 	print_r($vector);
 				// echo "</pre><br><br><br><br><br>";
-
-
 				// $vector = array_diff($vector, array('numero_temporal_retorno'));
-
 				// echo "<pre>";
 				// 	print_r($vector);
 				// echo "</pre><br><br><br><br><br>";
-
-
-
 				// exit();
-			////////////////////////////////////////////////////
-			////////////////////////////////////////////////////
-			////////////////////////////////////////////////////
-			////////////////////////////////////////////////////
-					$this->load->model('factura_model');
-					//leer numero actual de la resolucion
-					$respuesta = $this->factura_model->set_numero_temporal($vector['numero_temporal_retorno']);
-					//echo  $respuesta;
-					//$numero_temporal =$numero_temporal[0]["factura_inicial"];
+
+			$this->load->model('factura_model');
+			//leer numero actual de la resolucion
+			$respuesta = $this->factura_model->set_numero_temporal($vector['numero_temporal_retorno']);
+			//echo  $respuesta;
+			//$numero_temporal =$numero_temporal[0]["factura_inicial"];
 			//exit();
 			//echo $vector['numero_temporal_retorno'];		
 			unset($vector['numero_temporal_retorno']);
@@ -155,10 +140,11 @@ class Upload extends CI_controller
 	public function do_upload()
         {
 			//configuracion
-	        $config['upload_path']          = './uploads/';
-	        $config['allowed_types']        = 'txt';
-	        $config['max_size']             = 0;//tamaño maximo del archivo	       
-	        $this->load->library('upload', $config);//libreria uplod CI
+	        $config['upload_path']    = './uploads/';	//carpecta de suvida 
+	        $config['allowed_types']  = 'txt';			//formatos permitidos
+	        $config['max_size']       = 0;				//tamaño maximo del archivo	 0 para que sea maximo del archivo
+
+	        $this->load->library('upload', $config);	//libreria uplod CI
 		        if ( ! $this->upload->do_upload('userfile'))
 		            {
 	                    $error = array('error' => $this->upload->display_errors());
@@ -167,23 +153,23 @@ class Upload extends CI_controller
 		        else
 		            {
 	                    $data = array('upload_data' => $this->upload->data());
-	                    $ruta = $data['upload_data']['full_path'];
-	                   /* echo $xx = $data['upload_data']['full_path'];
-	                    echo "<pre>";
-						 	print_r($ruta);
+	                    $ruta = $data['upload_data']['full_path'];		//ruta del arciho.txt subido para procesarlo
+						/* echo $xx = $data['upload_data']['full_path'];
+						echo "<pre>";
+						print_r($ruta);
 						echo "</pre>"; */
-                    	$set_xml['xml'] = $this->generar_xml($ruta);                    	
+                    	$set_xml['xml'] = $this->generar_xml($ruta);  //psamos la ruta del .txt para la lectura
+                    	exit();                	
                     	$data['resultado'] = $this->set_xml($set_xml['xml']);
 
 
-//imprimir el xml completo en web o htmlspecialchars()
-//echo htmlentities($data['xml']['0']['xml']);
+						//imprimir el xml completo en web o htmlspecialchars()
+						//echo htmlentities($data['xml']['0']['xml']);
 
-/*
-$xml = new DomDocument('1.0', 'UTF-8');
-                    	$xml->formatOutput = true;
-   						 $el_xml = $xml->saveXML();
-    					$xml->save('libros.xml');*/
+						/*$xml = new DomDocument('1.0', 'UTF-8');
+						$xml->formatOutput = true;
+						$el_xml = $xml->saveXML();
+						$xml->save('libros.xml');*/
 
 
                     	//var_dump($data);

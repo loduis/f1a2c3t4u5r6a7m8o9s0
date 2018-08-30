@@ -3,139 +3,178 @@
 ////////////////////////////////////////////////////////////////// helper
 if ( ! function_exists('vector_plano'))
 {
-    function vector_plano($ruta,$numero_temporal)
-    {
+function vector_plano($ruta,$numero_temporal)
+{
+
 // inicio f open
 $gestor = fopen($ruta, "r");//open file txt
 if ($gestor)//valinadmos que halla una ruta a un documento 
 {//if ini gestor
 	$contador=0; //contadores
 	$vector = array();
-		while ($linea = fgets($gestor)) 
-			{
-				$linea = utf8_encode($linea);//pasar a utf8 la cadena
-				$linea =str_replace('Ø','&Ntilde;', $linea); //remplazmos  Ø por Ñ				
-				$linea = explode("==",$linea);//partimos la linea
+		
+while ($linea = fgets($gestor)) 
+	{  //inicio while
+		$linea = utf8_encode($linea);//pasar a utf8 la cadena
+		$linea =str_replace('Ø','&Ntilde;', $linea); //remplazmos  Ø por Ñ				
+		$linea = explode("==",$linea);//partimos la linea|
+		$linea['0'] = trim($linea['0']);// trim para quitar espacios adelante y atraz 
 
-				if ($linea['1']=='' or $linea['1']==null) 
-						{ 
-							echo "documento no cumple con especificaciones"; exit();
-						}
-					if ($linea['1'])
-							{
-								$linea['1'] = str_replace(' ', '', $linea['1']);
-							}
-						if (array_key_exists($linea['1'], $vector)) 
-							{
-								$linea['28'] = utf8_encode($linea['28']);
-								$linea['28'] =str_replace('&#216;','Ñ', $linea['28']);
-								$linea['28'] =str_replace('Ø','Ñ', $linea['28']);
-								//echo $linea['28']."<br>";
+// iniciamos IF para validar si es nota credito debito o factura
+// iniciamos IF para validar si es nota credito debito o factura
+
+			
+			//else if factura 
+			if ($linea['0']=='GRUPO ROLDAN S.A.S.') //se usa para factura
+				{//inicio if factura
+					// if ($linea['1']=='' or $linea['1']==null) 
+					// 		{ 
+					// 			echo "documento no cumple con especificaciones"; exit();
+					// 		}								
+					// if ($linea['1'])
+					// 			{
+					// 				$linea['1'] = str_replace(' ', '', $linea['1']);
+					// 			}
+					$linea['1'] = str_replace(' ', '', $linea['1']);
+							if (array_key_exists($linea['1'], $vector)) 
+								{
+									$linea['28'] = utf8_encode($linea['28']);
+									$linea['28'] =str_replace('&#216;','Ñ', $linea['28']);
+									$linea['28'] =str_replace('Ø','Ñ', $linea['28']);
+									//echo $linea['28']."<br>";
 
 
-								$detalle =[						
-											'Produ_Codigo_Producto'           =>  trim($linea['27']),
-											'Produ_Nombre_Producto'           =>  trim($linea['28']),
-											'Produ_Presentacion'              =>  trim($linea['29']),
-											'Produ_PorcentajeIVA'             =>  trim($linea['30']),
-											'Produ_Precio_Unitario'           =>  trim($linea['31']),
-											'Cantidad'                        =>  trim($linea['32']),
-											'Dscto1'                          =>  trim($linea['33']),
-											'Dscto2'                          =>  trim($linea['34']),
-											'Parcial'                         =>  trim($linea['35']),
-										 ];
-								array_push($vector[$linea['1']]["detalle"], $detalle);
-							}
-						else
-							{
-								//echo $numero_temporal;
-								//exit();
-								//trim($linea['0']),
-								//trim($linea['1']),
-								$vector[$linea['1']] = array(
-														'Fac_Enca_Prefijo'				  =>  'PRUE',
-														'Fac_Enca_Numero'                 =>  $numero_temporal,
-														'Fac_Enca_Fecha'                  =>  trim($linea['2']),
-														'Fac_Enca_Vencimiento'            =>  trim($linea['3']),
-														'Fac_Enca_Condicion'              =>  trim($linea['4']),
-														'Fac_Enca_Vendedor'               =>  trim($linea['5']),
-														'Fac_Enca_Tercero_Codigo_Tercero' =>  trim($linea['6']),
-														'Fac_Enca_Tercero_Nombre_Tercero' =>  trim($linea['7']),
-														'Fac_Enca_Tercero_Telefono'       =>  trim($linea['8']),
-														'Fac_Enca_Tercero_email'          =>  trim($linea['9']),
-														'Fac_Enca_Tercero_Direccion'      =>  trim($linea['10']),
-														'Fac_Enca_Direccion2'             =>  trim($linea['11']),
-														'Fac_Enca_Tercero_Ciudad'         =>  trim($linea['12']),
-														'Fac_Enca_Tercero_Pais'           =>  trim($linea['13']),
-														'Fac_Enca_Tercero_Identificacion' =>  trim($linea['14']),
-														'Fac_Enca_Emp_Codigo_Tercero'     =>  trim($linea['15']),
-														'Fac_Enca_Emp_Nombre_Tercero'     =>  trim($linea['16']),
-														'Fac_Enca_Emp_Telefono'           =>  trim($linea['17']),
-														'Fac_Enca_Emp_Direccion'          =>  trim($linea['18']),
-														'Fac_Enca_Emp_Identificacion'     =>  trim($linea['19']),
-														'Fac_Enca_Resolucion'             =>  trim($linea['20']),
-														'Fac_Enca_Elaborado'              =>  trim($linea['21']),
-														'Fac_Enca_Pedido'                 =>  trim($linea['22']),
-														'Fac_Enca_Tipo_ID'                =>  trim($linea['23']),
-														'Fac_Enca_Tipo_Persona'           =>  trim($linea['24']),
-														'Fac_Enca_Hora'                   =>  trim($linea['25']),
-														'Fac_Enca_Clave_Tecnica'          =>  trim($linea['26']),
-														'Fac_Totales_Gravado_19'          =>  trim($linea['36']),
-														'Fac_Totales_Gravado_5'           =>  trim($linea['37']),
-														'Fac_Totales_Exento'              =>  trim($linea['38']),
-														'Fac_Totales_Antes_Impuestos'     =>  trim($linea['39']),
-														'Fac_Totales_IVA_19'              =>  trim($linea['40']),
-														'Fac_Totales_IVA_5'               =>  trim($linea['41']),
-														'Fac_Totales_Valor_Total'         =>  trim($linea['42']),
-														'Fac_Enca_Observaciones'          =>  trim($linea['43']),
-														'detalle' 		 				  => [],
-														);
-														//'Fac_Enca_Emp_Codigo_Tercero'     =>  trim($linea['44']),
-										$linea['28'] = utf8_encode($linea['28']);
-										$linea['28'] =str_replace('&#216;','Ñ', $linea['28']);
-										$linea['28'] =str_replace('Ø','Ñ', $linea['28']);
-										//echo $linea['28']."<br>";
-										
-										$detalle =[
-													'Produ_Codigo_Producto'           =>  trim($linea['27']),
-													'Produ_Nombre_Producto'           =>  trim($linea['28']),
-													'Produ_Presentacion'              =>  trim($linea['29']),
-													'Produ_PorcentajeIVA'             =>  trim($linea['30']),
-													'Produ_Precio_Unitario'           =>  trim($linea['31']),
-													'Cantidad'                        =>  trim($linea['32']),
-													'Dscto1'                          =>  trim($linea['33']),
-													'Dscto2'                          =>  trim($linea['34']),
-													'Parcial'                         =>  trim($linea['35']),
-												 ];
-								array_push($vector[$linea['1']]["detalle"], $detalle);
+									$detalle =[						
+												'Produ_Codigo_Producto'           =>  trim($linea['27']),
+												'Produ_Nombre_Producto'           =>  trim($linea['28']),
+												'Produ_Presentacion'              =>  trim($linea['29']),
+												'Produ_PorcentajeIVA'             =>  trim($linea['30']),
+												'Produ_Precio_Unitario'           =>  trim($linea['31']),
+												'Cantidad'                        =>  trim($linea['32']),
+												'Dscto1'                          =>  trim($linea['33']),
+												'Dscto2'                          =>  trim($linea['34']),
+												'Parcial'                         =>  trim($linea['35']),
+											 ];
+									array_push($vector[$linea['1']]["detalle"], $detalle);
+								}
+							else
+								{
+									//echo $numero_temporal;
+									//exit();
+									//trim($linea['0']),
+									//trim($linea['1']),
+									$vector[$linea['1']] = array(
+															'Fac_Enca_Prefijo'				  =>  'PRUE',
+															'Fac_Enca_Numero'                 =>  $numero_temporal,
+															'Fac_Enca_Fecha'                  =>  trim($linea['2']),
+															'Fac_Enca_Vencimiento'            =>  trim($linea['3']),
+															'Fac_Enca_Condicion'              =>  trim($linea['4']),
+															'Fac_Enca_Vendedor'               =>  trim($linea['5']),
+															'Fac_Enca_Tercero_Codigo_Tercero' =>  trim($linea['6']),
+															'Fac_Enca_Tercero_Nombre_Tercero' =>  trim($linea['7']),
+															'Fac_Enca_Tercero_Telefono'       =>  trim($linea['8']),
+															'Fac_Enca_Tercero_email'          =>  trim($linea['9']),
+															'Fac_Enca_Tercero_Direccion'      =>  trim($linea['10']),
+															'Fac_Enca_Direccion2'             =>  trim($linea['11']),
+															'Fac_Enca_Tercero_Ciudad'         =>  trim($linea['12']),
+															'Fac_Enca_Tercero_Pais'           =>  trim($linea['13']),
+															'Fac_Enca_Tercero_Identificacion' =>  trim($linea['14']),
+															'Fac_Enca_Emp_Codigo_Tercero'     =>  trim($linea['15']),
+															'Fac_Enca_Emp_Nombre_Tercero'     =>  trim($linea['16']),
+															'Fac_Enca_Emp_Telefono'           =>  trim($linea['17']),
+															'Fac_Enca_Emp_Direccion'          =>  trim($linea['18']),
+															'Fac_Enca_Emp_Identificacion'     =>  trim($linea['19']),
+															'Fac_Enca_Resolucion'             =>  trim($linea['20']),
+															'Fac_Enca_Elaborado'              =>  trim($linea['21']),
+															'Fac_Enca_Pedido'                 =>  trim($linea['22']),
+															'Fac_Enca_Tipo_ID'                =>  trim($linea['23']),
+															'Fac_Enca_Tipo_Persona'           =>  trim($linea['24']),
+															'Fac_Enca_Hora'                   =>  trim($linea['25']),
+															'Fac_Enca_Clave_Tecnica'          =>  trim($linea['26']),
+															'Fac_Totales_Gravado_19'          =>  trim($linea['36']),
+															'Fac_Totales_Gravado_5'           =>  trim($linea['37']),
+															'Fac_Totales_Exento'              =>  trim($linea['38']),
+															'Fac_Totales_Antes_Impuestos'     =>  trim($linea['39']),
+															'Fac_Totales_IVA_19'              =>  trim($linea['40']),
+															'Fac_Totales_IVA_5'               =>  trim($linea['41']),
+															'Fac_Totales_Valor_Total'         =>  trim($linea['42']),
+															'Fac_Enca_Observaciones'          =>  trim($linea['43']),
+															'detalle' 		 				  => [],
+															);
+															//'Fac_Enca_Emp_Codigo_Tercero'     =>  trim($linea['44']),
+											$linea['28'] = utf8_encode($linea['28']);
+											$linea['28'] =str_replace('&#216;','Ñ', $linea['28']);
+											$linea['28'] =str_replace('Ø','Ñ', $linea['28']);
+											//echo $linea['28']."<br>";													
+											$detalle =[
+														'Produ_Codigo_Producto'           =>  trim($linea['27']),
+														'Produ_Nombre_Producto'           =>  trim($linea['28']),
+														'Produ_Presentacion'              =>  trim($linea['29']),
+														'Produ_PorcentajeIVA'             =>  trim($linea['30']),
+														'Produ_Precio_Unitario'           =>  trim($linea['31']),
+														'Cantidad'                        =>  trim($linea['32']),
+														'Dscto1'                          =>  trim($linea['33']),
+														'Dscto2'                          =>  trim($linea['34']),
+														'Parcial'                         =>  trim($linea['35']),
+													 ];
+									array_push($vector[$linea['1']]["detalle"], $detalle);
+									// echo "<pre>";
+									// var_dump($vector);
+									// echo "</pre>";
+									$numero_temporal = $numero_temporal+1;
+									$vector['numero_temporal_retorno'] = $numero_temporal;
+									//exit();
+								}
+							//temporal para manejar numero de factura para roldan
+								$contador++;						
+				}//fin if factura
 
-								// echo "<pre>";
-								// var_dump($vector);
-								// echo "</pre>";
-								$numero_temporal = $numero_temporal+1;
-								$vector['numero_temporal_retorno'] = $numero_temporal;
-								//exit();
-							}
 
-			//temporal para manejar numero de factura para roldan
+			elseif ($linea['0']=='NOTA  DEBITO')
+				{//inicio if debito
+					echo "entoro en el if";
+					exit();
+				}//fin if debito
 
-				$contador++;
-			}
 
-		//prefuntamos si el puntero esta en la ultima linea 
-		if (!feof($gestor)) 
-		{
-			echo "Error: fallo inesperado de fgets()\n";
-		}
-		//cerramos el documento
-	fclose($gestor);
+			elseif ($linea['0']=='NOTA  CREDITO') 
+				{//inicio if credito
+					
+				}//fin if credito
+
+
+
+					
+	}//fin while
+
+//prefuntamos si el puntero esta en la ultima linea 
+if (!feof($gestor)) 
+	{
+		echo "Error: fallo inesperado de fgets()\n";
+	}
+//cerramos el documento
+fclose($gestor);
 }//if ini gestor	
-//exit();
+
+echo "<pre>";
+	print_r($vector);
+echo "</pre>";
+exit();
 	////final fopen
 	//retornamos vector
     return $vector;
     }   
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
