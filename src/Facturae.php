@@ -880,24 +880,25 @@ class Facturae {
    * @param  string     $filePath Path to save invoice
    * @return string|int           XML data|Written file bytes
    */
-  public function export($filePath=null) {
-      // Prepare document
-    $xml = '<fe:Invoice '. 
-'xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" '.
-'xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" '.
-'xmlns:clm54217="urn:un:unece:uncefact:codelist:specification:54217:2001" '.
-'xmlns:clm66411="urn:un:unece:uncefact:codelist:specification:66411:2001" '.
-'xmlns:clmIANAMIMEMediaType="urn:un:unece:uncefact:codelist:specification:IANAMIMEMediaType:2003" '.
-//'xmlns:ds="http://www.w3.org/2000/09/xmldsig#" '.
-'xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2" '.
-'xmlns:fe="' . self::$SCHEMA_NS[$this->version] . '" '.
-'xmlns:qdt="urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2" '.
-'xmlns:sts="http://www.dian.gov.co/contratos/facturaelectronica/v1/Structures" '.
-'xmlns:udt="urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2" '.
-'xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" '.
-'xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#" '.
-'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
-'xsi:schemaLocation="http://www.dian.gov.co/contratos/facturaelectronica/v1 ../xsd/DIAN_UBL.xsd urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2 ../../ubl2/common/UnqualifiedDataTypeSchemaModule-2.0.xsd urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2 ../../ubl2/common/UBL-QualifiedDatatypes-2.0.xsd">';
+public function export($filePath=null) 
+{
+//       // Prepare document
+$xml ='<fe:DebitNote '. 
+  'xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" '.
+  'xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" '.
+  'xmlns:clm54217="urn:un:unece:uncefact:codelist:specification:54217:2001" '.
+  'xmlns:clm66411="urn:un:unece:uncefact:codelist:specification:66411:2001" '.
+  'xmlns:clmIANAMIMEMediaType="urn:un:unece:uncefact:codelist:specification:IANAMIMEMediaType:2003" '.
+  //'xmlns:ds="http://www.w3.org/2000/09/xmldsig#" '.
+  'xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2" '.
+  'xmlns:fe="' . self::$SCHEMA_NS[$this->version] . '" '.
+  'xmlns:qdt="urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2" '.
+  'xmlns:sts="http://www.dian.gov.co/contratos/facturaelectronica/v1/Structures" '.
+  'xmlns:udt="urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2" '.
+  'xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" '.
+  'xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#" '.
+  'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '.
+  'xsi:schemaLocation="http://www.dian.gov.co/contratos/facturaelectronica/v1 ../xsd/DIAN_UBL.xsd urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2 ../../ubl2/common/UnqualifiedDataTypeSchemaModule-2.0.xsd urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2 ../../ubl2/common/UBL-QualifiedDatatypes-2.0.xsd">';
 //'>';
 
 
@@ -908,7 +909,6 @@ class Facturae {
     var_dump($fecha);
     echo "</pre>";
 */
-
 $nit                    = "900332178";//nit de factura
 $Prefix                 = 'PRUE';//Prefijo
 $From                   = '980000000';//De
@@ -953,196 +953,370 @@ $cufe = sha1($NumFac.$fecha['FecFac'].$ValFac.$CodImp1.$ValImp1.$CodImp2.$ValImp
 //_________________________________________________________ cufe_______________________________________
 
 //<!--_________________________________________ini__Extensions_firma________________________________________________-->
-    $xml .='<ext:UBLExtensions>';
-        //<!--_____________________________________ini__ExtensionContent_info_factura_____________________________________-->
-        $xml .='<ext:UBLExtension>'.
-                '<ext:ExtensionContent>'.
-                  '<sts:DianExtensions>'.
-                    '<sts:InvoiceControl>'.
-                      '<sts:InvoiceAuthorization>'.$InvoiceAuthorization.'</sts:InvoiceAuthorization>'.
-                      '<sts:AuthorizationPeriod>'.
-                        '<cbc:StartDate>'.$StartDate.'</cbc:StartDate>'.
-                        '<cbc:EndDate>'.$EndDate.'</cbc:EndDate>'.
-                      '</sts:AuthorizationPeriod>'.
-                      '<sts:AuthorizedInvoices>'.
-                        '<sts:Prefix>'.$Prefix.'</sts:Prefix>'.
-                        '<sts:From>'.$From.'</sts:From>'.
-                        '<sts:To>'.$To.'</sts:To>'.
-                      '</sts:AuthorizedInvoices>'.
-                    '</sts:InvoiceControl>'.
-                    '<sts:InvoiceSource>'.
-                      '<cbc:IdentificationCode listAgencyID="6" listAgencyName="United Nations Economic Commission for Europe" listSchemeURI="urn:oasis:names:specification:ubl:codelist:gc:CountryIdentificationCode-2.0">'.$IdentificationCode.'</cbc:IdentificationCode>'.
-                    '</sts:InvoiceSource>'.
-                    '<sts:SoftwareProvider>'.
-                      '<sts:ProviderID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">'.$ProviderID.'</sts:ProviderID>'.
-                      '<sts:SoftwareID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">'.$SoftwareID.'</sts:SoftwareID>'.
-                    '</sts:SoftwareProvider>'.
-                    '<sts:SoftwareSecurityCode schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeName="SoftwareSecurityCode" schemeURI="http://www.dian.gov.co/contratos/facturaelectronica/v1/anexo_v1_0.html#SofwareSecurityCode">'.$SoftwareSecurityCode.'</sts:SoftwareSecurityCode>'.
-                  '</sts:DianExtensions>'.
-                '</ext:ExtensionContent>'.
-              '</ext:UBLExtension>';
-        //<!--_____________________________________fin__ExtensionContent_info_factura_____________________________________-->
-        //<!--_____________________________________ini__ExtensionContent_firma_factura____________________________________-->
-        $xml .= '<ext:UBLExtension>'.
+//     $xml .='<ext:UBLExtensions>';
+//         //<!--_____________________________________ini__ExtensionContent_info_factura_____________________________________-->
+//         $xml .='<ext:UBLExtension>'.
+//                 '<ext:ExtensionContent>'.
+//                   '<sts:DianExtensions>'.
+//                     '<sts:InvoiceControl>'.
+//                       '<sts:InvoiceAuthorization>'.$InvoiceAuthorization.'</sts:InvoiceAuthorization>'.
+//                       '<sts:AuthorizationPeriod>'.
+//                         '<cbc:StartDate>'.$StartDate.'</cbc:StartDate>'.
+//                         '<cbc:EndDate>'.$EndDate.'</cbc:EndDate>'.
+//                       '</sts:AuthorizationPeriod>'.
+//                       '<sts:AuthorizedInvoices>'.
+//                         '<sts:Prefix>'.$Prefix.'</sts:Prefix>'.
+//                         '<sts:From>'.$From.'</sts:From>'.
+//                         '<sts:To>'.$To.'</sts:To>'.
+//                       '</sts:AuthorizedInvoices>'.
+//                     '</sts:InvoiceControl>'.
+//                     '<sts:InvoiceSource>'.
+//                       '<cbc:IdentificationCode listAgencyID="6" listAgencyName="United Nations Economic Commission for Europe" listSchemeURI="urn:oasis:names:specification:ubl:codelist:gc:CountryIdentificationCode-2.0">'.$IdentificationCode.'</cbc:IdentificationCode>'.
+//                     '</sts:InvoiceSource>'.
+//                     '<sts:SoftwareProvider>'.
+//                       '<sts:ProviderID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">'.$ProviderID.'</sts:ProviderID>'.
+//                       '<sts:SoftwareID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">'.$SoftwareID.'</sts:SoftwareID>'.
+//                     '</sts:SoftwareProvider>'.
+//                     '<sts:SoftwareSecurityCode schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeName="SoftwareSecurityCode" schemeURI="http://www.dian.gov.co/contratos/facturaelectronica/v1/anexo_v1_0.html#SofwareSecurityCode">'.$SoftwareSecurityCode.'</sts:SoftwareSecurityCode>'.
+//                   '</sts:DianExtensions>'.
+//                 '</ext:ExtensionContent>'.
+//               '</ext:UBLExtension>';
+//         //<!--_____________________________________fin__ExtensionContent_info_factura_____________________________________-->
+//         //<!--_____________________________________ini__ExtensionContent_firma_factura____________________________________-->
+//         $xml .= '<ext:UBLExtension>'.
+//                   '<ext:ExtensionContent></ext:ExtensionContent>'.
+//                 '</ext:UBLExtension>';
+//         //<!--_____________________________________fin__ExtensionContent_firma_factura____________________________________-->
+//     $xml .='</ext:UBLExtensions>';
+// //<!--_________________________________________fin__Extensions_firma________________________________________________-->
+// //<!--_________________________________________ini__UBL_factura_____________________________________________________-->
+//     $xml .='<cbc:UBLVersionID>UBL 2.0</cbc:UBLVersionID>'.
+//             '<cbc:ProfileID>DIAN 1.0</cbc:ProfileID>   '.
+//             '<cbc:ID>'.$NumFac.'</cbc:ID>'.
+//             '<cbc:UUID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">'.$cufe.'</cbc:UUID>'.
+//             '<cbc:IssueDate>'.$fecha['IssueDate'].'</cbc:IssueDate>  '.
+//             '<cbc:IssueTime>'.$fecha['IssueTime'].'</cbc:IssueTime>  '.
+//             '<cbc:InvoiceTypeCode listAgencyID="195" listAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" listSchemeURI="http://www.dian.gov.co/contratos/facturaelectronica/v1/InvoiceType">1</cbc:InvoiceTypeCode>'.
+//             '<cbc:Note>'.$Note.'</cbc:Note>'.
+//             '<cbc:DocumentCurrencyCode>COP</cbc:DocumentCurrencyCode>'.
+//                 '<fe:AccountingSupplierParty>'.
+//                   '<cbc:AdditionalAccountID>1</cbc:AdditionalAccountID>'.
+//                   '<fe:Party>     '.
+//                     '<cac:PartyIdentification>'.
+//                       '<cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeID="31">'.$Nit.'</cbc:ID>'.
+//                     '</cac:PartyIdentification>'.
+//                       '<cac:PartyName>'.
+//                       '<cbc:Name>PJ - 900373115 - Adquiriente FE</cbc:Name>'.
+//                     '</cac:PartyName>'.
+//                     '<fe:PhysicalLocation>'.
+//                       '<fe:Address>'.
+//                         '<cbc:Department>Distrito Capital</cbc:Department>'.
+//                         '<cbc:CitySubdivisionName>Centro</cbc:CitySubdivisionName>'.
+//                         '<cbc:CityName>Bogotá</cbc:CityName>'.
+//                         '<cac:AddressLine>'.
+//                           '<cbc:Line>carrera 8 Nº 6C - 78</cbc:Line>'.
+//                         '</cac:AddressLine>'.
+//                         '<cac:Country>'.
+//                           '<cbc:IdentificationCode>CO</cbc:IdentificationCode>'.
+//                         '</cac:Country>'.
+//                       '</fe:Address>'.
+//                     '</fe:PhysicalLocation>'.
+//                     '<fe:PartyTaxScheme>'.
+//                       '<cbc:TaxLevelCode>0</cbc:TaxLevelCode>'.
+//                       '<cac:TaxScheme>'.
+//                       '</cac:TaxScheme>'.
+//                     '</fe:PartyTaxScheme>'.
+//                     '<fe:PartyLegalEntity>'.
+//                       '<cbc:RegistrationName>PJ - 900373115</cbc:RegistrationName>'.
+//                     '</fe:PartyLegalEntity>'.
+//                   '</fe:Party>'.
+//                 '</fe:AccountingSupplierParty>'.
+//                 '<fe:AccountingCustomerParty>'.
+//                   '<cbc:AdditionalAccountID>2</cbc:AdditionalAccountID>'.
+//                   '<fe:Party>'.
+//                     '<cac:PartyIdentification>'.
+//                       '<cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeID="31">'.$Nit.'</cbc:ID>'.
+//                     '</cac:PartyIdentification>'.
+//                     '<fe:PhysicalLocation>'.
+//                       '<fe:Address>'.
+//                         '<cbc:Department>Valle del Cauca</cbc:Department>'.
+//                         '<cbc:CitySubdivisionName>Centro</cbc:CitySubdivisionName>'.
+//                         '<cbc:CityName>Toribio</cbc:CityName>'.
+//                         '<cac:AddressLine>'.
+//                           '<cbc:Line>carrera 8 Nº 6C - 46</cbc:Line>'.
+//                         '</cac:AddressLine>'.
+//                         '<cac:Country>'.
+//                           '<cbc:IdentificationCode>CO</cbc:IdentificationCode>'.
+//                         '</cac:Country>'.
+//                       '</fe:Address>'.
+//                     '</fe:PhysicalLocation>'.
+//                     '<fe:PartyTaxScheme>'.
+//                       '<cbc:TaxLevelCode>0</cbc:TaxLevelCode>'.
+//                       '<cac:TaxScheme>'.
+//                       '</cac:TaxScheme>'.
+//                     '</fe:PartyTaxScheme>'.
+//                     '<fe:Person>'.
+//                       '<cbc:FirstName>Primer-N</cbc:FirstName>'.
+//                       '<cbc:FamilyName>Apellido-11333000</cbc:FamilyName>'.
+//                       '<cbc:MiddleName>Segundo-N</cbc:MiddleName>'.
+//                     '</fe:Person>'.
+//                   '</fe:Party>'.
+//                 '</fe:AccountingCustomerParty>'.
+
+
+
+//               '<fe:TaxTotal>'.
+//                 '<cbc:TaxAmount currencyID="COP">'.$ValImp1.'</cbc:TaxAmount>'.
+//                 '<cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator>'.
+//                 '<fe:TaxSubtotal>'.
+//                   '<cbc:TaxableAmount currencyID="COP">'.$LineExtensionAmount.'</cbc:TaxableAmount>'.
+//                   '<cbc:TaxAmount currencyID="COP">'.$ValImp1.'</cbc:TaxAmount>'.
+//                   '<cbc:Percent>19</cbc:Percent>'.
+//                   '<cac:TaxCategory>'.
+//                     '<cac:TaxScheme>'.
+//                       '<cbc:ID>'.$CodImp1.'</cbc:ID>'.
+//                     '</cac:TaxScheme>'.
+//                   '</cac:TaxCategory>'.
+//                 '</fe:TaxSubtotal>'.
+//               '</fe:TaxTotal>'.
+
+//               '<fe:TaxTotal>'.
+//                 '<cbc:TaxAmount currencyID="COP">'.$ValImp2.'</cbc:TaxAmount>'.
+//                 '<cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator>'.
+//                 '<fe:TaxSubtotal>'.
+//                   '<cbc:TaxableAmount currencyID="COP">'.$LineExtensionAmount.'</cbc:TaxableAmount>'.
+//                   '<cbc:TaxAmount currencyID="COP">'.$ValImp2.'</cbc:TaxAmount>'.
+//                   '<cbc:Percent>5</cbc:Percent>'.
+//                   '<cac:TaxCategory>'.
+//                     '<cac:TaxScheme>'.
+//                       '<cbc:ID>'.$CodImp2.'</cbc:ID>'.
+//                     '</cac:TaxScheme>'.
+//                   '</cac:TaxCategory>'.
+//                 '</fe:TaxSubtotal>'.
+//               '</fe:TaxTotal>'.
+
+
+//               '<fe:TaxTotal>'.
+//                 '<cbc:TaxAmount currencyID="COP">'.$ValImp3.'</cbc:TaxAmount>'.
+//                 '<cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator>'.
+//                 '<fe:TaxSubtotal>'.
+//                   '<cbc:TaxableAmount currencyID="COP">0.00</cbc:TaxableAmount>'.
+//                   '<cbc:TaxAmount currencyID="COP">'.$ValImp3.'</cbc:TaxAmount>'.
+//                   '<cbc:Percent>0</cbc:Percent>'.
+//                   '<cac:TaxCategory>'.
+//                     '<cac:TaxScheme>'.
+//                       '<cbc:ID>'.$CodImp3.'</cbc:ID>'.
+//                     '</cac:TaxScheme>'.
+//                   '</cac:TaxCategory>'.
+//                 '</fe:TaxSubtotal>'.
+//               '</fe:TaxTotal>'.
+
+//             '<fe:LegalMonetaryTotal>'.
+//               '<cbc:LineExtensionAmount currencyID="COP">'.$LineExtensionAmount.'</cbc:LineExtensionAmount>'.
+//               '<cbc:TaxExclusiveAmount currencyID="COP">'.$TaxExclusiveAmount.'</cbc:TaxExclusiveAmount>  '.
+//               '<cbc:PayableAmount currencyID="COP">'.$PayableAmount.'</cbc:PayableAmount>           '.
+//             '</fe:LegalMonetaryTotal>'.
+//             '<fe:InvoiceLine>'.
+//               '<cbc:ID>1</cbc:ID>'.
+//               '<cbc:InvoicedQuantity>1</cbc:InvoicedQuantity>'.
+//               '<cbc:LineExtensionAmount currencyID="COP">500.00</cbc:LineExtensionAmount>'.
+//               '<fe:Item>'.
+//                 '<cbc:Description>cascos d2</cbc:Description>'.
+//               '</fe:Item>'.
+//               '<fe:Price>'.
+//                 '<cbc:PriceAmount currencyID="COP">500.00</cbc:PriceAmount>'.
+//               '</fe:Price>'.
+//             '</fe:InvoiceLine>';
+// //<!--_________________________________________fin__UBL_factura_____________________________________________________-->
+//     // Close invoice and document
+//     $xml .= '</fe:Invoice>';
+
+    //$xml= '<fe:Invoice xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:clm54217="urn:un:unece:uncefact:codelist:specification:54217:2001" xmlns:clm66411="urn:un:unece:uncefact:codelist:specification:66411:2001" xmlns:clmIANAMIMEMediaType="urn:un:unece:uncefact:codelist:specification:IANAMIMEMediaType:2003" xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2" xmlns:fe="http://www.dian.gov.co/contratos/facturaelectronica/v1" xmlns:qdt="urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2" xmlns:sts="http://www.dian.gov.co/contratos/facturaelectronica/v1/Structures" xmlns:udt="urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2" xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dian.gov.co/contratos/facturaelectronica/v1 ../xsd/DIAN_UBL.xsd urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2 ../../ubl2/common/UnqualifiedDataTypeSchemaModule-2.0.xsd urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2 ../../ubl2/common/UBL-QualifiedDatatypes-2.0.xsd"><ext:UBLExtensions><ext:UBLExtension><ext:ExtensionContent><sts:DianExtensions><sts:InvoiceControl><sts:InvoiceAuthorization>9000000105596663</sts:InvoiceAuthorization><sts:AuthorizationPeriod><cbc:StartDate>2018-02-14</cbc:StartDate><cbc:EndDate>2028-02-14</cbc:EndDate></sts:AuthorizationPeriod><sts:AuthorizedInvoices><sts:Prefix>PRUE</sts:Prefix><sts:From>980000000</sts:From><sts:To>985000000</sts:To></sts:AuthorizedInvoices></sts:InvoiceControl><sts:InvoiceSource><cbc:IdentificationCode listAgencyID="6" listAgencyName="United Nations Economic Commission for Europe" listSchemeURI="urn:oasis:names:specification:ubl:codelist:gc:CountryIdentificationCode-2.0">CO</cbc:IdentificationCode></sts:InvoiceSource><sts:SoftwareProvider><sts:ProviderID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">900332178</sts:ProviderID><sts:SoftwareID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">ff8d5e3f-6746-40cb-9621-d52903f7d8b7</sts:SoftwareID></sts:SoftwareProvider><sts:SoftwareSecurityCode schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeName="SoftwareSecurityCode" schemeURI="http://www.dian.gov.co/contratos/facturaelectronica/v1/anexo_v1_0.html#SofwareSecurityCode">c590bebf67471c586bae888c9db5694444f3be2ce4e73eee7a7fb1d7322916d15da2bfa73a237c6ca18712e4152a5625</sts:SoftwareSecurityCode></sts:DianExtensions></ext:ExtensionContent></ext:UBLExtension><ext:UBLExtension><ext:ExtensionContent></ext:ExtensionContent></ext:UBLExtension></ext:UBLExtensions><cbc:UBLVersionID>UBL 2.0</cbc:UBLVersionID><cbc:ProfileID>DIAN 1.0</cbc:ProfileID>   <cbc:ID>PRUE980000107</cbc:ID><cbc:UUID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">48febb6c0060aca1c3dc4b0161596990f5f9689a</cbc:UUID><cbc:IssueDate>2018-08-16</cbc:IssueDate>  <cbc:IssueTime>11:56:54</cbc:IssueTime>  <cbc:InvoiceTypeCode listAgencyID="195" listAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" listSchemeURI="http://www.dian.gov.co/contratos/facturaelectronica/v1/InvoiceType">1</cbc:InvoiceTypeCode><cbc:Note>ARQUITECTU</cbc:Note><cbc:DocumentCurrencyCode>COP</cbc:DocumentCurrencyCode><fe:AccountingSupplierParty><cbc:AdditionalAccountID>1</cbc:AdditionalAccountID><fe:Party>     <cac:PartyIdentification><cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeID="31">900332178</cbc:ID></cac:PartyIdentification><cac:PartyName><cbc:Name>ALMACEN FERRETERIA AMISTAD</cbc:Name></cac:PartyName><fe:PhysicalLocation><fe:Address><cbc:Department>ANTIOQUIA</cbc:Department><cbc:CitySubdivisionName></cbc:CitySubdivisionName><cbc:CityName>MEDELLIN</cbc:CityName><cac:AddressLine><cbc:Line>CRA 50 # 42 - 107</cbc:Line></cac:AddressLine><cac:Country><cbc:IdentificationCode>CO</cbc:IdentificationCode></cac:Country></fe:Address></fe:PhysicalLocation><fe:PartyTaxScheme><cbc:TaxLevelCode>2</cbc:TaxLevelCode><cac:TaxScheme></cac:TaxScheme></fe:PartyTaxScheme><fe:PartyLegalEntity><cbc:RegistrationName>ALMACEN FERRETERIA AMISTAD</cbc:RegistrationName></fe:PartyLegalEntity></fe:Party></fe:AccountingSupplierParty><fe:AccountingCustomerParty><cbc:AdditionalAccountID>2</cbc:AdditionalAccountID><fe:Party><cac:PartyIdentification><cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeID="31">800093117</cbc:ID></cac:PartyIdentification><fe:PhysicalLocation><fe:Address><cbc:Department>ANTIOQUIA</cbc:Department><cbc:CitySubdivisionName></cbc:CitySubdivisionName><cbc:CityName>ENVIGADO</cbc:CityName><cac:AddressLine><cbc:Line>CL 36 SUR 23 96</cbc:Line></cac:AddressLine><cac:Country><cbc:IdentificationCode>CO</cbc:IdentificationCode></cac:Country></fe:Address></fe:PhysicalLocation><fe:PartyTaxScheme><cbc:TaxLevelCode>0</cbc:TaxLevelCode><cac:TaxScheme></cac:TaxScheme></fe:PartyTaxScheme><fe:Person><cbc:FirstName>ARQUITECTURA Y CONCRETO S.A.S</cbc:FirstName><cbc:FamilyName>ARQUITECTURA Y CONCRETO S.A.S</cbc:FamilyName><cbc:MiddleName>ARQUITECTURA Y CONCRETO S.A.S</cbc:MiddleName></fe:Person></fe:Party></fe:AccountingCustomerParty><fe:TaxTotal><cbc:TaxAmount currencyID="COP">22982.00</cbc:TaxAmount><cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator><fe:TaxSubtotal><cbc:TaxableAmount currencyID="COP">172010.00</cbc:TaxableAmount><cbc:TaxAmount currencyID="COP">22982.00</cbc:TaxAmount><cbc:Percent>19</cbc:Percent><cac:TaxCategory><cac:TaxScheme><cbc:ID>01</cbc:ID></cac:TaxScheme></cac:TaxCategory></fe:TaxSubtotal></fe:TaxTotal><fe:TaxTotal><cbc:TaxAmount currencyID="COP">2553.00</cbc:TaxAmount><cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator><fe:TaxSubtotal><cbc:TaxableAmount currencyID="COP">172010.00</cbc:TaxableAmount><cbc:TaxAmount currencyID="COP">2553.00</cbc:TaxAmount><cbc:Percent>5</cbc:Percent><cac:TaxCategory><cac:TaxScheme><cbc:ID>02</cbc:ID></cac:TaxScheme></cac:TaxCategory></fe:TaxSubtotal></fe:TaxTotal><fe:TaxTotal><cbc:TaxAmount currencyID="COP">0.00</cbc:TaxAmount><cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator><fe:TaxSubtotal><cbc:TaxableAmount currencyID="COP">0.00</cbc:TaxableAmount><cbc:TaxAmount currencyID="COP">0.00</cbc:TaxAmount><cbc:Percent>0</cbc:Percent><cac:TaxCategory><cac:TaxScheme><cbc:ID>03</cbc:ID></cac:TaxScheme></cac:TaxCategory></fe:TaxSubtotal></fe:TaxTotal><fe:LegalMonetaryTotal><cbc:LineExtensionAmount currencyID="COP">172010.00</cbc:LineExtensionAmount><cbc:TaxExclusiveAmount currencyID="COP">25535</cbc:TaxExclusiveAmount>  <cbc:PayableAmount currencyID="COP">197545.00</cbc:PayableAmount>           </fe:LegalMonetaryTotal><fe:InvoiceLine><cbc:ID>1</cbc:ID><cbc:InvoicedQuantity>30.0</cbc:InvoicedQuantity><cbc:LineExtensionAmount currencyID="COP">19770</cbc:LineExtensionAmount><fe:Item><cbc:Description>BISAG.3X3 C16 CP HO ST          INDUMA X24 UDS</cbc:Description></fe:Item><fe:Price><cbc:PriceAmount currencyID="COP">659.0</cbc:PriceAmount></fe:Price></fe:InvoiceLine><fe:InvoiceLine><cbc:ID>2</cbc:ID><cbc:InvoicedQuantity>6.0</cbc:InvoicedQuantity><cbc:LineExtensionAmount currencyID="COP">18054</cbc:LineExtensionAmount><fe:Item><cbc:Description>CABO MADERA P/PALA</cbc:Description></fe:Item><fe:Price><cbc:PriceAmount currencyID="COP">3009.0</cbc:PriceAmount></fe:Price></fe:InvoiceLine><fe:InvoiceLine><cbc:ID>3</cbc:ID><cbc:InvoicedQuantity>5.0</cbc:InvoicedQuantity><cbc:LineExtensionAmount currencyID="COP">51050</cbc:LineExtensionAmount><fe:Item><cbc:Description>PALA GARLANCHA No.4 SIN CABO    R:6056-40 HERRAGRO</cbc:Description></fe:Item><fe:Price><cbc:PriceAmount currencyID="COP">10210.0</cbc:PriceAmount></fe:Price></fe:InvoiceLine><fe:InvoiceLine><cbc:ID>4</cbc:ID><cbc:InvoicedQuantity>6.0</cbc:InvoicedQuantity><cbc:LineExtensionAmount currencyID="COP">83136</cbc:LineExtensionAmount><fe:Item><cbc:Description>TEJA ZINC 3.05 X .80 ONDULADA</cbc:Description></fe:Item><fe:Price><cbc:PriceAmount currencyID="COP">13856.0</cbc:PriceAmount></fe:Price></fe:InvoiceLine></fe:Invoice>';
+    // Add signature
+    // $xml = $this->injectSignature($xml,$fecha['SigningTime']);
+    // Prepend content type
+
+// $xml='<fe:DebitNote xmlns:fe="http://www.dian.gov.co/contratos/facturaelectronica/v1" xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:ccts="urn:oasis:names:specification:ubl:schema:xsd:CoreComponentParameters-2" xmlns:sdt="urn:oasis:names:specification:ubl:schema:xsd:SpecializedDatatypes-2" xmlns:clm54217="urn:un:unece:uncefact:codelist:specification:54217:2001" xmlns:clm66411="urn:un:unece:uncefact:codelist:specification:66411:2001" xmlns:clmIANAMIMEMediaType="urn:un:unece:uncefact:codelist:specification:IANAMIMEMediaType:2003" xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2" xmlns:qdt="urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2" xmlns:sts="http://www.dian.gov.co/contratos/facturaelectronica/v1/Structures" xmlns:udt="urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2" xsi:schemaLocation="http://www.dian.gov.co/contratos/facturaelectronica/v1 ../xsd/DIAN_UBL.xsd urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2 ../../ubl2/common/UnqualifiedDataTypeSchemaModule-2.0.xsd urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2 ../../ubl2/common/UBL-QualifiedDatatypes-2.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">';
+
+$xml .='<ext:UBLExtensions>'.
+    '<ext:UBLExtension>'.
+      '<ext:ExtensionContent>'.
+        '<sts:DianExtensions>'.
+          '<sts:InvoiceSource>'.
+            '<cbc:IdentificationCode listAgencyID="6" listAgencyName="United Nations Economic Commission for Europe" listSchemeURI="urn:oasis:names:specification:ubl:codelist:gc:CountryIdentificationCode-2.0">CO</cbc:IdentificationCode>'.
+          '</sts:InvoiceSource>'.
+          '<sts:SoftwareProvider>'.
+            '<sts:ProviderID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeURI="http://www.unece.org/trade/untdid/d08a/tred/tred3055.htm" schemeName="NIT, RUT" schemeDataURI="www.dian.gov.co/contenidos/servicios/rut_preguntasfrecuentes.html">'.$ProviderID.'</sts:ProviderID>'.
+            '<sts:SoftwareID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeURI="http://www.unece.org/trade/untdid/d08a/tred/tred3055.htm" schemeName="Código de Activación" schemeDataURI="http://www.dian.gov.co/micrositios/fac_electronica/documentos/Guia_del_usuario_Habilitacion_Adquirente.pdf">'.$SoftwareID.'</sts:SoftwareID>'.
+          '</sts:SoftwareProvider>'.
+          '<sts:SoftwareSecurityCode schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeURI="http://www.unece.org/trade/untdid/d08a/tred/tred3055.htm" schemeName="Código de Seguridad del Software" schemeDataURI="http://www.dian.gov.co/micrositios/fac_electronica/documentos/Anexo_Tecnico_003_Mecanismos_Sistema_Tecnico_de_Control.pdf">'.$SoftwareSecurityCode.'</sts:SoftwareSecurityCode>'.
+        '</sts:DianExtensions>'.
+      '</ext:ExtensionContent>'.
+    '</ext:UBLExtension>';
+
+$xml .= '<ext:UBLExtension>'.
                   '<ext:ExtensionContent></ext:ExtensionContent>'.
-                '</ext:UBLExtension>';
-        //<!--_____________________________________fin__ExtensionContent_firma_factura____________________________________-->
-    $xml .='</ext:UBLExtensions>';
-//<!--_________________________________________fin__Extensions_firma________________________________________________-->
-//<!--_________________________________________ini__UBL_factura_____________________________________________________-->
-    $xml .='<cbc:UBLVersionID>UBL 2.0</cbc:UBLVersionID>'.
-            '<cbc:ProfileID>DIAN 1.0</cbc:ProfileID>   '.
-            '<cbc:ID>'.$NumFac.'</cbc:ID>'.
-            '<cbc:UUID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">'.$cufe.'</cbc:UUID>'.
-            '<cbc:IssueDate>'.$fecha['IssueDate'].'</cbc:IssueDate>  '.
-            '<cbc:IssueTime>'.$fecha['IssueTime'].'</cbc:IssueTime>  '.
-            '<cbc:InvoiceTypeCode listAgencyID="195" listAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" listSchemeURI="http://www.dian.gov.co/contratos/facturaelectronica/v1/InvoiceType">1</cbc:InvoiceTypeCode>'.
-            '<cbc:Note>'.$Note.'</cbc:Note>'.
-            '<cbc:DocumentCurrencyCode>COP</cbc:DocumentCurrencyCode>'.
-                '<fe:AccountingSupplierParty>'.
-                  '<cbc:AdditionalAccountID>1</cbc:AdditionalAccountID>'.
-                  '<fe:Party>     '.
-                    '<cac:PartyIdentification>'.
-                      '<cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeID="31">'.$Nit.'</cbc:ID>'.
-                    '</cac:PartyIdentification>'.
-                      '<cac:PartyName>'.
-                      '<cbc:Name>PJ - 900373115 - Adquiriente FE</cbc:Name>'.
-                    '</cac:PartyName>'.
-                    '<fe:PhysicalLocation>'.
-                      '<fe:Address>'.
-                        '<cbc:Department>Distrito Capital</cbc:Department>'.
-                        '<cbc:CitySubdivisionName>Centro</cbc:CitySubdivisionName>'.
-                        '<cbc:CityName>Bogotá</cbc:CityName>'.
-                        '<cac:AddressLine>'.
-                          '<cbc:Line>carrera 8 Nº 6C - 78</cbc:Line>'.
-                        '</cac:AddressLine>'.
-                        '<cac:Country>'.
-                          '<cbc:IdentificationCode>CO</cbc:IdentificationCode>'.
-                        '</cac:Country>'.
-                      '</fe:Address>'.
-                    '</fe:PhysicalLocation>'.
-                    '<fe:PartyTaxScheme>'.
-                      '<cbc:TaxLevelCode>0</cbc:TaxLevelCode>'.
-                      '<cac:TaxScheme>'.
-                      '</cac:TaxScheme>'.
-                    '</fe:PartyTaxScheme>'.
-                    '<fe:PartyLegalEntity>'.
-                      '<cbc:RegistrationName>PJ - 900373115</cbc:RegistrationName>'.
-                    '</fe:PartyLegalEntity>'.
-                  '</fe:Party>'.
-                '</fe:AccountingSupplierParty>'.
-                '<fe:AccountingCustomerParty>'.
-                  '<cbc:AdditionalAccountID>2</cbc:AdditionalAccountID>'.
-                  '<fe:Party>'.
-                    '<cac:PartyIdentification>'.
-                      '<cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeID="31">'.$Nit.'</cbc:ID>'.
-                    '</cac:PartyIdentification>'.
-                    '<fe:PhysicalLocation>'.
-                      '<fe:Address>'.
-                        '<cbc:Department>Valle del Cauca</cbc:Department>'.
-                        '<cbc:CitySubdivisionName>Centro</cbc:CitySubdivisionName>'.
-                        '<cbc:CityName>Toribio</cbc:CityName>'.
-                        '<cac:AddressLine>'.
-                          '<cbc:Line>carrera 8 Nº 6C - 46</cbc:Line>'.
-                        '</cac:AddressLine>'.
-                        '<cac:Country>'.
-                          '<cbc:IdentificationCode>CO</cbc:IdentificationCode>'.
-                        '</cac:Country>'.
-                      '</fe:Address>'.
-                    '</fe:PhysicalLocation>'.
-                    '<fe:PartyTaxScheme>'.
-                      '<cbc:TaxLevelCode>0</cbc:TaxLevelCode>'.
-                      '<cac:TaxScheme>'.
-                      '</cac:TaxScheme>'.
-                    '</fe:PartyTaxScheme>'.
-                    '<fe:Person>'.
-                      '<cbc:FirstName>Primer-N</cbc:FirstName>'.
-                      '<cbc:FamilyName>Apellido-11333000</cbc:FamilyName>'.
-                      '<cbc:MiddleName>Segundo-N</cbc:MiddleName>'.
-                    '</fe:Person>'.
-                  '</fe:Party>'.
-                '</fe:AccountingCustomerParty>'.
+        '</ext:UBLExtension>';
+
+$xml .='</ext:UBLExtensions>'.
+  '<cbc:UBLVersionID>UBL 2.0</cbc:UBLVersionID>'.
+  '<cbc:CustomizationID/>'.
+  '<cbc:ProfileID>DIAN 1.0</cbc:ProfileID>'.
+  '<cbc:ID>3</cbc:ID>'.
+  '<cbc:IssueDate>'.$fecha['IssueDate'].'</cbc:IssueDate>  '.
+    '<cbc:IssueTime>'.$fecha['IssueTime'].'</cbc:IssueTime>  '.
+
+  '<cbc:Note>La ND no incluye el elemento UUID </cbc:Note>'.
+
+  '<cbc:Note>Este documento ejemplifica la causación de intereses de mora a una factura electrónica específica.</cbc:Note>'.
+  '<cbc:Note>El elemento xPath: /fe:DebitNote/cbc:ID contiene la identificación única de la Nota Débito</cbc:Note>'.
+
+  '<cbc:Note>El valor debitado a la Factura del Deudor está en los elementos del fragmento xPath: /fe:DebitNote/fe:LegalMonetaryTotal/, compuesto por tres elementos. </cbc:Note>'.
 
 
+  '<cbc:Note>Los intereses por mora causan el IVA. Por esta razón se incluye el fragmento xPath: /fe:DebitNote/fe:TaxTotal</cbc:Note>'.
 
-              '<fe:TaxTotal>'.
-                '<cbc:TaxAmount currencyID="COP">'.$ValImp1.'</cbc:TaxAmount>'.
-                '<cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator>'.
-                '<fe:TaxSubtotal>'.
-                  '<cbc:TaxableAmount currencyID="COP">'.$LineExtensionAmount.'</cbc:TaxableAmount>'.
-                  '<cbc:TaxAmount currencyID="COP">'.$ValImp1.'</cbc:TaxAmount>'.
-                  '<cbc:Percent>19</cbc:Percent>'.
-                  '<cac:TaxCategory>'.
-                    '<cac:TaxScheme>'.
-                      '<cbc:ID>'.$CodImp1.'</cbc:ID>'.
-                    '</cac:TaxScheme>'.
-                  '</cac:TaxCategory>'.
-                '</fe:TaxSubtotal>'.
-              '</fe:TaxTotal>'.
+  '<cbc:Note>El elemento xPath: /fe:DebitNote/cac:DiscrepancyResponse/cbc:ReferenceID debe estar presente y vacío.</cbc:Note>'.
 
-              '<fe:TaxTotal>'.
-                '<cbc:TaxAmount currencyID="COP">'.$ValImp2.'</cbc:TaxAmount>'.
-                '<cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator>'.
-                '<fe:TaxSubtotal>'.
-                  '<cbc:TaxableAmount currencyID="COP">'.$LineExtensionAmount.'</cbc:TaxableAmount>'.
-                  '<cbc:TaxAmount currencyID="COP">'.$ValImp2.'</cbc:TaxAmount>'.
-                  '<cbc:Percent>5</cbc:Percent>'.
-                  '<cac:TaxCategory>'.
-                    '<cac:TaxScheme>'.
-                      '<cbc:ID>'.$CodImp2.'</cbc:ID>'.
-                    '</cac:TaxScheme>'.
-                  '</cac:TaxCategory>'.
-                '</fe:TaxSubtotal>'.
-              '</fe:TaxTotal>'.
-
-
-              '<fe:TaxTotal>'.
-                '<cbc:TaxAmount currencyID="COP">'.$ValImp3.'</cbc:TaxAmount>'.
-                '<cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator>'.
-                '<fe:TaxSubtotal>'.
-                  '<cbc:TaxableAmount currencyID="COP">0.00</cbc:TaxableAmount>'.
-                  '<cbc:TaxAmount currencyID="COP">'.$ValImp3.'</cbc:TaxAmount>'.
-                  '<cbc:Percent>0</cbc:Percent>'.
-                  '<cac:TaxCategory>'.
-                    '<cac:TaxScheme>'.
-                      '<cbc:ID>'.$CodImp3.'</cbc:ID>'.
-                    '</cac:TaxScheme>'.
-                  '</cac:TaxCategory>'.
-                '</fe:TaxSubtotal>'.
-              '</fe:TaxTotal>'.
-
-            '<fe:LegalMonetaryTotal>'.
+  '<cbc:Note>El elemento xPath: /fe:DebitNote/cac:BillingReference/cac:InvoiceDocumentReference/cbc:ID es el primer identificador de la factura que será afectada</cbc:Note>'.
+  '<cbc:Note>El elemento xPath: /fe:DebitNote/cac:BillingReference/cac:InvoiceDocumentReference/cbc:UUID es el segundo identificador de la factura que será afectada; solo aplica para aquellas facturas que registran el CUFE en el elemento ./cbc:UUID; no aplica para la factura de contingencia. Esta última factura debe excluir el ./cbc:UUID</cbc:Note>'.
+  '<cbc:Note>El elemento xPath: /fe:DebitNote/cac:BillingReference/cac:InvoiceDocumentReference/cbc:IssueDate contendrá la fecha de la factura</cbc:Note>'.
+  '<cbc:Note>El fragmento xPath: /fe:DebitNote/cac:BillingReference contiene los identificadores de una factura.</cbc:Note>'.
+  '<cbc:DocumentCurrencyCode>COP</cbc:DocumentCurrencyCode>'.
+  '<cac:DiscrepancyResponse>'.
+    '<cbc:ReferenceID/>'.
+    '<cbc:ResponseCode listName="concepto de notas débito" listSchemeURI="http://www.dian.gov.co/micrositios/fac_electronica/documentos/Anexo_Tecnico_001_Formatos_de_los_Documentos_XML_de_Facturacion_Electron.pdf" name="2:= gastos por cobrar">1</cbc:ResponseCode>'.
+  '</cac:DiscrepancyResponse>'.
+  '<cac:BillingReference>'.
+    '<cac:InvoiceDocumentReference>'.
+      '<cbc:ID schemeName="número de la factura a afectar">PRUE980000113</cbc:ID>'.
+      '<cbc:UUID schemeName="CUFE de la factura de venta || factura de exportación"></cbc:UUID>'.
+      '<cbc:IssueDate>2018-08-31</cbc:IssueDate>'.
+    '</cac:InvoiceDocumentReference>'.
+  '</cac:BillingReference>'.
+  '<fe:AccountingSupplierParty>'.
+    '<cbc:AdditionalAccountID>1</cbc:AdditionalAccountID>'.
+ '<fe:Party>'.
+    '<cac:PartyIdentification>'.
+      '<cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeID="31">'.$Nit.'</cbc:ID>'.
+    '</cac:PartyIdentification>'.
+      '<cac:PartyName>'.
+      '<cbc:Name>PJ - 900373115 - Adquiriente FE</cbc:Name>'.
+    '</cac:PartyName>'.
+    '<fe:PhysicalLocation>'.
+      '<fe:Address>'.
+        '<cbc:Department>Distrito Capital</cbc:Department>'.
+        '<cbc:CitySubdivisionName>Centro</cbc:CitySubdivisionName>'.
+        '<cbc:CityName>Bogotá</cbc:CityName>'.
+        '<cac:AddressLine>'.
+          '<cbc:Line>carrera 8 Nº 6C - 78</cbc:Line>'.
+        '</cac:AddressLine>'.
+        '<cac:Country>'.
+          '<cbc:IdentificationCode>CO</cbc:IdentificationCode>'.
+        '</cac:Country>'.
+      '</fe:Address>'.
+    '</fe:PhysicalLocation>'.
+    '<fe:PartyTaxScheme>'.
+      '<cbc:TaxLevelCode>0</cbc:TaxLevelCode>'.
+      '<cac:TaxScheme>'.
+      '</cac:TaxScheme>'.
+    '</fe:PartyTaxScheme>'.
+    '<fe:PartyLegalEntity>'.
+      '<cbc:RegistrationName>PJ - 900373115</cbc:RegistrationName>'.
+    '</fe:PartyLegalEntity>'.
+  '</fe:Party>'.
+'</fe:AccountingSupplierParty>'.
+  '<fe:AccountingCustomerParty>'.
+    '<cbc:AdditionalAccountID schemeName="tipos de persona; comprador: una persona natural" schemeDataURI="http://www.dian.gov.co/micrositios/fac_electronica/documentos/Anexo_Tecnico_001_Formatos_de_los_Documentos_XML_de_Facturacion_Electron.pdf">2</cbc:AdditionalAccountID>'.
+'<fe:Party>'.
+'<cac:PartyIdentification>'.
+  '<cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeID="31">'.$Nit.'</cbc:ID>'.
+'</cac:PartyIdentification>'.
+'<fe:PhysicalLocation>'.
+  '<fe:Address>'.
+    '<cbc:Department>Valle del Cauca</cbc:Department>'.
+    '<cbc:CitySubdivisionName>Centro</cbc:CitySubdivisionName>'.
+    '<cbc:CityName>Toribio</cbc:CityName>'.
+    '<cac:AddressLine>'.
+      '<cbc:Line>carrera 8 Nº 6C - 46</cbc:Line>'.
+    '</cac:AddressLine>'.
+    '<cac:Country>'.
+      '<cbc:IdentificationCode>CO</cbc:IdentificationCode>'.
+    '</cac:Country>'.
+  '</fe:Address>'.
+'</fe:PhysicalLocation>'.
+'<fe:PartyTaxScheme>'.
+  '<cbc:TaxLevelCode>0</cbc:TaxLevelCode>'.
+  '<cac:TaxScheme>'.
+  '</cac:TaxScheme>'.
+'</fe:PartyTaxScheme>'.
+'<fe:Person>'.
+  '<cbc:FirstName>Primer-N</cbc:FirstName>'.
+  '<cbc:FamilyName>Apellido-11333000</cbc:FamilyName>'.
+  '<cbc:MiddleName>Segundo-N</cbc:MiddleName>'.
+'</fe:Person>'.
+'</fe:Party>'.
+  '</fe:AccountingCustomerParty>'.
+'<fe:TaxTotal>'.
+'<cbc:TaxAmount currencyID="COP">'.$ValImp1.'</cbc:TaxAmount>'.
+'<cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator>'.
+'<fe:TaxSubtotal>'.
+  '<cbc:TaxableAmount currencyID="COP">'.$LineExtensionAmount.'</cbc:TaxableAmount>'.
+  '<cbc:TaxAmount currencyID="COP">'.$ValImp1.'</cbc:TaxAmount>'.
+  '<cbc:Percent>19</cbc:Percent>'.
+  '<cac:TaxCategory>'.
+    '<cac:TaxScheme>'.
+      '<cbc:ID>'.$CodImp1.'</cbc:ID>'.
+    '</cac:TaxScheme>'.
+  '</cac:TaxCategory>'.
+'</fe:TaxSubtotal>'.
+'</fe:TaxTotal>'.
+  '<fe:LegalMonetaryTotal>'.
               '<cbc:LineExtensionAmount currencyID="COP">'.$LineExtensionAmount.'</cbc:LineExtensionAmount>'.
               '<cbc:TaxExclusiveAmount currencyID="COP">'.$TaxExclusiveAmount.'</cbc:TaxExclusiveAmount>  '.
               '<cbc:PayableAmount currencyID="COP">'.$PayableAmount.'</cbc:PayableAmount>           '.
             '</fe:LegalMonetaryTotal>'.
-            '<fe:InvoiceLine>'.
-              '<cbc:ID>1</cbc:ID>'.
-              '<cbc:InvoicedQuantity>1</cbc:InvoicedQuantity>'.
-              '<cbc:LineExtensionAmount currencyID="COP">500.00</cbc:LineExtensionAmount>'.
-              '<fe:Item>'.
-                '<cbc:Description>cascos d2</cbc:Description>'.
-              '</fe:Item>'.
-              '<fe:Price>'.
-                '<cbc:PriceAmount currencyID="COP">500.00</cbc:PriceAmount>'.
-              '</fe:Price>'.
-            '</fe:InvoiceLine>';
-//<!--_________________________________________fin__UBL_factura_____________________________________________________-->
-    // Close invoice and document
-    $xml .= '</fe:Invoice>';
+  '<cac:DebitNoteLine>'.
+    '<cbc:ID>1</cbc:ID>';
+$nota = '61cd1e40e3f97ce2e5305512b5114add0f4504cc';
+$NotaExplica = $nota;
+$VrLinea     = $LineExtensionAmount;
+$CCost       = '500.00';
+$Desc        = 'cualquiercosa';
+$uuid= sha1($NotaExplica.$VrLinea.$CCost.$Desc);
 
-    //$xml= '<fe:Invoice xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:clm54217="urn:un:unece:uncefact:codelist:specification:54217:2001" xmlns:clm66411="urn:un:unece:uncefact:codelist:specification:66411:2001" xmlns:clmIANAMIMEMediaType="urn:un:unece:uncefact:codelist:specification:IANAMIMEMediaType:2003" xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2" xmlns:fe="http://www.dian.gov.co/contratos/facturaelectronica/v1" xmlns:qdt="urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2" xmlns:sts="http://www.dian.gov.co/contratos/facturaelectronica/v1/Structures" xmlns:udt="urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2" xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dian.gov.co/contratos/facturaelectronica/v1 ../xsd/DIAN_UBL.xsd urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2 ../../ubl2/common/UnqualifiedDataTypeSchemaModule-2.0.xsd urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2 ../../ubl2/common/UBL-QualifiedDatatypes-2.0.xsd"><ext:UBLExtensions><ext:UBLExtension><ext:ExtensionContent><sts:DianExtensions><sts:InvoiceControl><sts:InvoiceAuthorization>9000000105596663</sts:InvoiceAuthorization><sts:AuthorizationPeriod><cbc:StartDate>2018-02-14</cbc:StartDate><cbc:EndDate>2028-02-14</cbc:EndDate></sts:AuthorizationPeriod><sts:AuthorizedInvoices><sts:Prefix>PRUE</sts:Prefix><sts:From>980000000</sts:From><sts:To>985000000</sts:To></sts:AuthorizedInvoices></sts:InvoiceControl><sts:InvoiceSource><cbc:IdentificationCode listAgencyID="6" listAgencyName="United Nations Economic Commission for Europe" listSchemeURI="urn:oasis:names:specification:ubl:codelist:gc:CountryIdentificationCode-2.0">CO</cbc:IdentificationCode></sts:InvoiceSource><sts:SoftwareProvider><sts:ProviderID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">900332178</sts:ProviderID><sts:SoftwareID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">ff8d5e3f-6746-40cb-9621-d52903f7d8b7</sts:SoftwareID></sts:SoftwareProvider><sts:SoftwareSecurityCode schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeName="SoftwareSecurityCode" schemeURI="http://www.dian.gov.co/contratos/facturaelectronica/v1/anexo_v1_0.html#SofwareSecurityCode">c590bebf67471c586bae888c9db5694444f3be2ce4e73eee7a7fb1d7322916d15da2bfa73a237c6ca18712e4152a5625</sts:SoftwareSecurityCode></sts:DianExtensions></ext:ExtensionContent></ext:UBLExtension><ext:UBLExtension><ext:ExtensionContent></ext:ExtensionContent></ext:UBLExtension></ext:UBLExtensions><cbc:UBLVersionID>UBL 2.0</cbc:UBLVersionID><cbc:ProfileID>DIAN 1.0</cbc:ProfileID>   <cbc:ID>PRUE980000107</cbc:ID><cbc:UUID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">48febb6c0060aca1c3dc4b0161596990f5f9689a</cbc:UUID><cbc:IssueDate>2018-08-16</cbc:IssueDate>  <cbc:IssueTime>11:56:54</cbc:IssueTime>  <cbc:InvoiceTypeCode listAgencyID="195" listAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" listSchemeURI="http://www.dian.gov.co/contratos/facturaelectronica/v1/InvoiceType">1</cbc:InvoiceTypeCode><cbc:Note>ARQUITECTU</cbc:Note><cbc:DocumentCurrencyCode>COP</cbc:DocumentCurrencyCode><fe:AccountingSupplierParty><cbc:AdditionalAccountID>1</cbc:AdditionalAccountID><fe:Party>     <cac:PartyIdentification><cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeID="31">900332178</cbc:ID></cac:PartyIdentification><cac:PartyName><cbc:Name>ALMACEN FERRETERIA AMISTAD</cbc:Name></cac:PartyName><fe:PhysicalLocation><fe:Address><cbc:Department>ANTIOQUIA</cbc:Department><cbc:CitySubdivisionName></cbc:CitySubdivisionName><cbc:CityName>MEDELLIN</cbc:CityName><cac:AddressLine><cbc:Line>CRA 50 # 42 - 107</cbc:Line></cac:AddressLine><cac:Country><cbc:IdentificationCode>CO</cbc:IdentificationCode></cac:Country></fe:Address></fe:PhysicalLocation><fe:PartyTaxScheme><cbc:TaxLevelCode>2</cbc:TaxLevelCode><cac:TaxScheme></cac:TaxScheme></fe:PartyTaxScheme><fe:PartyLegalEntity><cbc:RegistrationName>ALMACEN FERRETERIA AMISTAD</cbc:RegistrationName></fe:PartyLegalEntity></fe:Party></fe:AccountingSupplierParty><fe:AccountingCustomerParty><cbc:AdditionalAccountID>2</cbc:AdditionalAccountID><fe:Party><cac:PartyIdentification><cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeID="31">800093117</cbc:ID></cac:PartyIdentification><fe:PhysicalLocation><fe:Address><cbc:Department>ANTIOQUIA</cbc:Department><cbc:CitySubdivisionName></cbc:CitySubdivisionName><cbc:CityName>ENVIGADO</cbc:CityName><cac:AddressLine><cbc:Line>CL 36 SUR 23 96</cbc:Line></cac:AddressLine><cac:Country><cbc:IdentificationCode>CO</cbc:IdentificationCode></cac:Country></fe:Address></fe:PhysicalLocation><fe:PartyTaxScheme><cbc:TaxLevelCode>0</cbc:TaxLevelCode><cac:TaxScheme></cac:TaxScheme></fe:PartyTaxScheme><fe:Person><cbc:FirstName>ARQUITECTURA Y CONCRETO S.A.S</cbc:FirstName><cbc:FamilyName>ARQUITECTURA Y CONCRETO S.A.S</cbc:FamilyName><cbc:MiddleName>ARQUITECTURA Y CONCRETO S.A.S</cbc:MiddleName></fe:Person></fe:Party></fe:AccountingCustomerParty><fe:TaxTotal><cbc:TaxAmount currencyID="COP">22982.00</cbc:TaxAmount><cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator><fe:TaxSubtotal><cbc:TaxableAmount currencyID="COP">172010.00</cbc:TaxableAmount><cbc:TaxAmount currencyID="COP">22982.00</cbc:TaxAmount><cbc:Percent>19</cbc:Percent><cac:TaxCategory><cac:TaxScheme><cbc:ID>01</cbc:ID></cac:TaxScheme></cac:TaxCategory></fe:TaxSubtotal></fe:TaxTotal><fe:TaxTotal><cbc:TaxAmount currencyID="COP">2553.00</cbc:TaxAmount><cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator><fe:TaxSubtotal><cbc:TaxableAmount currencyID="COP">172010.00</cbc:TaxableAmount><cbc:TaxAmount currencyID="COP">2553.00</cbc:TaxAmount><cbc:Percent>5</cbc:Percent><cac:TaxCategory><cac:TaxScheme><cbc:ID>02</cbc:ID></cac:TaxScheme></cac:TaxCategory></fe:TaxSubtotal></fe:TaxTotal><fe:TaxTotal><cbc:TaxAmount currencyID="COP">0.00</cbc:TaxAmount><cbc:TaxEvidenceIndicator>false</cbc:TaxEvidenceIndicator><fe:TaxSubtotal><cbc:TaxableAmount currencyID="COP">0.00</cbc:TaxableAmount><cbc:TaxAmount currencyID="COP">0.00</cbc:TaxAmount><cbc:Percent>0</cbc:Percent><cac:TaxCategory><cac:TaxScheme><cbc:ID>03</cbc:ID></cac:TaxScheme></cac:TaxCategory></fe:TaxSubtotal></fe:TaxTotal><fe:LegalMonetaryTotal><cbc:LineExtensionAmount currencyID="COP">172010.00</cbc:LineExtensionAmount><cbc:TaxExclusiveAmount currencyID="COP">25535</cbc:TaxExclusiveAmount>  <cbc:PayableAmount currencyID="COP">197545.00</cbc:PayableAmount>           </fe:LegalMonetaryTotal><fe:InvoiceLine><cbc:ID>1</cbc:ID><cbc:InvoicedQuantity>30.0</cbc:InvoicedQuantity><cbc:LineExtensionAmount currencyID="COP">19770</cbc:LineExtensionAmount><fe:Item><cbc:Description>BISAG.3X3 C16 CP HO ST          INDUMA X24 UDS</cbc:Description></fe:Item><fe:Price><cbc:PriceAmount currencyID="COP">659.0</cbc:PriceAmount></fe:Price></fe:InvoiceLine><fe:InvoiceLine><cbc:ID>2</cbc:ID><cbc:InvoicedQuantity>6.0</cbc:InvoicedQuantity><cbc:LineExtensionAmount currencyID="COP">18054</cbc:LineExtensionAmount><fe:Item><cbc:Description>CABO MADERA P/PALA</cbc:Description></fe:Item><fe:Price><cbc:PriceAmount currencyID="COP">3009.0</cbc:PriceAmount></fe:Price></fe:InvoiceLine><fe:InvoiceLine><cbc:ID>3</cbc:ID><cbc:InvoicedQuantity>5.0</cbc:InvoicedQuantity><cbc:LineExtensionAmount currencyID="COP">51050</cbc:LineExtensionAmount><fe:Item><cbc:Description>PALA GARLANCHA No.4 SIN CABO    R:6056-40 HERRAGRO</cbc:Description></fe:Item><fe:Price><cbc:PriceAmount currencyID="COP">10210.0</cbc:PriceAmount></fe:Price></fe:InvoiceLine><fe:InvoiceLine><cbc:ID>4</cbc:ID><cbc:InvoicedQuantity>6.0</cbc:InvoicedQuantity><cbc:LineExtensionAmount currencyID="COP">83136</cbc:LineExtensionAmount><fe:Item><cbc:Description>TEJA ZINC 3.05 X .80 ONDULADA</cbc:Description></fe:Item><fe:Price><cbc:PriceAmount currencyID="COP">13856.0</cbc:PriceAmount></fe:Price></fe:InvoiceLine></fe:Invoice>';
-    // Add signature
+    
+$xml .=
+    '<cbc:UUID>'.$uuid.'</cbc:UUID>'.
+    '<cbc:Note>'.$nota.'</cbc:Note>'.
+    '<cbc:LineExtensionAmount currencyID="COP">'.$LineExtensionAmount.'</cbc:LineExtensionAmount>'.
+    '<cbc:AccountingCost>'.$CCost.'</cbc:AccountingCost>'.
+    '<cac:Item>'.
+      '<cbc:Description>cualquiercosa</cbc:Description>'.
+    '</cac:Item>'.
+
+
+  '</cac:DebitNoteLine>'.
+
+'</fe:DebitNote>';
+
+
+
     $xml = $this->injectSignature($xml,$fecha['SigningTime']);
-    // Prepend content type
+
     $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . $xml;
 
     // Save document
-    //if (!is_null($filePath)) return file_put_contents($filePath, $xml);
+    if (!is_null($filePath)) return file_put_contents($filePath, $xml);
+
+ 
+
+$rango = 3;
 
 
-$obj_xml = new SimpleXMLElement($xml);
-$documento_xml = $obj_xml->asXML(); //el xml de salidad
+//$obj_xml = new SimpleXMLElement($xml);
+//$documento_xml = $obj_xml->asXML(); //el xml de salidad
+$documento_xml = $xml;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                           //
@@ -1162,8 +1336,8 @@ $nit_10         = str_pad($nit, 10, "0", STR_PAD_LEFT);   //se añaden ceros a l
 $rango_ex       = dechex($rango);//pasamos el numero de factura a exadecimal
 $num_fac        = str_pad($rango_ex, 10, "0", STR_PAD_LEFT); //se añaden ceros a la izquierda hasta completar 10 digitos 
 
-$tipo_documento = "face_f";
-$tipo_de_zip  = "ws_f";
+$tipo_documento = "face_d";
+$tipo_de_zip  = "ws_d";
 
 $nombre_xml   =  $tipo_documento.$nit_10.$num_fac;   // Nombre para usar en el xml y el zip 
 $nombre_zip   =  $tipo_de_zip.$nit_10.$num_fac;        // Nombre para usar en el xml y el zip
@@ -1213,7 +1387,7 @@ echo "<br><br>".$content."<br><br>";
 $parameters =
 '<ns1:EnvioFacturaElectronicaPeticion>
 <ns1:NIT>'.$nit.'</ns1:NIT>
-<ns1:InvoiceNumber>'.$InvoiceNumber.'</ns1:InvoiceNumber>
+<ns1:InvoiceNumber>3</ns1:InvoiceNumber>
 <ns1:IssueDate>'.$fecha['IssueDate'].'T'.$fecha['IssueTime'].'</ns1:IssueDate>
 <ns1:Document>'.$content.'</ns1:Document>
 </ns1:EnvioFacturaElectronicaPeticion>
