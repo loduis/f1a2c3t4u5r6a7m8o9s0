@@ -1146,10 +1146,10 @@ $xml .='<ext:UBLExtensions>'.
             '<cbc:IdentificationCode listAgencyID="6" listAgencyName="United Nations Economic Commission for Europe" listSchemeURI="urn:oasis:names:specification:ubl:codelist:gc:CountryIdentificationCode-2.0">CO</cbc:IdentificationCode>'.
           '</sts:InvoiceSource>'.
           '<sts:SoftwareProvider>'.
-            '<sts:ProviderID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeURI="http://www.unece.org/trade/untdid/d08a/tred/tred3055.htm" schemeName="NIT, RUT" schemeDataURI="www.dian.gov.co/contenidos/servicios/rut_preguntasfrecuentes.html">'.$ProviderID.'</sts:ProviderID>'.
-            '<sts:SoftwareID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeURI="http://www.unece.org/trade/untdid/d08a/tred/tred3055.htm" schemeName="Código de Activación" schemeDataURI="http://www.dian.gov.co/micrositios/fac_electronica/documentos/Guia_del_usuario_Habilitacion_Adquirente.pdf">'.$SoftwareID.'</sts:SoftwareID>'.
+            '<sts:ProviderID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">'.$ProviderID.'</sts:ProviderID>'.
+            '<sts:SoftwareID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">'.$SoftwareID.'</sts:SoftwareID>'.
           '</sts:SoftwareProvider>'.
-          '<sts:SoftwareSecurityCode schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeURI="http://www.unece.org/trade/untdid/d08a/tred/tred3055.htm" schemeName="Código de Seguridad del Software" schemeDataURI="http://www.dian.gov.co/micrositios/fac_electronica/documentos/Anexo_Tecnico_003_Mecanismos_Sistema_Tecnico_de_Control.pdf">'.$SoftwareSecurityCode.'</sts:SoftwareSecurityCode>'.
+          '<sts:SoftwareSecurityCode schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)">'.$SoftwareSecurityCode.'</sts:SoftwareSecurityCode>'.
         '</sts:DianExtensions>'.
       '</ext:ExtensionContent>'.
     '</ext:UBLExtension>';
@@ -1160,7 +1160,7 @@ $xml .= '<ext:UBLExtension>'.
 
 $xml .='</ext:UBLExtensions>'.
   '<cbc:UBLVersionID>UBL 2.0</cbc:UBLVersionID>'.
-  '<cbc:CustomizationID/>'.
+  '<cbc:CustomizationID></cbc:CustomizationID> '.
   '<cbc:ProfileID>DIAN 1.0</cbc:ProfileID>'.
   '<cbc:ID>3</cbc:ID>'.
   '<cbc:IssueDate>'.$fecha['IssueDate'].'</cbc:IssueDate>  '.
@@ -1184,7 +1184,7 @@ $xml .='</ext:UBLExtensions>'.
   '<cbc:Note>El fragmento xPath: /fe:DebitNote/cac:BillingReference contiene los identificadores de una factura.</cbc:Note>'.
   '<cbc:DocumentCurrencyCode>COP</cbc:DocumentCurrencyCode>'.
   '<cac:DiscrepancyResponse>'.
-    '<cbc:ReferenceID/>'.
+    '<cbc:ReferenceID></cbc:ReferenceID>'.
     '<cbc:ResponseCode listName="concepto de notas débito" listSchemeURI="http://www.dian.gov.co/micrositios/fac_electronica/documentos/Anexo_Tecnico_001_Formatos_de_los_Documentos_XML_de_Facturacion_Electron.pdf" name="2:= gastos por cobrar">1</cbc:ResponseCode>'.
   '</cac:DiscrepancyResponse>'.
   '<cac:BillingReference>'.
@@ -1227,7 +1227,7 @@ $xml .='</ext:UBLExtensions>'.
   '</fe:Party>'.
 '</fe:AccountingSupplierParty>'.
   '<fe:AccountingCustomerParty>'.
-    '<cbc:AdditionalAccountID schemeName="tipos de persona; comprador: una persona natural" schemeDataURI="http://www.dian.gov.co/micrositios/fac_electronica/documentos/Anexo_Tecnico_001_Formatos_de_los_Documentos_XML_de_Facturacion_Electron.pdf">2</cbc:AdditionalAccountID>'.
+    '<cbc:AdditionalAccountID schemeName="tipos de persona; comprador: una persona natural">2</cbc:AdditionalAccountID>'.
 '<fe:Party>'.
 '<cac:PartyIdentification>'.
   '<cbc:ID schemeAgencyID="195" schemeAgencyName="CO, DIAN (Direccion de Impuestos y Aduanas Nacionales)" schemeID="31">'.$Nit.'</cbc:ID>'.
@@ -1294,7 +1294,6 @@ $xml .=
     '<cac:Item>'.
       '<cbc:Description>cualquiercosa</cbc:Description>'.
     '</cac:Item>'.
-
 
   '</cac:DebitNoteLine>'.
 
